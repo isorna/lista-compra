@@ -1,2 +1,2 @@
 # neoland-bootcamp-fullstack
-Repositorio para el bootcamp fullstack de Neoland
+Repositorio de Alvaro Isorna para el Bootcamp de Fullstack de Neoland
