@@ -2,9 +2,18 @@
 <html>
   <head>
     <title>Práctica del Bootcamp de Fullstack</title>
+    <script src="./js/index.js" defer></script>
+    <link rel="stylesheet" href="./css/styles.css"></link>
   </head>
   <body>
-    Hola Mundo, que tal?
-    pues bien
+    <h1>Lista de la compra</h1>
+    <form id="formulario">
+      <input type="text" id="articulo" placeholder="nuevo artículo" />
+      <button type="button" id="nuevoArticulo" disabled>Añadir</button>
+      <button type="button" id="nuevaLista">Nueva lista de la compra</button>
+    </form>
+    <ul id="lista">
+      <li>No hay nada que comprar</li>
+    </ul>
   </body>
 </html>

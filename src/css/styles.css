@@ -1,0 +1,13 @@
+ul {
+  border: 2px solid black;
+  padding: 1em;
+}
+li {
+  list-style-type: none;
+}
+ul li:first-child:has(+ li) {
+  display: none;
+}
+button {
+  cursor: pointer;
+}
