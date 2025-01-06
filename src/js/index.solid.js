@@ -1,25 +1,17 @@
 document.addEventListener('DOMContentLoaded', onDOMContentLoaded)
 
 function onDOMContentLoaded() {
-  const listaArticulos = document.getElementById('lista')
   const formulario = document.getElementById('formulario')
   const campoArticulo = document.getElementById('articulo')
   const botonArticulo = document.getElementById('nuevoArticulo')
   const botonNuevaLista = document.getElementById('nuevaLista')
-  const listaCompra = JSON.parse(window.localStorage.getItem('lista-compra')) || []
 
   formulario.addEventListener('submit', onFormSubmit)
   campoArticulo.addEventListener('keyup', onInputKeyUp)
   botonArticulo.addEventListener('click', onNewArticleClick)
   botonNuevaLista.addEventListener('click', onNewListClick)
 
-  if (listaCompra.length > 0){
-    for (let i = 0; i < listaCompra.length; i++){
-      const elemento = document.createElement('li')
-      elemento.innerText = listaCompra[i].nombre
-      listaArticulos.appendChild(elemento)
-    }
-  }
+  loadShoppingList()
 }
 
 function onFormSubmit(e) {
@@ -49,36 +41,62 @@ function onInputKeyUp(e) {
 
 function onNewArticleClick(e) {
   e.stopPropagation()
-  const listaArticulos = document.getElementById('lista')
-  const campoArticulo = document.getElementById('articulo')
-  const botonArticulo = document.getElementById('nuevoArticulo')
-  const listaCompra = JSON.parse(window.localStorage.getItem('lista-compra')) || []
-
-  if (campoArticulo.value !== '') {
-    const nuevaListaCompra = [
-      ...listaCompra,
-      {
-        nombre: campoArticulo.value
-      }
-    ]
-    window.localStorage.setItem('lista-compra', JSON.stringify(nuevaListaCompra))
-    const elemento = document.createElement('li')
-    elemento.innerText = campoArticulo.value
-    listaArticulos.appendChild(elemento)
-    campoArticulo.value = ''
-    botonArticulo.setAttribute('disabled', undefined)
-  }
+  addToShoppingList()
 }
 
 function onNewListClick(e) {
   e.stopPropagation()
+  resetShoppingList()
+}
+
+function loadShoppingList() {
+  const listaCompra = JSON.parse(window.localStorage.getItem('lista-compra')) || []
+
+  if (listaCompra.length > 0){
+    for (let i = 0; i < listaCompra.length; i++){
+      addToElementsList(listaCompra[i].name)
+    }
+  }
+}
+
+function addToShoppingList(){
+  const campoArticulo = document.getElementById('articulo')
+  const nuevoArticulo = campoArticulo.value
+
+  if (nuevoArticulo !== '') {
+    const listaCompra = JSON.parse(window.localStorage.getItem('lista-compra')) || []
+    const nuevaListaCompra = [
+      ...listaCompra,
+      {
+        name: nuevoArticulo
+      }
+    ]
+    window.localStorage.setItem('lista-compra', JSON.stringify(nuevaListaCompra))
+    addToElementsList(nuevoArticulo)
+  }
+}
+
+function addToElementsList(nuevoArticulo){
   const listaArticulos = document.getElementById('lista')
+  const elemento = document.createElement('li')
+  elemento.innerText = nuevoArticulo
+  listaArticulos.appendChild(elemento)
+  resetFormState()
+}
+
+function resetShoppingList() {
+  const listaArticulos = document.getElementById('lista')
+  window.localStorage.removeItem('lista-compra')
+
+  for (let i = listaArticulos.childNodes.length - 1; i > 1; i--){
+    listaArticulos.removeChild(listaArticulos.lastChild)
+  }
+  resetFormState()
+}
+
+function resetFormState(){
   const campoArticulo = document.getElementById('articulo')
   const botonArticulo = document.getElementById('nuevoArticulo')
   campoArticulo.value = ''
   botonArticulo.setAttribute('disabled', undefined)
-  window.localStorage.removeItem('lista-compra')
-  for (let i = listaArticulos.childNodes.length - 1; i > 1; i--){
-    listaArticulos.removeChild(listaArticulos.lastChild)
-  }
 }
