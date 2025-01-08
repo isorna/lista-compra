@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Práctica del Master de Fullstack</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "classes/Article": "./js/classes/Article.js",
+          "classes/ShoppingList": "./js/classes/ShoppingList.js",
+          "classes/LocalStore": "./js/classes/LocalStore.js",
+          "classes/HttpError": "./js/classes/HttpError.js",
+          "decorators/log": "./js/decorators/log.js",
+          "decorators/validate": "./js/decorators/validate.js",
+          "utils/translate": "./js/utils/translate.js",
+          "utils/simpleFetch": "./js/utils/simpleFetch.js"
+        }
+      }
+    </script>
+    <script type="module" src="./js/index.modules.js" defer></script>
+    <link rel="stylesheet" href="./css/styles.css"></link>
+  </head>
+  <body>
+    <h1>Lista de la compra <span id="total"></span></h1>
+    <form id="formulario">
+      <fieldset>
+        <legend>Añadir a la lista</legend>
+        <datalist id="productos"></datalist>
+        <input type="text" id="articulo" placeholder="nuevo artículo" list="productos" autocomplete="off" />
+        <input type="number" id="qty" placeholder="0" min="0" max="10" step="1" />
+        <input type="number" id="precio" placeholder="0€" min="0" max="100" step="1" />
+        <button type="button" id="nuevoArticulo" disabled>Añadir</button>
+        <button type="reset" id="nuevaLista">Nueva lista de la compra</button>
+      </fieldset>
+      <fieldset>
+        <legend>Filtrar</legend>
+        <input type="text" id="filtro" placeholder="nombre del artículo" autocomplete="off" />
+      </fieldset>
+    </form>
+    <ul id="lista">
+      <li>No hay nada que comprar</li>
+    </ul>
+  </body>
+</html>

@@ -1,43 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
-    <title>Práctica del Master de Fullstack</title>
-    <script type="importmap">
-      {
-        "imports": {
-          "classes/Article": "./js/classes/Article.js",
-          "classes/ShoppingList": "./js/classes/ShoppingList.js",
-          "classes/LocalStore": "./js/classes/LocalStore.js",
-          "classes/HttpError": "./js/classes/HttpError.js",
-          "decorators/log": "./js/decorators/log.js",
-          "decorators/validate": "./js/decorators/validate.js",
-          "utils/translate": "./js/utils/translate.js",
-          "utils/simpleFetch": "./js/utils/simpleFetch.js"
-        }
-      }
-    </script>
-    <script type="module" src="./js/index.modules.js" defer></script>
-    <link rel="stylesheet" href="./css/styles.css"></link>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El noticiero de Neoland - Segundo día del bootcamp de Fullstack</title>
   </head>
   <body>
-    <h1>Lista de la compra <span id="total"></span></h1>
-    <form id="formulario">
-      <fieldset>
-        <legend>Añadir a la lista</legend>
-        <datalist id="productos"></datalist>
-        <input type="text" id="articulo" placeholder="nuevo artículo" list="productos" autocomplete="off" />
-        <input type="number" id="qty" placeholder="0" min="0" max="10" step="1" />
-        <input type="number" id="precio" placeholder="0€" min="0" max="100" step="1" />
-        <button type="button" id="nuevoArticulo" disabled>Añadir</button>
-        <button type="reset" id="nuevaLista">Nueva lista de la compra</button>
-      </fieldset>
-      <fieldset>
-        <legend>Filtrar</legend>
-        <input type="text" id="filtro" placeholder="nombre del artículo" autocomplete="off" />
-      </fieldset>
-    </form>
-    <ul id="lista">
-      <li>No hay nada que comprar</li>
-    </ul>
+    <header>
+      <h1>Segundo día del bootcamp de Fullstack</h1>
+      <nav>
+        <ol>
+          <li><a href="./" title="inicio">Home</a></li>
+          <li><a href="./resumen-semanal.html#resumen-semanal" title="resumen semanal">Resumen semanal</a></li>
+        </ol>
+      </nav>
+    </header>
+    <article>
+      <h1>Los alumnos sobreviven al segundo día del bootcamp</h1>
+      <img src="../assets/img/600x400.svg" />
+      <p>A pesar de las dificultades, <span>han conseguido subir su primera</span> página web al repositorio.</p>
+      <blockquote>
+        <p>No se lo podían creer.</p>
+      </blockquote>
+      <p><em>Editorial</em></p>
+    </article>
+    <section>
+      <h1>Comentarios</h1>
+      <ul>
+        <li><cite><strong>Álvaro (el profe):</strong> siempre confié en ellos</cite></li>
+      </ul>
+      <form action="./informacion.html">
+        <input type="hidden" name="sesion" value="SESSION_ALVARO" />
+        <fieldset>
+          <label>Usuario:</label>
+          <input type="text" name="usuario" placeholder="tu nombre de usuario" />
+        </fieldset>
+        <fieldset>
+          <label>Contraseña:</label>
+          <input type="password" name="pwd" />
+        </fieldset>
+        <fieldset>
+          <label>Fecha de nacimiento:</label>
+          <input type="date" name="fecha" />
+        </fieldset>
+        <select name="opcion">
+          <option value="1">opcion 1</option>
+          <option value="2">opcion 2</option>
+          <option value="3">opcion 3</option>
+          <option value="4">opcion 4</option>
+        </select>
+        <textarea name="texto"></textarea>
+        <button type="submit">enviar</button>
+      </form>
+    </section>
   </body>
 </html>
