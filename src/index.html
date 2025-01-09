@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El noticiero de Neoland - Segundo día del bootcamp de Fullstack</title>
+    <link rel="stylesheet" href="./css/reset.css"></link>
+    <link rel="stylesheet" href="./css/styles.noticia.css"></link>
   </head>
-  <body>
+  <body id="app-wrapper">
     <header>
       <h1>Segundo día del bootcamp de Fullstack</h1>
       <nav>
         <ol>
           <li><a href="./" title="inicio">Home</a></li>
+          <li><a href="./resumen-semanal.html#resumen-semanal" title="resumen semanal">Resumen semanal</a></li>
           <li><a href="./resumen-semanal.html#resumen-semanal" title="resumen semanal">Resumen semanal</a></li>
         </ol>
       </nav>
@@ -26,10 +29,13 @@
     </article>
     <section>
       <h1>Comentarios</h1>
-      <ul>
-        <li><cite><strong>Álvaro (el profe):</strong> siempre confié en ellos</cite></li>
+      <ul class="lista-comentarios">
+        <li>
+          <img src="../assets/img/avatar.png" />
+          <cite><strong>Álvaro (el profe):</strong> siempre confié en ellos</cite>
+        </li>
       </ul>
-      <form action="./informacion.html">
+      <form action="./informacion.html" id="comentarios">
         <input type="hidden" name="sesion" value="SESSION_ALVARO" />
         <fieldset>
           <label>Usuario:</label>
@@ -43,13 +49,17 @@
           <label>Fecha de nacimiento:</label>
           <input type="date" name="fecha" />
         </fieldset>
-        <select name="opcion">
-          <option value="1">opcion 1</option>
-          <option value="2">opcion 2</option>
-          <option value="3">opcion 3</option>
-          <option value="4">opcion 4</option>
-        </select>
-        <textarea name="texto"></textarea>
+        <fieldset>
+          <select name="opcion">
+            <option value="1">opcion 1</option>
+            <option value="2">opcion 2</option>
+            <option value="3">opcion 3</option>
+            <option value="4">opcion 4</option>
+          </select>
+        </fieldset>
+        <fieldset>
+          <textarea name="texto"></textarea>
+        </fieldset>
         <button type="submit">enviar</button>
       </form>
     </section>
