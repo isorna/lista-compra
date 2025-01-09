@@ -6,6 +6,8 @@
     <title>El noticiero de Neoland - Segundo día del bootcamp de Fullstack</title>
     <link rel="stylesheet" href="./css/reset.css"></link>
     <link rel="stylesheet" href="./css/styles.noticia.css"></link>
+    <link rel="stylesheet" href="./css/styles.noticia.mobile.css" media="screen and (max-width: 768px)"></link>
+    <link rel="stylesheet" href="./css/styles.noticia.desktop.css" media="screen and (min-width: 769px)"></link>
   </head>
   <body id="app-wrapper">
     <header>
@@ -32,6 +34,14 @@
           <img src="../assets/img/avatar.png" />
           <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
         </li>
+        <li>
+          <img src="../assets/img/avatar.png" />
+          <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
+        </li>
+        <li>
+          <img src="../assets/img/avatar.png" />
+          <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
+        </li>
       </ul>
       <form action="./informacion.html" id="comentarios">
         <input type="hidden" name="sesion" value="SESSION_ALVARO" />
@@ -47,19 +57,14 @@
           <label>Fecha de nacimiento:</label>
           <input type="date" name="fecha" />
         </fieldset>
-        <fieldset>
-          <select name="opcion">
-            <option value="1">opcion 1</option>
-            <option value="2">opcion 2</option>
-            <option value="3">opcion 3</option>
-            <option value="4">opcion 4</option>
-          </select>
-        </fieldset>
-        <fieldset>
+        <fieldset hidden>
           <textarea name="texto"></textarea>
         </fieldset>
         <button type="submit">enviar</button>
       </form>
     </section>
+    <footer>
+      <p>&copy; Neoland.es</p>
+    </footer>
   </body>
 </html>

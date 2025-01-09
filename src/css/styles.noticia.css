@@ -3,56 +3,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#app-wrapper {
-  display: grid;
-  grid-template-rows: 100px 2fr 1fr;
-  margin: 0 3em;
-  max-width: 1280px;
-}
-
-@media screen and (max-width: 600px) {
-  body {
-    background-color: grey;
-  }
-}
-@media screen and (min-width: 601px) {
-  body {
-    background-color: pink;
-  }
-}
-
-header,
-article,
-section,
-ol {
-  display: flex;
-}
-
-header {
-  flex-direction: column;
-  gap: 1em;
-
-  h1 {
-    margin-top: 2em;
-    font-size: 1em;
-    font-weight: bold;
-  }
-
-  li {
-    border-right: 10px solid blue;
-    margin-right: 1em;
-    padding: 5px 10px;
-
-    +li {
-      background-color: chartreuse;
-    }
-
-    &:last-child {
-      border-right: unset;
-    }
-  }
-}
-
 
 q {
   quotes: auto;
@@ -65,7 +15,63 @@ em {
   font-style: italic;
 }
 
+ol>li {
+  display: block;
+  padding-right: 1em;
+  list-style-type: none;
+}
+
+table tr td {
+  background-color: coral;
+}
+
+table tr td:nth-child(7) {
+  background-color: grey;
+}
+
+[hidden] {
+  display: none;
+}
+
+/* Page components */
+
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  h1 {
+    margin-top: 2em;
+    font-size: 1em;
+    font-weight: bold;
+  }
+
+  &>nav>ol {
+    display: flex;
+
+    li {
+      border-right: 10px solid blue;
+      margin-right: 1em;
+      padding: 5px 10px;
+
+      +li {
+        background-color: chartreuse;
+      }
+
+      &:last-child {
+        border-right: unset;
+        a {
+          text-decoration: none;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+}
+
 article {
+  display: flex;
   flex-direction: column;
   background-color: beige;
   padding: .5em;
@@ -85,14 +91,8 @@ article {
   }
 }
 
-ol>li {
-  display: block;
-  padding-right: 1em;
-  list-style-type: none;
-}
-
 section {
-  margin-top: 2em;
+  display: flex;
   flex-direction: column;
 
   h1 {
@@ -100,8 +100,7 @@ section {
   }
 
   .lista-comentarios {
-    margin: 2em 0;
-
+    margin: 1em 0 0;
 
     li {
       display: flex;
@@ -118,20 +117,28 @@ section {
         border: 2px dotted black;
         background-color: white;
       }
+
       cite {
         display: block;
+      }
+      &+li {
+        margin-top: 1em;
+      }
+      &:nth-child(odd) {
+        flex-direction: row-reverse;
       }
     }
   }
 
   form {
     margin-top: 1em;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1;
+    gap: .5em;
 
-    input[type="date"] {
-      border-radius: 5px;
-      padding: 10px;
+    fieldset {
+      display: flex;
+      justify-content: space-between;
     }
 
     textarea {
@@ -140,10 +147,7 @@ section {
   }
 }
 
-table tr td {
-  background-color: coral;
-}
-
-table tr td:nth-child(7) {
-  background-color: grey;
+footer {
+  margin-top: 1em;
+  text-align: center;
 }
