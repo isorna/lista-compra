@@ -1,8 +1,13 @@
-body {
-  background-color: grey;
-  font-family: Arial, Helvetica, sans-serif;
+:root {
+  --color-azul: lightblue;
+  --color-comentarios: cornflowerblue;
 }
 
+body {
+  background-color: grey;
+  font-family: var(--tipografia, 'sans-serif');
+  font-size: var(--base-font-size, 14px);
+}
 
 q {
   quotes: auto;
@@ -92,6 +97,7 @@ article {
 }
 
 section {
+  background-color: var(--color-azul);
   display: flex;
   flex-direction: column;
 
@@ -102,14 +108,23 @@ section {
   .lista-comentarios {
     margin: 1em 0 0;
 
+    /**
+      * COMPONENTE WEB: COMENTARIO
+      * --color-comentarios: color de fondo del comentario
+      */
     li {
       display: flex;
-      padding: 5px;
+      /* padding: 1em; */
+      line-height: calc(var(--base-font-size)*2);
       border: 1px dotted black;
       height: 50px;
-      background-color: cornflowerblue;
+      background-color: var(--color-comentarios);
       align-items: center;
       justify-content: space-between;
+
+      .color-verde {
+        background-color: green;
+      }
 
       img {
         width: 90px;
