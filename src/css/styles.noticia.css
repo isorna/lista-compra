@@ -147,13 +147,29 @@ section {
 
   form {
     margin-top: 1em;
-    display: grid;
-    grid-template-columns: 1;
-    gap: .5em;
+    /* display: grid; */
+    /* grid-template-columns: 1; */
+    /* gap: .5em; */
+    padding: 5px;
 
     fieldset {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
+      padding: 5px;
+    }
+
+    input {
+      margin-top: .3em;
+      line-height: 1.5em;
+      padding: 5px;
+    }
+
+    button {
+      margin-top: 1em;
+      display: block;
+      line-height: 1.5em;
+      width: 100%;
     }
 
     textarea {
