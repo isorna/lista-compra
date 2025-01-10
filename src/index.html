@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El noticiero de Neoland - Tercero día del bootcamp de Fullstack</title>
+    <link rel="stylesheet" href="./css/reset.css"></link>
+    <link rel="stylesheet" href="./css/styles.typography.css"></link>
+    <link rel="stylesheet" href="./css/styles.noticia.css"></link>
+    <link rel="stylesheet" href="./css/styles.noticia.mobile.css" media="screen and (max-width: 768px)"></link>
+    <link rel="stylesheet" href="./css/styles.noticia.desktop.css" media="screen and (min-width: 769px)"></link>
   </head>
-  <body>
+  <body id="app-wrapper">
     <header>
       <h1>Tercero día del bootcamp de Fullstack</h1>
       <nav>
         <ol>
           <li><a href="./" title="inicio">Home</a></li>
+          <li><a href="./resumen-semanal.html#resumen-semanal" title="resumen semanal">Resumen semanal</a></li>
           <li><a href="./resumen-semanal.html#resumen-semanal" title="resumen semanal">Resumen semanal</a></li>
         </ol>
       </nav>
@@ -19,17 +25,26 @@
       <h1>Los alumnos sobreviven al segundo día del bootcamp</h1>
       <img src="../assets/img/600x400.svg" />
       <p>A pesar de las dificultades, <span>han conseguido subir su primera</span> página web al repositorio.</p>
-      <blockquote>
-        <p>No se lo podían creer.</p>
-      </blockquote>
+      <p><q>No se lo podían creer.</q></p>
       <p><em>Editorial</em></p>
     </article>
     <section>
       <h1>Comentarios</h1>
-      <ul>
-        <li><cite><strong>Álvaro (el profe):</strong> siempre confié en ellos</cite></li>
+      <ul class="lista-comentarios">
+        <li>
+          <img src="../assets/img/avatar.png" />
+          <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
+        </li>
+        <li style="--color-comentarios: red">
+          <img src="../assets/img/avatar.png" />
+          <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
+        </li>
+        <li class="color-verde">
+          <img src="../assets/img/avatar.png" />
+          <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
+        </li>
       </ul>
-      <form action="./informacion.html">
+      <form action="./informacion.html" id="comentarios">
         <input type="hidden" name="sesion" value="SESSION_ALVARO" />
         <fieldset>
           <legend>Datos de usuario</legend>
@@ -42,15 +57,14 @@
           <label>Fecha de nacimiento:</label>
           <input type="date" name="fecha" />
         </fieldset>
-        <select name="opcion">
-          <option value="1">opcion 1</option>
-          <option value="2">opcion 2</option>
-          <option value="3">opcion 3</option>
-          <option value="4">opcion 4</option>
-        </select>
-        <textarea name="texto"></textarea>
+        <fieldset hidden>
+          <textarea name="texto"></textarea>
+        </fieldset>
         <button type="submit">enviar</button>
       </form>
     </section>
+    <footer>
+      <p>&copy; Neoland.es</p>
+    </footer>
   </body>
 </html>
