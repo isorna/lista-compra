@@ -16,28 +16,96 @@
         }
       }
     </script>
-    <script type="module" src="./js/index.modules.js" defer></script>
+    <!-- <script type="module" src="./js/index.modules.js" defer></script> -->
+    <script src="./js/index.practica.js"></script>
+    <link rel="stylesheet" href="./css/reset.css"></link>
     <link rel="stylesheet" href="./css/styles.css"></link>
+    <link rel="stylesheet" href="./css/styles.mobile.css" media="screen and (max-width: 768px)"></link>
+    <link rel="stylesheet" href="./css/styles.desktop.css" media="screen and (min-width: 769px)"></link>
   </head>
-  <body>
-    <h1>Lista de la compra <span id="total"></span></h1>
-    <form id="formulario">
-      <fieldset>
-        <legend>Añadir a la lista</legend>
-        <datalist id="productos"></datalist>
-        <input type="text" id="articulo" placeholder="nuevo artículo" list="productos" autocomplete="off" />
-        <input type="number" id="qty" placeholder="0" min="0" max="10" step="1" />
-        <input type="number" id="precio" placeholder="0€" min="0" max="100" step="1" />
-        <button type="button" id="nuevoArticulo" disabled>Añadir</button>
-        <button type="reset" id="nuevaLista">Nueva lista de la compra</button>
-      </fieldset>
-      <fieldset>
-        <legend>Filtrar</legend>
-        <input type="text" id="filtro" placeholder="nombre del artículo" autocomplete="off" />
-      </fieldset>
-    </form>
-    <ul id="lista">
-      <li>No hay nada que comprar</li>
-    </ul>
+  <body class="debug">
+    <header class="debug">
+      <h1>Lista de la compra <span hidden id="total"></span></h1>
+      <button onclick="switchColor()">CLICK</button>
+    </header>
+    <main class="debug">
+      <form id="formulario" class="debug">
+        <fieldset>
+          <legend>Añadir a la lista</legend>
+          <!-- <datalist id="productos"></datalist> -->
+          <input type="text" id="articulo" placeholder="nuevo artículo" list="productos" autocomplete="off" />
+          <!-- <input type="number" id="qty" placeholder="0" min="0" max="10" step="1" />
+          <input type="number" id="precio" placeholder="0€" min="0" max="100" step="1" /> -->
+          <button type="button" id="nuevoArticulo" onclick="addToShoppingList()">Añadir</button>
+          <button type="reset" id="nuevaLista" onclick="resetShoppingList()">Nueva lista de la compra</button>
+        </fieldset>
+        <fieldset hidden>
+          <legend>Filtrar</legend>
+          <input type="text" id="filtro" placeholder="nombre del artículo" autocomplete="off" />
+        </fieldset>
+      </form>
+      <!-- <ul id="lista" hidden>
+        <li>No hay nada que comprar</li>
+      </ul> -->
+      <table class="debug">
+        <thead>
+          <tr>
+            <th>cantidad</th>
+            <th>objeto</th>
+            <th>precio</th>
+            <th>total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>papel de cocina</td>
+            <td>2€</td>
+            <td>2€</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>papel de cocina</td>
+            <td>2€</td>
+            <td>2€</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>papel de cocina</td>
+            <td>2€</td>
+            <td>2€</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>papel de cocina</td>
+            <td>2€</td>
+            <td>2€</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>papel de cocina</td>
+            <td>2€</td>
+            <td>2€</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>papel de cocina</td>
+            <td>2€</td>
+            <td>2€</td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+    <aside class="debug">
+      <nav class="debug">
+        <ul class="debug">
+          <li class="debug">Opción de menú 1</li>
+          <li class="debug">Opción de menú 2</li>
+          <li class="debug">Opción de menú 3</li>
+          <li class="debug">Opción de menú 4</li>
+          <li class="debug">Opción de menú 5</li>
+        </ul>
+      </nav>
+    </aside>
   </body>
 </html>
