@@ -56,9 +56,9 @@ console.log('LISTA DE LA COMPRA POR DEFECTO', shoppingList)
 // TOMORROW:
 function addToShoppingList() {
   // Add to shopping list as text string
-  let newArticle = document.getElementById('articulo').value
+  let newArticle = document.getElementById('article').value
   let articleQty = document.getElementById('qty').value
-  let articlePrice = document.getElementById('precio').value
+  let articlePrice = document.getElementById('price').value
   // shoppingList.push(newArticle)
   // Add to shopping list as object
   let newArticleObject = {
