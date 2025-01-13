@@ -6,9 +6,23 @@ let newArticle = 'flanes'
 // Numbers
 let totalAmount = 0
 // Arrays
-let shoppingList = ['carne', 'pescado', 'fruta']
+let shoppingList = []
 // Constants
 const PERAS = 'peras'
+// Example: dictionary
+const URLS = {
+  home: 'index.practica.html',
+  tables: 'tablas.practica.html',
+  notFound: '404.html'
+}
+const I18N = {
+  es: {
+    'new.article': 'Nuevo artículo'
+  },
+  en: {
+    'new.article': 'New article'
+  }
+}
 // Objects
 let productInformation = {
   qty: 0,
@@ -33,25 +47,35 @@ let shoppingListWithObjects = [
   }
 ]
 
+console.log(URLS.home, I18N.en['new.article'])
 
 console.log('LISTA DE LA COMPRA POR DEFECTO', shoppingList)
 // console.info(shoppingList)
 // console.error(shoppingList)
 
-
-
 // TOMORROW:
-function addToShoppingList(){
+function addToShoppingList() {
+  // Add to shopping list as text string
   let newArticle = document.getElementById('articulo').value
-  shoppingList.push(newArticle)
+  let articleQty = document.getElementById('qty').value
+  let articlePrice = document.getElementById('precio').value
+  // shoppingList.push(newArticle)
+  // Add to shopping list as object
+  let newArticleObject = {
+    // TODO: remember to cast to numbers
+    qty: articleQty,
+    name: newArticle,
+    price: articlePrice
+  }
+  shoppingList.push(newArticleObject)
   console.log('addToShoppingList', shoppingList)
 }
 
-function resetShoppingList(){
+function resetShoppingList() {
   shoppingList = []
   console.log('resetShoppingList', shoppingList)
 }
 
-function switchColor () {
-  document.getElementsByTagName('header')[0].style.backgroundColor='cyan'
+function switchColor() {
+  document.getElementsByTagName('header')[0].style.backgroundColor = 'cyan'
 }
