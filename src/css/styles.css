@@ -68,6 +68,9 @@ body {
       gap: .5em;
       flex-direction: column;
       padding: .3em;
+      fieldset {
+        display: flex;
+      }
     }
     table {
       margin-top: 1em;
