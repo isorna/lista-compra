@@ -28,7 +28,7 @@
       <h1>Lista de la compra <span hidden id="total"></span></h1>
       <button onclick="switchColor()">CLICK</button>
     </header>
-    <main id="mainContent" class="debug">
+    <main class="debug">
       <form id="formulario" class="debug">
         <fieldset>
           <legend>Añadir a la lista</legend>
@@ -44,7 +44,6 @@
           <input type="text" id="filtro" placeholder="nombre del artículo" autocomplete="off" />
         </fieldset>
       </form>
-      <p id="log" class="debug">LOG</p>
       <table id="shoppingListTable" class="debug">
         <thead>
           <tr>
@@ -55,18 +54,6 @@
           </tr>
         </thead>
         <tbody id="shoppingListTableBody">
-          <tr>
-            <td>1</td>
-            <td>papel de cocina</td>
-            <td>2€</td>
-            <td>2€</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>papel de cocina</td>
-            <td>2€</td>
-            <td>2€</td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>
