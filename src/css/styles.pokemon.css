@@ -1,0 +1,60 @@
+
+.debug {
+  padding: 1em;
+  background-color: rgba(241, 8, 8, .3);
+}
+
+body {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  header {
+    grid-column-start: span 12;
+    display: flex;
+    flex-direction: column-reverse;
+
+    h1 {
+      font-size: 2em;
+    }
+    nav {
+      ol {
+        display: flex;
+        justify-content: space-evenly;
+        column-gap: 1px;
+
+        li {
+          flex-grow: 1;
+          a {
+            display: block;
+            line-height: 3em;
+            text-align: center;
+            text-decoration: none;
+            &.active,
+            &:hover {
+              background-color: blue;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+  }
+  main {
+    grid-column-start: span 12;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+    form {
+      display: flex;
+      label {}
+      input {}
+      button {}
+      p {}
+    }
+    table {
+      border: 1px solid black;
+      caption {}
+    }
+  }
+}
