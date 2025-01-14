@@ -1,14 +1,18 @@
 // 1. Definimos nuestra lista de la compra
-// OLD CODE: do not use!!!
-// var shoppingList = ['carne', 'pescado', 'fruta']
 // Text strings
-let newArticle = 'flanes'
+let newArticleName = 'flanes'
 // Numbers
 let totalAmount = 0
 // Arrays
 let shoppingList = []
 // Constants
 const PERAS = 'peras'
+// TODO: define my shopping list items
+const PRODUCTS = {
+  MILK: 'LECHE',
+  FRUIT: 'FRUTA',
+  MEAT: 'CARNE'
+}
 // Example: dictionary
 const URLS = {
   home: 'index.practica.html',
@@ -50,16 +54,40 @@ let shoppingListWithObjects = [
 console.log(URLS.home, I18N.en['new.article'])
 
 console.log('LISTA DE LA COMPRA POR DEFECTO', shoppingList)
-// console.info(shoppingList)
-// console.error(shoppingList)
 
 // TOMORROW:
+// Add current article to shopping list
 function addToShoppingList() {
   // Add to shopping list as text string
   let newArticle = document.getElementById('article').value
   let articleQty = document.getElementById('qty').value
   let articlePrice = document.getElementById('price').value
-  // shoppingList.push(newArticle)
+
+  if (newArticle === '') {
+    console.error('Falta el nombre del articulo')
+    return
+  } else {
+    newArticle = newArticle.toUpperCase()
+  }
+
+  switch (newArticle) {
+    case PRODUCTS.MILK:
+      articleQty = 12
+      break;
+    case PRODUCTS.FRUIT:
+      articleQty = 3
+      break;
+    default:
+      if (articleQty === '') {
+        articleQty = 0
+      }
+      break;
+  }
+
+  if (articlePrice === '') {
+    articlePrice = 0
+  }
+
   // Add to shopping list as object
   let newArticleObject = {
     // TODO: remember to cast to numbers
@@ -71,6 +99,9 @@ function addToShoppingList() {
   console.log('addToShoppingList', shoppingList)
 }
 
+/**
+ *
+ */
 function resetShoppingList() {
   shoppingList = []
   console.log('resetShoppingList', shoppingList)
