@@ -9,9 +9,9 @@ let shoppingList = []
 const PERAS = 'peras'
 // TODO: define my shopping list items
 const PRODUCTS = {
-  MILK: 'LECHE',
-  FRUIT: 'FRUTA',
-  MEAT: 'CARNE'
+  MILK: 'leche',
+  FRUIT: 'fruta',
+  MEAT: 'carne'
 }
 // Example: dictionary
 const URLS = {
@@ -51,52 +51,61 @@ let shoppingListWithObjects = [
   }
 ]
 
-console.log(URLS.home, I18N.en['new.article'])
-
 console.log('LISTA DE LA COMPRA POR DEFECTO', shoppingList)
 
 // TOMORROW:
 // Add current article to shopping list
 function addToShoppingList() {
   // Add to shopping list as text string
-  let newArticle = document.getElementById('article').value
+  let articleName = document.getElementById('article').value
   let articleQty = document.getElementById('qty').value
   let articlePrice = document.getElementById('price').value
-
-  if (newArticle === '') {
-    console.error('Falta el nombre del articulo')
-    return
-  } else {
-    newArticle = newArticle.toUpperCase()
+  // Define new article object
+  let newArticleObject = {
+    qty: 0,
+    name: '',
+    price: 0
   }
 
-  switch (newArticle) {
+  if (articleName === '') {
+    console.error('Falta el nombre del articulo')
+    return
+  }
+
+  // Depending on article type, assign default qty and price
+  switch (articleName) {
     case PRODUCTS.MILK:
       articleQty = 12
+      articlePrice = 24
       break;
     case PRODUCTS.FRUIT:
       articleQty = 3
+      articlePrice = 2
       break;
     default:
-      if (articleQty === '') {
-        articleQty = 0
-      }
       break;
   }
 
+  // Change empty values to zero when needed
+  if (articleQty === '') {
+    articleQty = 0
+  }
   if (articlePrice === '') {
     articlePrice = 0
   }
 
-  // Add to shopping list as object
-  let newArticleObject = {
-    // TODO: remember to cast to numbers
+  // newArticleObject.name = articleName
+  // newArticleObject.qty = articleQty
+  // newArticleObject.price = articlePrice
+  newArticleObject = {
     qty: articleQty,
-    name: newArticle,
+    name: articleName,
     price: articlePrice
   }
+  console.log('addToShoppingList NEW ARTICLE', newArticleObject)
+  // Add to shopping list as object
   shoppingList.push(newArticleObject)
-  console.log('addToShoppingList', shoppingList)
+  console.log('addToShoppingList SHOPPING LIST', shoppingList)
 }
 
 /**

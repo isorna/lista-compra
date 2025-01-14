@@ -33,9 +33,9 @@
         <fieldset>
           <legend>Añadir a la lista</legend>
           <!-- <datalist id="productos"></datalist> -->
-          <input type="text" id="article" placeholder="nuevo artículo" list="productos" autocomplete="off" />
-          <input type="number" id="qty" placeholder="0" min="0" max="10" step="1" />
-          <input type="number" id="price" placeholder="0€" min="0" max="100" step="1" />
+          <label>Nombre: <input type="text" id="article" placeholder="nuevo artículo" list="productos" autocomplete="off" /></label>
+          <label>Cantidad: <input type="number" id="qty" placeholder="0" min="0" max="10" step="1" /></label>
+          <label>Precio: <input type="number" id="price" placeholder="0€" min="0" max="100" step="1" /></label>
           <button type="button" id="newArticle" onclick="addToShoppingList()">Añadir</button>
           <button type="reset" id="newList" onclick="resetShoppingList()">Nueva lista de la compra</button>
         </fieldset>
