@@ -60,6 +60,12 @@ function addToShoppingList() {
   let articleName = document.getElementById('article').value
   let articleQty = document.getElementById('qty').value
   let articlePrice = document.getElementById('price').value
+  let logText = document.getElementById('log')
+  let shoppingListTable = document.getElementById('shoppingListTable')
+  let shoppingListTableBody = document.getElementById('shoppingListTableBody')
+  let shoppingListTableTotal = document.getElementById('shoppingListTableTotal')
+  let mainContent = document.getElementById('mainContent')
+  let totalAmount = 0
   // Define new article object
   let newArticleObject = {
     qty: 0,
@@ -86,31 +92,72 @@ function addToShoppingList() {
       break;
   }
 
-  // Change empty values to zero when needed
-  if (articleQty === '') {
-    articleQty = 0
-  }
-  if (articlePrice === '') {
-    articlePrice = 0
-  }
+  // Cast to numbers when needed
+  articleQty = Number(articleQty)
+  articlePrice = Number(articlePrice)
 
-  // newArticleObject.name = articleName
-  // newArticleObject.qty = articleQty
-  // newArticleObject.price = articlePrice
+  // Update declared new article object with final values
   newArticleObject = {
     qty: articleQty,
     name: articleName,
     price: articlePrice
   }
-  console.log('addToShoppingList NEW ARTICLE', newArticleObject)
+
   // Add to shopping list as object
   shoppingList.push(newArticleObject)
-  console.log('addToShoppingList SHOPPING LIST', shoppingList)
+
+  // Calculate total amount
+  for (let i = 0; i < shoppingList.length; i = i + 1) {
+    // For each shoppingList item:
+    let shoppingListItem = shoppingList[i]
+    let shoppingListItemSubtotal = shoppingListItem.qty * shoppingListItem.price
+    totalAmount = totalAmount + shoppingListItemSubtotal
+  }
+  shoppingListTableTotal.innerText = totalAmount
+
+  // Create new article on table
+  let newArticleElement = document.createElement('p')
+  newArticleElement.innerText = 'He añadido '
+  + articleQty
+  + ' unidades de '
+  + articleName
+  + ' al precio de '
+  + articlePrice
+  + ' €'
+  mainContent.appendChild(newArticleElement)
+  // 1. Creo la fila
+  let newTableRow = document.createElement('tr')
+  // 2. Creo las celdas
+  let qtyCell = document.createElement('td')
+  let nameCell = document.createElement('td')
+  let priceCell = document.createElement('td')
+  let subtotalCell = document.createElement('td')
+  // 3. Añado los valores a las celdas
+  qtyCell.innerText = newArticleObject.qty
+  nameCell.innerText = newArticleObject.name
+  priceCell.innerText = newArticleObject.price
+  subtotalCell.innerText = newArticleObject.qty * newArticleObject.price
+  // 4. Añado las celdas a la fila
+  newTableRow.appendChild(qtyCell)
+  newTableRow.appendChild(nameCell)
+  newTableRow.appendChild(priceCell)
+  newTableRow.appendChild(subtotalCell)
+  // 5. Añado la fila a shoppingListTableBody
+  shoppingListTableBody.appendChild(newTableRow)
+
+  // Log
+  logText.innerText = 'He añadido '
+  + articleQty
+  + ' unidades de '
+  + articleName
+  + ' al precio de '
+  + articlePrice
+  + ' €'
+  // console.log('TABLA', shoppingListTable)
+  // console.log('addToShoppingList NEW ARTICLE', newArticleObject)
+  // console.log('addToShoppingList SHOPPING LIST', shoppingList)
 }
 
-/**
- *
- */
 function resetShoppingList() {
   shoppingList = []
   console.log('resetShoppingList', shoppingList)
