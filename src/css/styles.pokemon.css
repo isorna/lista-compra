@@ -27,12 +27,17 @@ body {
           flex-grow: 1;
           a {
             display: block;
-            line-height: 3em;
+            line-height: calc(3em - 5px);
             text-align: center;
             text-decoration: none;
+            border-bottom: 5px;
+            border-color: red;
+            border-style: solid;
+
             &.active,
             &:hover {
               background-color: blue;
+              border-color: blue;
               color: white;
             }
           }
@@ -47,14 +52,49 @@ body {
     row-gap: 1em;
     form {
       display: flex;
-      label {}
-      input {}
-      button {}
-      p {}
+      flex-direction: row;
+      column-gap: 1em;
+      padding: 1em;
+      align-items: flex-end;
+      background-color: #333;
+
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1em;
+        width: 100px;
+        label {
+          font-weight: bold;
+          color: white;
+        }
+        input {
+          width: 200px;
+          line-height: 40px;
+          font-size: 36px;
+        }
+      }
+      button {
+        height: 45px;
+        width: 80px;
+        font-size: 24px;
+        background-color: red;
+        border-radius: 8px;
+        border-width: 0;
+        cursor: pointer;
+        color: white;
+      }
+      p {
+        padding: 1em;
+        border-radius: 10px;
+        background-color: green;
+        color: white;
+      }
     }
     table {
       border: 1px solid black;
-      caption {}
+      caption {
+        font-weight: bold;
+      }
     }
   }
 }
