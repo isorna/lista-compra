@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repaso de HTML, CSS y JS - INDICE</title>
+  <link rel="stylesheet" href="./css/reset.css" />
+  <link rel="stylesheet" href="./css/styles.pokemon.css" />
+</head>
+<body class="debug">
+  <!-- Cabecera de la página -->
+  <header class="debug">
+    <h1 class="debug">Mi Pokedex - HOME</h1>
+    <nav>
+      <ol>
+        <li><a href="index.repaso.html" class="active">Home</a></li>
+        <li><a href="coleccion.html">Mi colección</a></li>
+        <li><a href="mapa.html">Mapa</a></li>
+      </ol>
+    </nav>
+  </header>
+  <!-- Componente: buscador de pokemons -->
+  <main class="debug">
+    <form>
+      <fieldset>
+        <label for="search">Nombre o número</label>
+        <input type="text" id="search" />
+      </fieldset>
+      <button type="button" id="searchButton" title="Buscar">&#x1F50D;&#xfe0e;</button>
+      <p>Busca un Pokémon por su nombre o usando su número de la Pokédex Nacional.</p>
+    </form>
+    <table class="debug">
+      <caption>Lista de Pokemons</caption>
+      <thead></thead>
+      <tbody></tbody>
+      <tfoot></tfoot>
+    </table>
+  </main>
+</body>
+</html>
