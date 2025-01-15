@@ -95,6 +95,36 @@ body {
       }
     }
 
+    .pokemon-card {
+      padding: 10px 10px 20px;
+      a {
+        text-decoration: none;
+
+        figure {
+          img {
+            display: block;
+            max-width: 100%;
+            border-radius: 5px;
+          }
+
+          figcaption {
+            margin-top: .3em;
+            font-size: .8em;
+            color: #919191;
+          }
+        }
+      }
+
+      h1 {
+        margin-top: .5em;
+        font-weight: bold;
+      }
+
+      p {
+        margin-top: .5em;
+      }
+    }
+
     form {
       display: flex;
       flex-direction: row;
@@ -144,43 +174,12 @@ body {
     }
 
     table {
-      /* width: 100%; */
+      width: 100%;
       background-color: white;
 
       caption {
         line-height: 2em;
         font-weight: bold;
-      }
-
-      td {
-        padding: 10px 10px 20px;
-
-        a {
-          text-decoration: none;
-
-          figure {
-            img {
-              display: block;
-              max-width: 100%;
-              border-radius: 5px;
-            }
-
-            figcaption {
-              margin-top: .3em;
-              font-size: .8em;
-              color: #919191;
-            }
-          }
-        }
-
-        h1 {
-          margin-top: .5em;
-          font-weight: bold;
-        }
-
-        p {
-          margin-top: .5em;
-        }
       }
     }
   }
