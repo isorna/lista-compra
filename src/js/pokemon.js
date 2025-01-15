@@ -1,8 +1,6 @@
 // 1. Solución rápida y moderna, PERO NO ES EFICIENTE
 import POKEMONS from '../pokemon/pokedex.json' with { type: 'json' }
 
-console.log('Datos de Bulbasaur', POKEMONS)
-
 readPokemonsList()
 
 /** HOISTING */
@@ -56,8 +54,8 @@ function readPokemonsList() {
     // 2.2.1.2. Añadir la imagen al figure
     figureElement.appendChild(imgElement)
     // 2.2.1.3. Crear el figcaption
-    let figcaptionElement = document.createElement('figure')
-    figcaptionElement.innerText = 'Nº ' + numeroImagen
+    let figcaptionElement = document.createElement('figcaption')
+    figcaptionElement.innerText = 'Nº ' + numeroImagen.padStart(4, '0')
     // 2.2.1.4. Añadir el figcaption al figure
     figureElement.appendChild(figcaptionElement)
     // 2.2.2. Añadir el figure al link
