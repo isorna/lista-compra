@@ -95,6 +95,21 @@ body {
       }
     }
 
+
+    .pokemon-gallery {
+      --gallery-columns: 3;
+      display: grid;
+      grid-template-columns: repeat(var(--gallery-columns), 1fr);
+      width: calc(276px*var(--gallery-columns));
+      justify-items: center;
+      margin: 0 auto;
+      background-color: white;
+
+      .pokemon-card {
+        width: 256px;
+      }
+    }
+
     .pokemon-card {
       padding: 10px 10px 20px;
       a {
@@ -182,5 +197,16 @@ body {
         font-weight: bold;
       }
     }
+
+    /* LO DEJO COMO REFERENCIA, pero no se usa */
+    /* .old-pokemon-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      background-color: white;
+      li {
+        max-width: 25%;
+        flex-grow: 1;
+      }
+    } */
   }
 }
