@@ -4,20 +4,27 @@
   background-color: rgba(241, 8, 8, .3);
 }
 
+[hidden] {
+  display: none;
+}
+
 body {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  row-gap: 1em;
   font-size: 18px;
   font-family: Arial, Helvetica, sans-serif;
   header {
     grid-column-start: span 12;
     display: flex;
+    row-gap: 1em;
     flex-direction: column-reverse;
 
     h1 {
       font-size: 2em;
     }
     nav {
+      background-color: white;
       ol {
         display: flex;
         justify-content: space-evenly;
@@ -50,6 +57,27 @@ body {
     display: flex;
     flex-direction: column;
     row-gap: 1em;
+
+    .taglist {
+      display: flex;
+      column-gap: 10px;
+
+      .tag {
+        flex-grow: 1;
+        border-radius: 5px;
+        line-height: 2em;
+        text-align: center;
+
+        &.planta {
+          background-color: #9bcc50;
+        }
+        &.veneno {
+          color: white;
+          background-color: #b97fc9;
+        }
+      }
+    }
+
     form {
       display: flex;
       flex-direction: row;
@@ -91,9 +119,36 @@ body {
       }
     }
     table {
-      border: 1px solid black;
+      width: 100%;
+      background-color: white;
       caption {
+        line-height: 2em;
         font-weight: bold;
+      }
+      td {
+        padding: 10px 10px 20px;
+        a {
+          text-decoration: none;
+          figure {
+            img {
+              display: block;
+              max-width: 100%;
+              border-radius: 5px;
+            }
+            figcaption {
+              margin-top: .3em;
+              font-size: .8em;
+              color: #919191;
+            }
+          }
+        }
+        h1 {
+          margin-top: .5em;
+          font-weight: bold;
+        }
+        p {
+          margin-top: .5em;
+        }
       }
     }
   }
