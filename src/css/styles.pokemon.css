@@ -84,11 +84,11 @@ body {
           padding: 0;
         }
 
-        &.planta {
+        &.grass {
           background-color: #9bcc50;
         }
 
-        &.veneno {
+        &.poison {
           color: white;
           background-color: #b97fc9;
         }
