@@ -3,7 +3,29 @@ import POKEMONS from '../pokemon/pokedex.json' with { type: 'json' }
 
 readPokemonsList()
 
-/** HOISTING */
+document.addEventListener('DOMContentLoaded', onDOMContentLoaded)
+
+/** ============== HOISTING ============== **/
+/**
+ * DOM Content Load event controller
+ */
+function onDOMContentLoaded(e) {
+  // Código a ejecutar cuando cargue la página
+  const searchButton = document.getElementById('searchButton')
+  console.log('la página ha cargado', e)
+  searchButton.addEventListener('click', onSearchClick)
+}
+
+/**
+ * Search button click event controller
+ * @param {event} e
+ */
+function onSearchClick(e){
+  const searchInput = document.getElementById('search')
+  const query = searchInput.value
+  const listaDePokemonsBuscados = buscarPokemon(query)
+  console.log('he clicado en el botón de búsqueda', listaDePokemonsBuscados)
+}
 
 /**
  * Leemos los datos de POKEMONS y con ellos construimos la tabla en el HTML
@@ -84,4 +106,36 @@ function readPokemonsList() {
     // 3. Añadir el LI a la LISTA
     LISTA.appendChild(liElement)
   }
+}
+
+/**
+ * Search for a singular pokemon data sheet
+ * @param {string} query
+ * @returns string
+ */
+function buscarPokemon(query) {
+  let returnValue = []
+  // Como no sabemos si es un id o un texto, lo transformamos
+  let numberQuery = Number(query)
+  // Buscar el pokemon por nombre o por id
+  // Usando POKEMONS, primero tenemos que saber si query es un id o un nombre
+  if (!isNaN(numberQuery)) {// query es un número
+    // Recorremos el array de POKEMONS
+    for (let pokemon of POKEMONS) {
+      if (pokemon.id === numberQuery) {
+        returnValue.push(pokemon.name.english)
+      }
+    }
+  } else {// query es una cadena de texto
+    // Recorremos el array de POKEMONS
+    for (let pokemon of POKEMONS) {
+      // Lo cambiamos a un filtro por cadena de texto
+      if (pokemon.name.english.includes(query)) {
+        returnValue.push(pokemon.name.english)
+      }
+    }
+  }
+  console.log('estoy en buscarPokemon, he recibido: ', query)
+
+  return returnValue
 }
