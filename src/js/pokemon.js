@@ -1,8 +1,6 @@
 // 1. Solución rápida y moderna, PERO NO ES EFICIENTE
 import POKEMONS from '../pokemon/pokedex.json' with { type: 'json' }
 
-readPokemonsList()
-
 document.addEventListener('DOMContentLoaded', onDOMContentLoaded)
 
 /** ============== HOISTING ============== **/
@@ -11,9 +9,21 @@ document.addEventListener('DOMContentLoaded', onDOMContentLoaded)
  */
 function onDOMContentLoaded(e) {
   // Código a ejecutar cuando cargue la página
+  // 1. Búsqueda de pokemons
   const searchButton = document.getElementById('searchButton')
-  console.log('la página ha cargado', e)
   searchButton.addEventListener('click', onSearchClick)
+  // 2. Cargo la lista de pokemons por defecto
+  readPokemonsList()
+  // 3. Click en las etiquetas de tipo de pokemon
+  const tagElementsList = document.getElementsByClassName('tag')
+  for (let tagElement of tagElementsList) {
+    tagElement.addEventListener('click', onTagClick)
+  }
+  // 4. Cancelo los clicks en los links de los pokemons
+  const linkList = document.querySelectorAll('.pokemon-card>a')
+  for (let linkElement of linkList) {
+    linkElement.addEventListener('click', onLinkClick)
+  }
 }
 
 /**
@@ -23,8 +33,30 @@ function onDOMContentLoaded(e) {
 function onSearchClick(e){
   const searchInput = document.getElementById('search')
   const query = searchInput.value
-  const listaDePokemonsBuscados = buscarPokemon(query)
-  console.log('he clicado en el botón de búsqueda', listaDePokemonsBuscados)
+  const listaDePokemonsEncontrados = buscarPokemon(query)
+
+  if (listaDePokemonsEncontrados.length > 0) {
+    console.log('he encontrado: ', listaDePokemonsEncontrados)
+  } else {
+    console.log('no he encontrado ningún pokemon')
+  }
+}
+
+/**
+ * Cancel link clicks
+ * @param {event} e
+ */
+function onLinkClick(e) {
+  e.preventDefault()
+  console.log('link click')
+}
+
+/**
+ * Show clicked tag
+ * @param {event} e
+ */
+function onTagClick(e) {
+  console.log(e.target)
 }
 
 /**
@@ -120,14 +152,12 @@ function buscarPokemon(query) {
   // Buscar el pokemon por nombre o por id
   // Usando POKEMONS, primero tenemos que saber si query es un id o un nombre
   if (!isNaN(numberQuery)) {// query es un número
-    // Recorremos el array de POKEMONS
     for (let pokemon of POKEMONS) {
       if (pokemon.id === numberQuery) {
         returnValue.push(pokemon.name.english)
       }
     }
   } else {// query es una cadena de texto
-    // Recorremos el array de POKEMONS
     for (let pokemon of POKEMONS) {
       // Lo cambiamos a un filtro por cadena de texto
       if (pokemon.name.english.includes(query)) {
