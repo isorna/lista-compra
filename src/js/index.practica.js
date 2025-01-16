@@ -137,7 +137,3 @@ function resetShoppingList() {
   shoppingList = []
   console.log('resetShoppingList', shoppingList)
 }
-
-function switchColor() {
-  document.getElementsByTagName('header')[0].style.backgroundColor = 'cyan'
-}
