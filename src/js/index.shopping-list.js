@@ -20,7 +20,8 @@ function onDomContentLoaded() {
   }
 
   // Get shoppingList from localStorage
-  const storedData = JSON.parse(localStorage.getItem('shoppingList'))
+  // TODO: próxima semana, explicar esta condición
+  const storedData = JSON.parse(localStorage.getItem('shoppingList')) || []
   storedData.forEach(savedArticle => {
     shoppingList.push(savedArticle)
     addNewRowToShoppingListTable(savedArticle)
