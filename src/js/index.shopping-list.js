@@ -19,6 +19,9 @@ function onDomContentLoaded() {
       this.pop()
     }
   }
+  // Set the focus on the first field
+  // BUG: commented due to live server problems
+  // resetFocus()
 }
 
 function onArticleNameKeyUp(e) {
@@ -85,15 +88,21 @@ function createShoppingListItem() {
   const articleNameElement = document.getElementById('articleName')
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
+  const timestamp = new Date()
+  // Template literals:
+  // const id = `${articleNameElement.value}_${String(timestamp.getTime())}`
+  const id = articleNameElement.value + '_' + String(timestamp.getTime())
   const newArticleObject = {
+    id: id,
     name: articleNameElement.value,
     qty: Number(qtyElement.value),
     price: Number(priceElement.value)
   }
-  // console.log('Create Shpping List item', newArticleObject)
+  console.log('Create Shpping List item', newArticleObject)
   shoppingList.push(newArticleObject)
   getShoppingListTotalAmount()
   addNewRowToShoppingListTable(newArticleObject)
+  resetFocus()
 }
 
 /**
@@ -107,16 +116,26 @@ function addNewRowToShoppingListTable(newArticleObject){
   const newArticleTableCellName = document.createElement('td')
   const newArticleTableCellPrice = document.createElement('td')
   const newArticleTableCellSubtotal = document.createElement('td')
+  const newArticleDeleteButtonCell = document.createElement('td')
+  const newArticleDeleteButton = document.createElement('button')
   // 1.1. Assign Table Cells values
   newArticleTableCellQty.innerText = newArticleObject.qty
   newArticleTableCellName.innerText = newArticleObject.name
   newArticleTableCellPrice.innerText = newArticleObject.price
   newArticleTableCellSubtotal.innerText = newArticleObject.qty * newArticleObject.price
+  newArticleDeleteButton.innerText = '🗑'
+  newArticleDeleteButton.className = 'delete-button'
+  newArticleDeleteButton.setAttribute('id-to-delete', newArticleObject.id)
+  newArticleTableRow.setAttribute('id-to-delete', newArticleObject.id)
+  // TODO: revisar la semana que viene
+  newArticleDeleteButton.addEventListener('click', deleteShoppingListItem)
+  newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
   // 1.2. Append Table Cells to Table Row
   newArticleTableRow.appendChild(newArticleTableCellQty)
   newArticleTableRow.appendChild(newArticleTableCellName)
   newArticleTableRow.appendChild(newArticleTableCellPrice)
   newArticleTableRow.appendChild(newArticleTableCellSubtotal)
+  newArticleTableRow.appendChild(newArticleDeleteButtonCell)
   // 2. Append the new Table Row to the shoppingListTableBodyElement
   shoppingListTableBodyElement.appendChild(newArticleTableRow)
   // console.log('Add a new row to the shopping list table element', newArticleObject)
@@ -133,8 +152,18 @@ function updateShoppingListItem() {
 /**
  * Delete existing shopping list item
  */
-function deleteShoppingListItem() {
-  console.log('Delete Shpping List item')
+function deleteShoppingListItem(e) {
+  const shoppingListTableBodyElement = document.getElementById('shoppingListTableBody')
+  const itemIdToDelete = e.target.getAttribute('id-to-delete')
+  const rowToDelete = document.querySelector('tr[id-to-delete="' + itemIdToDelete + '"]')
+  // 1. Delete item from shoppingList
+  // 1.1. Find item inside shoppingList
+  const itemIndex = shoppingList.findIndex((shoppingListItem) => shoppingListItem.id === itemIdToDelete)
+  // 1.2. Delete item from shoppingList Array
+  shoppingList.splice(itemIndex, 1)
+  // 2. Delete item row from Table
+  shoppingListTableBodyElement.remove(rowToDelete)
+  console.log('Delete Shpping List item', rowToDelete)
   getShoppingListTotalAmount()
 }
 
@@ -174,4 +203,12 @@ function getShoppingListTotalAmount() {
   // 3. Show it on table total amount cell
   shoppingListTableTotalElement.innerText = totalAmount
   // console.log('Get Shopping List total amount', totalAmount)
+}
+
+/**
+ * Sets the focus on the first form field
+ */
+function resetFocus(){
+  const articleNameElement = document.getElementById('articleName')
+  articleNameElement.focus()
 }
