@@ -1,6 +1,6 @@
 // Shopping List database
 const shoppingList = []
-
+// Assign DOM Content Loaded event
 document.addEventListener('DOMContentLoaded', onDomContentLoaded)
 
 // ======== EVENTS ======== //
@@ -9,22 +9,39 @@ function onDomContentLoaded() {
   const newArticleElement = document.getElementById('newArticle')
   const newListElement = document.getElementById('newList')
 
-  console.log('DOM Content Loaded')
+  // console.log('DOM Content Loaded')
   articleNameElement.addEventListener('keyup', onArticleNameKeyUp)
   newArticleElement.addEventListener('click', onNewArticleClick)
   newListElement.addEventListener('click', onNewListClick)
+  // Set Up shopping list Class
+  shoppingList.empty = function() {
+    while (this.length > 0){
+      this.pop()
+    }
+  }
 }
 
 function onArticleNameKeyUp(e) {
-  console.log('Article name keyup')
+  const articleNameElement = document.getElementById('articleName')
+  const newArticleElement = document.getElementById('newArticle')
+  // console.log('Article name keyup')
+
+  if (articleNameElement.value !== '') {
+    newArticleElement.disabled = undefined
+  } else {
+    newArticleElement.disabled = true
+  }
 }
 
 function onNewArticleClick(e) {
-  console.log('New Article click')
+  createShoppingListItem()
+  // console.log('New Article click', shoppingList)
+  cleanUpForm()
 }
 
 function onNewListClick(e) {
-  console.log('New List click')
+  // console.log('New List click')
+  resetShoppingList()
 }
 
 // ======== METHODS ======== //
@@ -33,21 +50,76 @@ function onNewListClick(e) {
  * Reset shopping list
  */
 function resetShoppingList() {
-  console.log('Reset Shpping List')
+  // console.log('Reset Shpping List')
+  // 1. Empty the shopping list
+  shoppingList.empty()
+  // 2. Empty Table Element
+  emptyTableElement()
+  // 3. Update Table total amount cell
+  getShoppingListTotalAmount()
+  // 4. Clean Up form
+  cleanUpForm()
 }
 
 /**
  * Clean up form
  */
 function cleanUpForm() {
-  console.log('Clean Up form')
+  // console.log('Clean Up form')
+  // 1. Get inputs and save them in const
+  const articleNameElement = document.getElementById('articleName')
+  const qtyElement = document.getElementById('qty')
+  const priceElement = document.getElementById('price')
+  // 2. Set input values to ''
+  articleNameElement.value = ''
+  qtyElement.value = ''
+  priceElement.value = ''
 }
+
+// C.R.U.D.
 
 /**
  * Create new shopping list item
  */
 function createShoppingListItem() {
-  console.log('Create Shpping List item')
+  const articleNameElement = document.getElementById('articleName')
+  const qtyElement = document.getElementById('qty')
+  const priceElement = document.getElementById('price')
+  const newArticleObject = {
+    name: articleNameElement.value,
+    qty: Number(qtyElement.value),
+    price: Number(priceElement.value)
+  }
+  // console.log('Create Shpping List item', newArticleObject)
+  shoppingList.push(newArticleObject)
+  getShoppingListTotalAmount()
+  addNewRowToShoppingListTable(newArticleObject)
+}
+
+/**
+ * Add a new row to the shopping list table element
+ */
+function addNewRowToShoppingListTable(newArticleObject){
+  const shoppingListTableBodyElement = document.getElementById('shoppingListTableBody')
+  // 1. Create HTML Elements that represents the new article
+  const newArticleTableRow = document.createElement('tr')
+  const newArticleTableCellQty = document.createElement('td')
+  const newArticleTableCellName = document.createElement('td')
+  const newArticleTableCellPrice = document.createElement('td')
+  const newArticleTableCellSubtotal = document.createElement('td')
+  // 1.1. Assign Table Cells values
+  newArticleTableCellQty.innerText = newArticleObject.qty
+  newArticleTableCellName.innerText = newArticleObject.name
+  newArticleTableCellPrice.innerText = newArticleObject.price
+  newArticleTableCellSubtotal.innerText = newArticleObject.qty * newArticleObject.price
+  // 1.2. Append Table Cells to Table Row
+  newArticleTableRow.appendChild(newArticleTableCellQty)
+  newArticleTableRow.appendChild(newArticleTableCellName)
+  newArticleTableRow.appendChild(newArticleTableCellPrice)
+  newArticleTableRow.appendChild(newArticleTableCellSubtotal)
+  // 2. Append the new Table Row to the shoppingListTableBodyElement
+  shoppingListTableBodyElement.appendChild(newArticleTableRow)
+  // console.log('Add a new row to the shopping list table element', newArticleObject)
 }
 
 /**
@@ -55,6 +127,7 @@ function createShoppingListItem() {
  */
 function updateShoppingListItem() {
   console.log('Update Shpping List item')
+  getShoppingListTotalAmount()
 }
 
 /**
@@ -62,11 +135,43 @@ function updateShoppingListItem() {
  */
 function deleteShoppingListItem() {
   console.log('Delete Shpping List item')
+  getShoppingListTotalAmount()
+}
+
+/**
+ * Empty table element
+ */
+function emptyTableElement() {
+  const shoppingListTableElement = document.getElementById('shoppingListTable')
+  const shoppingListTableBodyElement = document.getElementById('shoppingListTableBody')
+  const shoppingListTableBodyRowsList = document.querySelectorAll('tbody>tr')
+  // 1. For each table row found
+  for (let tableRow of shoppingListTableBodyRowsList) {
+    // 2. Remove it from the table element
+    // console.log('borro fila', tableRow)
+    // shoppingListTableBodyElement.remove(shoppingListTableBodyRowsList[0])
+    shoppingListTableBodyElement.remove(tableRow)
+  }
+  // 3. Recreate new tbody due to bug
+  const newTableBody = document.createElement('tbody')
+  newTableBody.id = 'shoppingListTableBody'
+  shoppingListTableElement.appendChild(newTableBody)
+  // console.log('Empty table element', shoppingListTableBodyRowsList)
 }
 
 /**
  * Calculate shopping list total amount
  */
 function getShoppingListTotalAmount() {
-  console.log('Get Shopping List total amount')
+  const shoppingListTableTotalElement = document.getElementById('shoppingListTableTotal')
+  let totalAmount = 0
+  for (let article of shoppingList) {
+    // 1. Calculate subtotals for each article
+    const subtotal = article.qty * article.price
+    // 2. Add all subtotals
+    totalAmount += subtotal
+  }
+  // 3. Show it on table total amount cell
+  shoppingListTableTotalElement.innerText = totalAmount
+  // console.log('Get Shopping List total amount', totalAmount)
 }
