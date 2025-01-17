@@ -9,7 +9,6 @@ function onDomContentLoaded() {
   const newArticleElement = document.getElementById('newArticle')
   const newListElement = document.getElementById('newList')
 
-  // console.log('DOM Content Loaded')
   articleNameElement.addEventListener('keyup', onArticleNameKeyUp)
   newArticleElement.addEventListener('click', onNewArticleClick)
   newListElement.addEventListener('click', onNewListClick)
@@ -19,15 +18,19 @@ function onDomContentLoaded() {
       this.pop()
     }
   }
-  // Set the focus on the first field
-  // BUG: commented due to live server problems
-  // resetFocus()
+
+  // Get shoppingList from localStorage
+  const storedData = JSON.parse(localStorage.getItem('shoppingList'))
+  storedData.forEach(savedArticle => {
+    shoppingList.push(savedArticle)
+    addNewRowToShoppingListTable(savedArticle)
+  });
+  getShoppingListTotalAmount()
 }
 
 function onArticleNameKeyUp(e) {
   const articleNameElement = document.getElementById('articleName')
   const newArticleElement = document.getElementById('newArticle')
-  // console.log('Article name keyup')
 
   if (articleNameElement.value !== '') {
     newArticleElement.disabled = undefined
@@ -38,12 +41,10 @@ function onArticleNameKeyUp(e) {
 
 function onNewArticleClick(e) {
   createShoppingListItem()
-  // console.log('New Article click', shoppingList)
   cleanUpForm()
 }
 
 function onNewListClick(e) {
-  // console.log('New List click')
   resetShoppingList()
 }
 
@@ -53,7 +54,6 @@ function onNewListClick(e) {
  * Reset shopping list
  */
 function resetShoppingList() {
-  // console.log('Reset Shpping List')
   // 1. Empty the shopping list
   shoppingList.empty()
   // 2. Empty Table Element
@@ -68,7 +68,6 @@ function resetShoppingList() {
  * Clean up form
  */
 function cleanUpForm() {
-  // console.log('Clean Up form')
   // 1. Get inputs and save them in const
   const articleNameElement = document.getElementById('articleName')
   const qtyElement = document.getElementById('qty')
@@ -90,6 +89,7 @@ function createShoppingListItem() {
   const priceElement = document.getElementById('price')
   const timestamp = new Date()
   // Template literals:
+  // TODO: ver la próxima semana
   // const id = `${articleNameElement.value}_${String(timestamp.getTime())}`
   const id = articleNameElement.value + '_' + String(timestamp.getTime())
   const newArticleObject = {
@@ -98,8 +98,9 @@ function createShoppingListItem() {
     qty: Number(qtyElement.value),
     price: Number(priceElement.value)
   }
-  console.log('Create Shpping List item', newArticleObject)
   shoppingList.push(newArticleObject)
+  // Save shoppingList on localStorage
+  localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
   getShoppingListTotalAmount()
   addNewRowToShoppingListTable(newArticleObject)
   resetFocus()
@@ -126,7 +127,6 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleDeleteButton.innerText = '🗑'
   newArticleDeleteButton.className = 'delete-button'
   newArticleDeleteButton.setAttribute('id-to-delete', newArticleObject.id)
-  newArticleTableRow.setAttribute('id-to-delete', newArticleObject.id)
   // TODO: revisar la semana que viene
   newArticleDeleteButton.addEventListener('click', deleteShoppingListItem)
   newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
@@ -138,14 +138,12 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableRow.appendChild(newArticleDeleteButtonCell)
   // 2. Append the new Table Row to the shoppingListTableBodyElement
   shoppingListTableBodyElement.appendChild(newArticleTableRow)
-  // console.log('Add a new row to the shopping list table element', newArticleObject)
 }
 
 /**
  * Update existing shopping list item
  */
 function updateShoppingListItem() {
-  console.log('Update Shpping List item')
   getShoppingListTotalAmount()
 }
 
@@ -153,39 +151,29 @@ function updateShoppingListItem() {
  * Delete existing shopping list item
  */
 function deleteShoppingListItem(e) {
-  const shoppingListTableBodyElement = document.getElementById('shoppingListTableBody')
   const itemIdToDelete = e.target.getAttribute('id-to-delete')
-  const rowToDelete = document.querySelector('tr[id-to-delete="' + itemIdToDelete + '"]')
+  const rowToDelete = e.target.closest('tr')
   // 1. Delete item from shoppingList
   // 1.1. Find item inside shoppingList
   const itemIndex = shoppingList.findIndex((shoppingListItem) => shoppingListItem.id === itemIdToDelete)
   // 1.2. Delete item from shoppingList Array
   shoppingList.splice(itemIndex, 1)
-  // 2. Delete item row from Table
-  shoppingListTableBodyElement.remove(rowToDelete)
-  console.log('Delete Shpping List item', rowToDelete)
+  rowToDelete.remove()
   getShoppingListTotalAmount()
+  // Save shoppingList on localStorage
+  localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
 }
 
 /**
  * Empty table element
  */
 function emptyTableElement() {
-  const shoppingListTableElement = document.getElementById('shoppingListTable')
-  const shoppingListTableBodyElement = document.getElementById('shoppingListTableBody')
   const shoppingListTableBodyRowsList = document.querySelectorAll('tbody>tr')
   // 1. For each table row found
   for (let tableRow of shoppingListTableBodyRowsList) {
     // 2. Remove it from the table element
-    // console.log('borro fila', tableRow)
-    // shoppingListTableBodyElement.remove(shoppingListTableBodyRowsList[0])
-    shoppingListTableBodyElement.remove(tableRow)
+    tableRow.remove()
   }
-  // 3. Recreate new tbody due to bug
-  const newTableBody = document.createElement('tbody')
-  newTableBody.id = 'shoppingListTableBody'
-  shoppingListTableElement.appendChild(newTableBody)
-  // console.log('Empty table element', shoppingListTableBodyRowsList)
 }
 
 /**
@@ -202,7 +190,6 @@ function getShoppingListTotalAmount() {
   }
   // 3. Show it on table total amount cell
   shoppingListTableTotalElement.innerText = totalAmount
-  // console.log('Get Shopping List total amount', totalAmount)
 }
 
 /**
