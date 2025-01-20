@@ -1,4 +1,4 @@
-import USUAL_PRODUCTS from '../api/get.articles.json' with { type: 'json' }
+// import USUAL_PRODUCTS from '../api/get.articles.json' with { type: 'json' }
 
 // Shopping List database
 const shoppingList = []
@@ -22,12 +22,7 @@ function onDomContentLoaded() {
   }
 
   // Get shoppingList from localStorage
-  // TODO: próxima semana, explicar esta condición
-  const storedData = JSON.parse(localStorage.getItem('shoppingList')) || []
-  storedData.forEach(savedArticle => {
-    shoppingList.push(savedArticle)
-    addNewRowToShoppingListTable(savedArticle)
-  });
+  readShoppingList()
   getShoppingListTotalAmount()
   getUsualProducts()
 }
@@ -262,4 +257,16 @@ function showError(errorMessage) {
   window.alert(errorMessage)
   console.error(errorMessage)
   throw new Error(`HTTP error! Status: ${errorMessage}`);
+}
+
+/**
+ * Get saved sopphing list data
+ */
+function readShoppingList() {
+  // TODO: próxima semana, explicar esta condición
+  const storedData = JSON.parse(localStorage.getItem('shoppingList')) || []
+  storedData.forEach(savedArticle => {
+    shoppingList.push(savedArticle)
+    addNewRowToShoppingListTable(savedArticle)
+  });
 }
