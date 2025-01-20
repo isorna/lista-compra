@@ -1,3 +1,5 @@
+import { Article } from './classes/ShopArticle.js'
+
 // Shopping List database
 const shoppingList = []
 // Assign DOM Content Loaded event
@@ -83,22 +85,13 @@ function createShoppingListItem() {
   const articleNameElement = document.getElementById('articleName')
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
-  const timestamp = new Date()
-  // Template literals:
-  // TODO: ver la próxima semana
-  // const id = `${articleNameElement.value}_${String(timestamp.getTime())}`
-  const id = articleNameElement.value + '_' + String(timestamp.getTime())
-  const newArticleObject = {
-    id: id,
-    name: articleNameElement.value,
-    qty: Number(qtyElement.value),
-    price: Number(priceElement.value)
-  }
-  shoppingList.push(newArticleObject)
+  const newArticleObjectFromClass = new Article(articleNameElement.value, qtyElement.value, priceElement.value)
+
+  shoppingList.push(newArticleObjectFromClass)
   // Save shoppingList on localStorage
   localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
   getShoppingListTotalAmount()
-  addNewRowToShoppingListTable(newArticleObject)
+  addNewRowToShoppingListTable(newArticleObjectFromClass)
   resetFocus()
 }
 
