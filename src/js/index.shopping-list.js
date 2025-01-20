@@ -1,3 +1,5 @@
+import USUAL_PRODUCTS from '../api/get.articles.json' with { type: 'json' }
+
 // Shopping List database
 const shoppingList = []
 // Assign DOM Content Loaded event
@@ -27,6 +29,7 @@ function onDomContentLoaded() {
     addNewRowToShoppingListTable(savedArticle)
   });
   getShoppingListTotalAmount()
+  getUsualProducts()
 }
 
 function onArticleNameKeyUp(e) {
@@ -199,4 +202,64 @@ function getShoppingListTotalAmount() {
 function resetFocus(){
   const articleNameElement = document.getElementById('articleName')
   articleNameElement.focus()
+}
+
+/**
+ * Get usual products and put them on datalist
+ */
+async function getUsualProducts() {
+  const dataListElement = document.getElementById('productos')
+  const apiData = await getAPIData()
+
+  apiData.forEach((product) => {
+    const newOptionElement = document.createElement('option')
+    newOptionElement.value = product.name
+    dataListElement.appendChild(newOptionElement)
+  })
+}
+
+/**
+ * Get data from API
+ */
+async function getAPIData() {
+  // API endpoint
+  const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
+
+  const apiData = await fetch(API_USUAL_PRODUCTS_URL)
+    .then((response) => {
+      if (!response.ok) {
+        showError(response.status)
+      }
+
+      return response.json();
+    })
+
+  return apiData
+}
+
+/**
+ * Save new article to API
+ */
+// TODO: verlo la proxima semana
+function saveNewArticleToAPI(newArticle) {
+  // API endpoint
+  const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
+
+  fetch(API_USUAL_PRODUCTS_URL, { body: newArticle })
+    .then((response) => {
+      if (!response.ok) {
+        showError(response.status)
+      }
+
+      console.log('Articulo guardado')
+    })
+}
+
+/**
+ * Show error to user
+ */
+function showError(errorMessage) {
+  window.alert(errorMessage)
+  console.error(errorMessage)
+  throw new Error(`HTTP error! Status: ${errorMessage}`);
 }
