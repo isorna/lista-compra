@@ -1,5 +1,3 @@
-// import USUAL_PRODUCTS from '../api/get.articles.json' with { type: 'json' }
-
 // Shopping List database
 const shoppingList = []
 // Assign DOM Content Loaded event
@@ -21,7 +19,6 @@ function onDomContentLoaded() {
     }
   }
 
-  // Get shoppingList from localStorage
   readShoppingList()
   getShoppingListTotalAmount()
   getUsualProducts()
@@ -228,6 +225,8 @@ async function getAPIData() {
 
       return response.json();
     })
+    // TODO:
+    // .catch()...
 
   return apiData
 }
@@ -253,6 +252,7 @@ function saveNewArticleToAPI(newArticle) {
 /**
  * Show error to user
  */
+// TODO: create an error layer/popup
 function showError(errorMessage) {
   window.alert(errorMessage)
   console.error(errorMessage)
@@ -263,7 +263,7 @@ function showError(errorMessage) {
  * Get saved sopphing list data
  */
 function readShoppingList() {
-  // TODO: próxima semana, explicar esta condición
+  // TODO: ESTA semana, explicar esta condición
   const storedData = JSON.parse(localStorage.getItem('shoppingList')) || []
   storedData.forEach(savedArticle => {
     shoppingList.push(savedArticle)
