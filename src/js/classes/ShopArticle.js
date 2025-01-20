@@ -12,4 +12,5 @@ export class Article {
   }
 }
 
-class UsualProduct extends Article {}
+// TODO: para verlo mañana
+// class UsualProduct extends Article {}

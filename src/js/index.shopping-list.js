@@ -1,7 +1,6 @@
 import { Article } from './classes/ShopArticle.js'
+import { shoppingList } from './classes/Shop.js'
 
-// Shopping List database
-const shoppingList = []
 // Assign DOM Content Loaded event
 document.addEventListener('DOMContentLoaded', onDomContentLoaded)
 
@@ -14,12 +13,6 @@ function onDomContentLoaded() {
   articleNameElement.addEventListener('keyup', onArticleNameKeyUp)
   newArticleElement.addEventListener('click', onNewArticleClick)
   newListElement.addEventListener('click', onNewListClick)
-  // Set Up shopping list Class
-  shoppingList.empty = function() {
-    while (this.length > 0){
-      this.pop()
-    }
-  }
 
   readShoppingList()
   getShoppingListTotalAmount()
@@ -53,6 +46,7 @@ function onNewListClick(e) {
  */
 function resetShoppingList() {
   // 1. Empty the shopping list
+  localStorage.removeItem('shoppingList')
   shoppingList.empty()
   // 2. Empty Table Element
   emptyTableElement()
