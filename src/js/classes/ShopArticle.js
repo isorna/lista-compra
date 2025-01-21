@@ -34,6 +34,7 @@ export class ArticleFactory {
         return new UsualProduct(articleData)
         break
       case ARTICLE_TYPES.BASIC:
+      default:
         return new Article(articleData)
     }
   }
