@@ -1,3 +1,5 @@
+import { emptyArray } from '../decorators/emptyArray.js'
+
 // Patrón: Singleton (IIEF)
 const shoppingList = (function() {
   let shoppingListInstance
@@ -7,13 +9,9 @@ const shoppingList = (function() {
       if (!shoppingListInstance) {
         // Init shoppingListInstance
         shoppingListInstance = []
-        shoppingList.empty = function() {
-          while (this.length > 0){
-            this.pop()
-          }
-        }
       }
-      return shoppingListInstance
+      // Patron decorator
+      return emptyArray(shoppingListInstance)
     }
   }
 })()
