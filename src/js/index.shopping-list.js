@@ -109,19 +109,19 @@ function addNewRowToShoppingListTable(newArticleObject){
   const newArticleTableCellSubtotal = document.createElement('td')
   const newArticleDeleteButtonCell = document.createElement('td')
   const newArticleDeleteButton = document.createElement('button')
-  // 1.1. Assign Table Cells values
-  newArticleTableCellQty.innerText = newArticleObject.qty
-  newArticleTableCellName.innerText = newArticleObject.name
-  newArticleTableCellPrice.innerText = newArticleObject.price
-  newArticleTableCellSubtotal.innerText = newArticleObject.qty * newArticleObject.price
-  newArticleDeleteButton.innerText = '🗑'
-  newArticleDeleteButton.className = 'delete-button'
-  // TODO: revisar la semana que viene
   const clickEvent = new MouseEvent('click', {
     bubbles: true,
     cancelable: true,
     view: window
   })
+  // 1.1. Assign Table Cells values
+  newArticleTableCellQty.innerText = newArticleObject.qty
+  newArticleTableCellName.innerText = newArticleObject.name
+  newArticleTableCellName.addEventListener('click', buyArticle.bind(this, clickEvent, newArticleObject.id, newArticleTableRow))
+  newArticleTableCellPrice.innerText = newArticleObject.price
+  newArticleTableCellSubtotal.innerText = newArticleObject.qty * newArticleObject.price
+  newArticleDeleteButton.innerText = '🗑'
+  newArticleDeleteButton.className = 'delete-button'
   newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(this, clickEvent, newArticleObject.id, newArticleTableRow))
   newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
   // 1.2. Append Table Cells to Table Row
@@ -130,8 +130,29 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableRow.appendChild(newArticleTableCellPrice)
   newArticleTableRow.appendChild(newArticleTableCellSubtotal)
   newArticleTableRow.appendChild(newArticleDeleteButtonCell)
+  if (newArticleObject.bought === true) {
+    newArticleTableRow.classList.add('bought')
+    console.log('entra', newArticleTableCellName.innerText)
+    newArticleTableRow.querySelector('td:nth-child(2)').innerHTML += '&#x1F5F9;'
+  }
   // 2. Append the new Table Row to the shoppingListTableBodyElement
   shoppingListTableBodyElement.appendChild(newArticleTableRow)
+}
+
+/**
+ * Update item to bought
+ */
+function buyArticle(e, itemId, rowToUpdate) {
+  // Find item inside shoppingList
+  const itemIndex = shoppingList.findIndex((shoppingListItem) => shoppingListItem.id === itemId)
+  if (shoppingList[itemIndex].bought !== true) {
+    shoppingList[itemIndex].bought = true
+    // Save shoppingList on localStorage
+    localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
+    // Update html
+    rowToUpdate.classList.add('bought')
+    rowToUpdate.querySelector('td:nth-child(2)').innerHTML += '&#x1F5F9;'
+  }
 }
 
 /**

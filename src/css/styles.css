@@ -84,7 +84,18 @@ body {
         border: 1px solid var(--main-color);
         padding: calc(var(--border-radius)*2);
       }
+
+      .bought td,
+      .bought th {
+        background-color: gold;
+      }
       tbody {
+        td:nth-child(2) {
+          cursor: pointer;
+          &:hover {
+            background-color: goldenrod;
+          }
+        }
         /* Text align right for number columns */
         td:nth-child(1),
         td:nth-child(3),
