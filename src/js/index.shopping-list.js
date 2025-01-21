@@ -1,5 +1,7 @@
-import { Article } from './classes/ShopArticle.js'
+import { ArticleFactory, ARTICLE_TYPES } from './classes/ShopArticle.js'
 import { shoppingList } from './classes/Shop.js'
+
+const myFactory = new ArticleFactory
 
 // Assign DOM Content Loaded event
 document.addEventListener('DOMContentLoaded', onDomContentLoaded)
@@ -79,13 +81,18 @@ function createShoppingListItem() {
   const articleNameElement = document.getElementById('articleName')
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
-  const newArticleObjectFromClass = new Article(articleNameElement.value, qtyElement.value, priceElement.value)
+  const articleData = {
+    name: articleNameElement.value,
+    qty: qtyElement.value,
+    price: priceElement.value
+  }
+  const newArticle = myFactory.create(ARTICLE_TYPES.USUAL, articleData)
 
-  shoppingList.push(newArticleObjectFromClass)
+  shoppingList.push(newArticle)
   // Save shoppingList on localStorage
   localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
   getShoppingListTotalAmount()
-  addNewRowToShoppingListTable(newArticleObjectFromClass)
+  addNewRowToShoppingListTable(newArticle)
   resetFocus()
 }
 
@@ -109,9 +116,13 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableCellSubtotal.innerText = newArticleObject.qty * newArticleObject.price
   newArticleDeleteButton.innerText = '🗑'
   newArticleDeleteButton.className = 'delete-button'
-  newArticleDeleteButton.setAttribute('id-to-delete', newArticleObject.id)
   // TODO: revisar la semana que viene
-  newArticleDeleteButton.addEventListener('click', deleteShoppingListItem)
+  const clickEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+    view: window
+  })
+  newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(this, clickEvent, newArticleObject.id, newArticleTableRow))
   newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
   // 1.2. Append Table Cells to Table Row
   newArticleTableRow.appendChild(newArticleTableCellQty)
@@ -133,9 +144,7 @@ function updateShoppingListItem() {
 /**
  * Delete existing shopping list item
  */
-function deleteShoppingListItem(e) {
-  const itemIdToDelete = e.target.getAttribute('id-to-delete')
-  const rowToDelete = e.target.closest('tr')
+function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // 1. Delete item from shoppingList
   // 1.1. Find item inside shoppingList
   const itemIndex = shoppingList.findIndex((shoppingListItem) => shoppingListItem.id === itemIdToDelete)

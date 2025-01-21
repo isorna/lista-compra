@@ -8,4 +8,7 @@ shoppingList.empty = function() {
   }
 }
 
+// Patrón: Singleton (IEEF)
+// const shoppingList = (function () {})()
+
 export { shoppingList }
