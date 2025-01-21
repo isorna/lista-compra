@@ -133,7 +133,7 @@ function addNewRowToShoppingListTable(newArticleObject){
   if (newArticleObject.bought === true) {
     newArticleTableRow.classList.add('bought')
     console.log('entra', newArticleTableCellName.innerText)
-    newArticleTableRow.querySelector('td:nth-child(2)').innerHTML += '&#x1F5F9;'
+    newArticleTableRow.querySelector('td:nth-child(2)').innerHTML = '🗹 ' + newArticleTableRow.querySelector('td:nth-child(2)').innerHTML
   }
   // 2. Append the new Table Row to the shoppingListTableBodyElement
   shoppingListTableBodyElement.appendChild(newArticleTableRow)
@@ -151,7 +151,14 @@ function buyArticle(e, itemId, rowToUpdate) {
     localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
     // Update html
     rowToUpdate.classList.add('bought')
-    rowToUpdate.querySelector('td:nth-child(2)').innerHTML += '&#x1F5F9;'
+    rowToUpdate.querySelector('td:nth-child(2)').innerHTML = '🗹 ' + rowToUpdate.querySelector('td:nth-child(2)').innerHTML
+  } else {
+    shoppingList[itemIndex].bought = false
+    // Save shoppingList on localStorage
+    localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
+    // Update html
+    rowToUpdate.classList.remove('bought')
+    rowToUpdate.querySelector('td:nth-child(2)').innerHTML = rowToUpdate.querySelector('td:nth-child(2)').innerHTML.replace('🗹 ', '')
   }
 }
 
