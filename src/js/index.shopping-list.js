@@ -49,7 +49,7 @@ function onNewListClick(e) {
 function resetShoppingList() {
   // 1. Empty the shopping list
   localStorage.removeItem('shoppingList')
-  shoppingList.empty()
+  shoppingList.get().empty()
   // 2. Empty Table Element
   emptyTableElement()
   // 3. Update Table total amount cell
@@ -88,9 +88,9 @@ function createShoppingListItem() {
   }
   const newArticle = myFactory.create(ARTICLE_TYPES.USUAL, articleData)
 
-  shoppingList.push(newArticle)
+  shoppingList.get().push(newArticle)
   // Save shoppingList on localStorage
-  localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
+  localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
   getShoppingListTotalAmount()
   addNewRowToShoppingListTable(newArticle)
   resetFocus()
@@ -144,18 +144,18 @@ function addNewRowToShoppingListTable(newArticleObject){
  */
 function buyArticle(e, itemId, rowToUpdate) {
   // Find item inside shoppingList
-  const itemIndex = shoppingList.findIndex((shoppingListItem) => shoppingListItem.id === itemId)
-  if (shoppingList[itemIndex].bought !== true) {
-    shoppingList[itemIndex].bought = true
+  const itemIndex = shoppingList.get().findIndex((shoppingListItem) => shoppingListItem.id === itemId)
+  if (shoppingList.get()[itemIndex].bought !== true) {
+    shoppingList.get()[itemIndex].bought = true
     // Save shoppingList on localStorage
-    localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
+    localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
     // Update html
     rowToUpdate.classList.add('bought')
     rowToUpdate.querySelector('td:nth-child(2)').innerHTML = '🗹 ' + rowToUpdate.querySelector('td:nth-child(2)').innerHTML
   } else {
-    shoppingList[itemIndex].bought = false
+    shoppingList.get()[itemIndex].bought = false
     // Save shoppingList on localStorage
-    localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
+    localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
     // Update html
     rowToUpdate.classList.remove('bought')
     rowToUpdate.querySelector('td:nth-child(2)').innerHTML = rowToUpdate.querySelector('td:nth-child(2)').innerHTML.replace('🗹 ', '')
@@ -175,13 +175,13 @@ function updateShoppingListItem() {
 function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // 1. Delete item from shoppingList
   // 1.1. Find item inside shoppingList
-  const itemIndex = shoppingList.findIndex((shoppingListItem) => shoppingListItem.id === itemIdToDelete)
+  const itemIndex = shoppingList.get().findIndex((shoppingListItem) => shoppingListItem.id === itemIdToDelete)
   // 1.2. Delete item from shoppingList Array
-  shoppingList.splice(itemIndex, 1)
+  shoppingList.get().splice(itemIndex, 1)
   rowToDelete.remove()
   getShoppingListTotalAmount()
   // Save shoppingList on localStorage
-  localStorage.setItem('shoppingList', JSON.stringify(shoppingList))
+  localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
 }
 
 /**
@@ -202,7 +202,7 @@ function emptyTableElement() {
 function getShoppingListTotalAmount() {
   const shoppingListTableTotalElement = document.getElementById('shoppingListTableTotal')
   let totalAmount = 0
-  for (let article of shoppingList) {
+  for (let article of shoppingList.get()) {
     // 1. Calculate subtotals for each article
     const subtotal = article.qty * article.price
     // 2. Add all subtotals
@@ -287,10 +287,9 @@ function showError(errorMessage) {
  * Get saved sopphing list data
  */
 function readShoppingList() {
-  // TODO: ESTA semana, explicar esta condición
   const storedData = JSON.parse(localStorage.getItem('shoppingList')) || []
   storedData.forEach(savedArticle => {
-    shoppingList.push(savedArticle)
+    shoppingList.get().push(savedArticle)
     addNewRowToShoppingListTable(savedArticle)
   });
 }
