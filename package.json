@@ -1,0 +1,22 @@
+{
+  "name": "neoland-bootcamp-fullstack",
+  "version": "1.0.0",
+  "description": "proyecto de prácticas para el bootcamp de Neoland",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isorna/neoland-bootcamp-fullstack.git"
+  },
+  "author": "@isorna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isorna/neoland-bootcamp-fullstack/issues"
+  },
+  "homepage": "https://github.com/isorna/neoland-bootcamp-fullstack#readme",
+  "dependencies": {
+    "animate.css": "^4.1.1"
+  }
+}
