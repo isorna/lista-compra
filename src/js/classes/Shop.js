@@ -1,14 +1,21 @@
-/**
- * TODO: documentar cómo funciona la shoppingList
- */
-const shoppingList = []
-shoppingList.empty = function() {
-  while (this.length > 0){
-    this.pop()
-  }
-}
+// Patrón: Singleton (IIEF)
+const shoppingList = (function() {
+  let shoppingListInstance
 
-// Patrón: Singleton (IEEF)
-// const shoppingList = (function () {})()
+  return {
+    get: () => {
+      if (!shoppingListInstance) {
+        // Init shoppingListInstance
+        shoppingListInstance = []
+        shoppingList.empty = function() {
+          while (this.length > 0){
+            this.pop()
+          }
+        }
+      }
+      return shoppingListInstance
+    }
+  }
+})()
 
 export { shoppingList }
