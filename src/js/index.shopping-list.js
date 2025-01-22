@@ -1,5 +1,6 @@
-import { ArticleFactory, ARTICLE_TYPES } from './classes/ShopArticle.js'
-import { shoppingList } from './classes/Shop.js'
+import { ArticleFactory, ARTICLE_TYPES } from 'classes/ShopArticle'
+import { shoppingList } from 'classes/Shop'
+import { simpleFetch } from '../js/lib/simpleFetch.js'
 
 const myFactory = new ArticleFactory
 
@@ -241,16 +242,24 @@ async function getAPIData() {
   // API endpoint
   const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
 
-  const apiData = await fetch(API_USUAL_PRODUCTS_URL)
-    .then((response) => {
-      if (!response.ok) {
-        showError(response.status)
+  try {
+    const apiData = await simpleFetch(API_USUAL_PRODUCTS_URL, {
+      // Si la petición tarda demasiado, la abortamos
+      signal: AbortSignal.timeout(3000),
+    });
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      console.error('Fetch abortado');
+    }
+    if (err instanceof HttpError) {
+      if (err.response.status === 404) {
+        console.error('Not found');
       }
-
-      return response.json();
-    })
-    // TODO:
-    // .catch()...
+      if (err.response.status === 500) {
+        console.error('Internal server error');
+      }
+    }
+  }
 
   return apiData
 }
@@ -277,11 +286,11 @@ function saveNewArticleToAPI(newArticle) {
  * Show error to user
  */
 // TODO: create an error layer/popup
-function showError(errorMessage) {
-  window.alert(errorMessage)
-  console.error(errorMessage)
-  throw new Error(`HTTP error! Status: ${errorMessage}`);
-}
+// function showError(errorMessage) {
+//   window.alert(errorMessage)
+//   console.error(errorMessage)
+//   throw new Error(`HTTP error! Status: ${errorMessage}`);
+// }
 
 /**
  * Get saved sopphing list data
