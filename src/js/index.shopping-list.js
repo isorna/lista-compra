@@ -86,7 +86,7 @@ function createShoppingListItem() {
     qty: qtyElement.value,
     price: priceElement.value
   }
-  const newArticle = myFactory.create(ARTICLE_TYPES.USUAL, articleData)
+  const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
 
   shoppingList.get().push(newArticle)
   // Save shoppingList on localStorage
