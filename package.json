@@ -1,10 +1,12 @@
 {
   "name": "neoland-bootcamp-fullstack",
   "version": "1.0.0",
+  "type": "module",
   "description": "proyecto de prácticas para el bootcamp de Neoland",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind": "npx tailwindcss -i ./src/css/styles.tailwind.css -o ./src/css/output.css --watch"
   },
   "repository": {
     "type": "git",
@@ -18,5 +20,11 @@
   "homepage": "https://github.com/isorna/neoland-bootcamp-fullstack#readme",
   "dependencies": {
     "animate.css": "^4.1.1"
+  },
+  "devDependencies": {
+    "stylelint": "^16.13.2",
+    "stylelint-config-standard": "^37.0.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
   }
 }
