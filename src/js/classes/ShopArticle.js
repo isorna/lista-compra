@@ -1,3 +1,5 @@
+// @ts-check
+
 export class Article {
   id
   name
@@ -28,7 +30,7 @@ export const ARTICLE_TYPES = {
 }
 
 export class ArticleFactory {
-  create(type, articleData) {
+  create({ type, articleData }) {
     switch (type) {
       case ARTICLE_TYPES.USUAL:
         return new UsualProduct(articleData)
