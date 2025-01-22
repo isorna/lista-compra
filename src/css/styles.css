@@ -1,9 +1,11 @@
+/* stylelint-disable no-descending-specificity */
 [hidden] {
   display: none;
 }
 
+
 .debug {
-  background-color: rgba(241, 8, 8, .3);
+  background-color: rgba(241 8 8 / 0.3);
 }
 
 body {
@@ -11,7 +13,8 @@ body {
   --main-bg-color: darkgoldenrod;
   --main-color: whitesmoke;
   --focus-color: blue;
-  --card-bg-color: rgba(241, 8, 8, .3);
+  --card-bg-color: rgba(241 8 8 / 0.3);
+
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   background-color: var(--main-color);
@@ -30,20 +33,24 @@ body {
       color: var(--main-color);
     }
   }
+
   main {
     display: flex;
     flex-direction: column;
     margin-top: 1em;
     padding: 1em;
+
     h1 {
       font-weight: bold;
     }
+
     input:focus,
     input:active,
     button:focus,
     button:active {
       outline-color: var(--focus-color);
     }
+
     form {
       margin-top: 1em;
       display: flex;
@@ -58,27 +65,32 @@ body {
         display: flex;
         flex-direction: column;
         row-gap: 5px;
+
         input {
           border-radius: var(--border-radius);
           padding: 0 5px;
           line-height: 40px;
           font-size: 24px;
+
           &[type="number"] {
             text-align: right;
           }
         }
       }
+
       &>button {
         flex-grow: 1;
         border-radius: var(--border-radius);
         cursor: pointer;
       }
     }
+
     table {
       margin-top: 1em;
       width: 100%;
       border-radius: var(--border-radius);
       background-color: var(--card-bg-color);
+
       th,
       td {
         border: 1px solid var(--main-color);
@@ -89,13 +101,16 @@ body {
       .bought th {
         background-color: gold;
       }
+
       tbody {
         td:nth-child(2) {
           cursor: pointer;
+
           &:hover {
             background-color: goldenrod;
           }
         }
+
         /* Text align right for number columns */
         td:nth-child(1),
         td:nth-child(3),
@@ -103,12 +118,14 @@ body {
           text-align: right;
         }
       }
+
       tfoot {
         th,
         td:nth-child(2) {
           text-align: right;
         }
       }
+
       .delete-button {
         cursor: pointer;
         font-size: 36px;
@@ -117,6 +134,7 @@ body {
       }
     }
   }
+
   #menu {
     display: flex;
     flex-direction: column;
@@ -132,11 +150,14 @@ body {
       padding: calc(var(--border-radius)*2);
       background-color: var(--main-bg-color);
       border-radius: var(--border-radius);
+
       li {
         padding: calc(var(--border-radius)*2);
+
         a {
           color: var(--main-color);
           text-decoration-style: dotted;
+
           &:hover,
           &:active,
           &:focus {
