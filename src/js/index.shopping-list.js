@@ -82,9 +82,15 @@ function cleanUpForm() {
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
   // 2. Set input values to ''
-  articleNameElement?.setAttribute('value', '')
-  qtyElement?.setAttribute('value', '')
-  priceElement?.setAttribute('value', '')
+  if (articleNameElement) {
+    /** @type {HTMLInputElement} */(articleNameElement).value = ''
+  }
+  if (qtyElement) {
+    /** @type {HTMLInputElement} */(qtyElement).value = ''
+  }
+  if (priceElement) {
+    /** @type {HTMLInputElement} */(priceElement).value = ''
+  }
 }
 
 // C.R.U.D.
@@ -96,10 +102,11 @@ function createShoppingListItem() {
   const articleNameElement = document.getElementById('articleName')
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
+
   const articleData = {
-    name: articleNameElement?.getAttribute('value') || '',
-    qty: qtyElement?.getAttribute('value') || '',
-    price: priceElement?.getAttribute('value') || ''
+    name: getInputValue(articleNameElement),
+    qty: getInputValue(qtyElement),
+    price: getInputValue(priceElement)
   }
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
 
@@ -109,6 +116,19 @@ function createShoppingListItem() {
   getShoppingListTotalAmount()
   addNewRowToShoppingListTable(newArticle)
   resetFocus()
+}
+
+/**
+ * Retrieves the value from the specified input element.
+ * @param {HTMLElement | null} inputElement - The input element from which to get the value.
+ * @returns {string} The value of the input element, or an empty string if the element is null.
+ */
+function getInputValue(inputElement) {
+  if (inputElement) {
+    return /** @type {HTMLInputElement} */(inputElement).value
+  } else {
+    return ''
+  }
 }
 
 /**
@@ -332,7 +352,7 @@ async function getAPIData() {
  */
 function readShoppingList() {
   /** @type {Array<UsualProduct>} */
-  const storedData = JSON.parse(localStorage.getItem('shoppingList') || '')
+  const storedData = JSON.parse(localStorage.getItem('shoppingList') || '[]')
   storedData.forEach(savedArticle => {
     shoppingList.get().push(savedArticle)
     addNewRowToShoppingListTable(savedArticle)
