@@ -42,7 +42,6 @@ function onArticleNameKeyUp(e) {
 /**
  *
  * @param {MouseEvent} e
- * @returns {any}
  */
 function onNewArticleClick(e) {
   createShoppingListItem()
@@ -92,7 +91,6 @@ function cleanUpForm() {
 
 /**
  * Create new shopping list item
- * @returns {any}
  */
 function createShoppingListItem() {
   const articleNameElement = document.getElementById('articleName')
@@ -164,7 +162,6 @@ function addNewRowToShoppingListTable(newArticleObject){
 
 /**
  * Update item to bought
- * @this {HTMLElement}
  * @param {MouseEvent} e
  * @param {string} itemId
  * @param {HTMLElement} rowToUpdate
@@ -203,7 +200,6 @@ function updateShoppingListItem() {
 
 /**
  * Delete existing shopping list item
- * @this {HTMLButtonElement}
  * @param {MouseEvent} e
  * @param {string} itemIdToDelete
  * @param {HTMLElement} rowToDelete
