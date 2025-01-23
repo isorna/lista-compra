@@ -1,6 +1,8 @@
-import { ArticleFactory, ARTICLE_TYPES } from 'classes/ShopArticle'
+// @ts-check
+import { ArticleFactory, ARTICLE_TYPES, Article, UsualProduct } from 'classes/ShopArticle'
 import { shoppingList } from 'classes/Shop'
 import { simpleFetch } from '../js/lib/simpleFetch.js'
+import { HttpError } from './classes/HttpError.js'
 
 const myFactory = new ArticleFactory
 
@@ -13,31 +15,44 @@ function onDomContentLoaded() {
   const newArticleElement = document.getElementById('newArticle')
   const newListElement = document.getElementById('newList')
 
-  articleNameElement.addEventListener('keyup', onArticleNameKeyUp)
-  newArticleElement.addEventListener('click', onNewArticleClick)
-  newListElement.addEventListener('click', onNewListClick)
+  articleNameElement?.addEventListener('keyup', onArticleNameKeyUp)
+  newArticleElement?.addEventListener('click', onNewArticleClick)
+  newListElement?.addEventListener('click', onNewListClick)
 
   readShoppingList()
   getShoppingListTotalAmount()
   getUsualProducts()
 }
 
+/**
+ *
+ * @param {KeyboardEvent} e
+ */
 function onArticleNameKeyUp(e) {
   const articleNameElement = document.getElementById('articleName')
   const newArticleElement = document.getElementById('newArticle')
 
-  if (articleNameElement.value !== '') {
-    newArticleElement.disabled = undefined
+  if (articleNameElement?.getAttribute('value') !== '') {
+    newArticleElement?.removeAttribute('disabled')
   } else {
-    newArticleElement.disabled = true
+    newArticleElement?.setAttribute('disabled', 'true')
   }
 }
 
+/**
+ *
+ * @param {MouseEvent} e
+ * @returns {any}
+ */
 function onNewArticleClick(e) {
   createShoppingListItem()
   cleanUpForm()
 }
 
+/**
+ *
+ * @param {MouseEvent} e
+ */
 function onNewListClick(e) {
   resetShoppingList()
 }
@@ -68,24 +83,25 @@ function cleanUpForm() {
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
   // 2. Set input values to ''
-  articleNameElement.value = ''
-  qtyElement.value = ''
-  priceElement.value = ''
+  articleNameElement?.setAttribute('value', '')
+  qtyElement?.setAttribute('value', '')
+  priceElement?.setAttribute('value', '')
 }
 
 // C.R.U.D.
 
 /**
  * Create new shopping list item
+ * @returns {any}
  */
 function createShoppingListItem() {
   const articleNameElement = document.getElementById('articleName')
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
   const articleData = {
-    name: articleNameElement.value,
-    qty: qtyElement.value,
-    price: priceElement.value
+    name: articleNameElement?.getAttribute('value') || '',
+    qty: qtyElement?.getAttribute('value') || '',
+    price: priceElement?.getAttribute('value') || ''
   }
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
 
@@ -99,6 +115,8 @@ function createShoppingListItem() {
 
 /**
  * Add a new row to the shopping list table element
+ * @param {Article | UsualProduct} newArticleObject
+ * @returns {any}
  */
 function addNewRowToShoppingListTable(newArticleObject){
   const shoppingListTableBodyElement = document.getElementById('shoppingListTableBody')
@@ -116,14 +134,14 @@ function addNewRowToShoppingListTable(newArticleObject){
     view: window
   })
   // 1.1. Assign Table Cells values
-  newArticleTableCellQty.innerText = newArticleObject.qty
+  newArticleTableCellQty.innerText = String(newArticleObject.qty)
   newArticleTableCellName.innerText = newArticleObject.name
-  newArticleTableCellName.addEventListener('click', buyArticle.bind(this, clickEvent, newArticleObject.id, newArticleTableRow))
-  newArticleTableCellPrice.innerText = newArticleObject.price
-  newArticleTableCellSubtotal.innerText = newArticleObject.qty * newArticleObject.price
+  newArticleTableCellName.addEventListener('click', buyArticle.bind(newArticleTableCellName, clickEvent, newArticleObject.id, newArticleTableRow))
+  newArticleTableCellPrice.innerText = String(newArticleObject.price)
+  newArticleTableCellSubtotal.innerText = String(newArticleObject.qty * newArticleObject.price)
   newArticleDeleteButton.innerText = '🗑'
   newArticleDeleteButton.className = 'delete-button'
-  newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(this, clickEvent, newArticleObject.id, newArticleTableRow))
+  newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(newArticleDeleteButton, clickEvent, newArticleObject.id, newArticleTableRow))
   newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
   // 1.2. Append Table Cells to Table Row
   newArticleTableRow.appendChild(newArticleTableCellQty)
@@ -131,35 +149,48 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableRow.appendChild(newArticleTableCellPrice)
   newArticleTableRow.appendChild(newArticleTableCellSubtotal)
   newArticleTableRow.appendChild(newArticleDeleteButtonCell)
-  if (newArticleObject.bought === true) {
-    newArticleTableRow.classList.add('bought')
-    console.log('entra', newArticleTableCellName.innerText)
-    newArticleTableRow.querySelector('td:nth-child(2)').innerHTML = '🗹 ' + newArticleTableRow.querySelector('td:nth-child(2)').innerHTML
+  if (newArticleObject instanceof UsualProduct) {
+    if (newArticleObject?.bought === true) {
+      const cellToUpdate = newArticleTableRow.querySelector('td:nth-child(2)')
+      newArticleTableRow.classList.add('bought')
+      if (cellToUpdate) {
+        cellToUpdate.innerHTML = '🗹 ' + cellToUpdate.innerHTML
+      }
+    }
   }
   // 2. Append the new Table Row to the shoppingListTableBodyElement
-  shoppingListTableBodyElement.appendChild(newArticleTableRow)
+  shoppingListTableBodyElement?.appendChild(newArticleTableRow)
 }
 
 /**
  * Update item to bought
+ * @this {HTMLElement}
+ * @param {MouseEvent} e
+ * @param {string} itemId
+ * @param {HTMLElement} rowToUpdate
  */
 function buyArticle(e, itemId, rowToUpdate) {
   // Find item inside shoppingList
-  const itemIndex = shoppingList.get().findIndex((shoppingListItem) => shoppingListItem.id === itemId)
+  const itemIndex = shoppingList.get().findIndex((/** @type {UsualProduct} shoppingListItem */shoppingListItem) => shoppingListItem.id === itemId)
+  const cellToUpdate = rowToUpdate.querySelector('td:nth-child(2)')
   if (shoppingList.get()[itemIndex].bought !== true) {
     shoppingList.get()[itemIndex].bought = true
     // Save shoppingList on localStorage
     localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
     // Update html
     rowToUpdate.classList.add('bought')
-    rowToUpdate.querySelector('td:nth-child(2)').innerHTML = '🗹 ' + rowToUpdate.querySelector('td:nth-child(2)').innerHTML
+    if (cellToUpdate) {
+      cellToUpdate.innerHTML = '🗹 ' + cellToUpdate.innerHTML
+    }
   } else {
     shoppingList.get()[itemIndex].bought = false
     // Save shoppingList on localStorage
     localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
     // Update html
     rowToUpdate.classList.remove('bought')
-    rowToUpdate.querySelector('td:nth-child(2)').innerHTML = rowToUpdate.querySelector('td:nth-child(2)').innerHTML.replace('🗹 ', '')
+    if (cellToUpdate) {
+      cellToUpdate.innerHTML = cellToUpdate.innerHTML.replace('🗹 ', '')
+    }
   }
 }
 
@@ -172,11 +203,15 @@ function updateShoppingListItem() {
 
 /**
  * Delete existing shopping list item
+ * @this {HTMLButtonElement}
+ * @param {MouseEvent} e
+ * @param {string} itemIdToDelete
+ * @param {HTMLElement} rowToDelete
  */
 function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // 1. Delete item from shoppingList
   // 1.1. Find item inside shoppingList
-  const itemIndex = shoppingList.get().findIndex((shoppingListItem) => shoppingListItem.id === itemIdToDelete)
+  const itemIndex = shoppingList.get().findIndex((/** @type {UsualProduct} shoppingListItem */shoppingListItem) => shoppingListItem.id === itemIdToDelete)
   // 1.2. Delete item from shoppingList Array
   shoppingList.get().splice(itemIndex, 1)
   rowToDelete.remove()
@@ -210,7 +245,9 @@ function getShoppingListTotalAmount() {
     totalAmount += subtotal
   }
   // 3. Show it on table total amount cell
-  shoppingListTableTotalElement.innerText = totalAmount
+  if (shoppingListTableTotalElement) {
+    shoppingListTableTotalElement.innerText = String(totalAmount)
+  }
 }
 
 /**
@@ -218,7 +255,7 @@ function getShoppingListTotalAmount() {
  */
 function resetFocus(){
   const articleNameElement = document.getElementById('articleName')
-  articleNameElement.focus()
+  articleNameElement?.focus()
 }
 
 /**
@@ -228,26 +265,28 @@ async function getUsualProducts() {
   const dataListElement = document.getElementById('productos')
   const apiData = await getAPIData()
 
-  apiData.forEach((product) => {
+  apiData.forEach((/** @type {UsualProduct} shoppingListItem */product) => {
     const newOptionElement = document.createElement('option')
     newOptionElement.value = product.name
-    dataListElement.appendChild(newOptionElement)
+    dataListElement?.appendChild(newOptionElement)
   })
 }
 
 /**
  * Get data from API
+ * @returns {Promise<Array<UsualProduct>>}
  */
 async function getAPIData() {
   // API endpoint
   const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
+  let apiData
 
   try {
-    const apiData = await simpleFetch(API_USUAL_PRODUCTS_URL, {
+    apiData = await simpleFetch(API_USUAL_PRODUCTS_URL, {
       // Si la petición tarda demasiado, la abortamos
       signal: AbortSignal.timeout(3000),
     });
-  } catch (err) {
+  } catch (/** @type {any | HttpError} */err) {
     if (err.name === 'AbortError') {
       console.error('Fetch abortado');
     }
@@ -266,21 +305,21 @@ async function getAPIData() {
 
 /**
  * Save new article to API
+ * @param {UsualProduct} newArticle
  */
-// TODO: verlo la proxima semana
-function saveNewArticleToAPI(newArticle) {
-  // API endpoint
-  const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
+// function saveNewArticleToAPI(newArticle) {
+//   // API endpoint
+//   const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
 
-  fetch(API_USUAL_PRODUCTS_URL, { body: newArticle })
-    .then((response) => {
-      if (!response.ok) {
-        showError(response.status)
-      }
+//   fetch(API_USUAL_PRODUCTS_URL, { body: newArticle })
+//     .then((response) => {
+//       if (!response.ok) {
+//         showError(response.status)
+//       }
 
-      console.log('Articulo guardado')
-    })
-}
+//       console.log('Articulo guardado')
+//     })
+// }
 
 /**
  * Show error to user
@@ -296,7 +335,8 @@ function saveNewArticleToAPI(newArticle) {
  * Get saved sopphing list data
  */
 function readShoppingList() {
-  const storedData = JSON.parse(localStorage.getItem('shoppingList')) || []
+  /** @type {Array<UsualProduct>} */
+  const storedData = JSON.parse(localStorage.getItem('shoppingList') || '')
   storedData.forEach(savedArticle => {
     shoppingList.get().push(savedArticle)
     addNewRowToShoppingListTable(savedArticle)

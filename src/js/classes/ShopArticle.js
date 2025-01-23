@@ -1,10 +1,20 @@
 // @ts-check
 
+/**
+ * @typedef {Object} ArticleParams
+ * @property {string} name
+ * @property {string} qty
+ * @property {string} price
+*/
+
 export class Article {
   id
   name
   qty
   price
+  /**
+   * @param {ArticleParams} param0
+   *  */
   constructor({ name, qty, price }){
     const timestamp = new Date()
     this.id = name + '_' + String(timestamp.getTime())
@@ -15,8 +25,15 @@ export class Article {
 }
 
 // Mixin / Herencia
+/**
+ * @extends {Article}
+ * @property {boolean} [bought=false]
+ */
 export class UsualProduct extends Article {
   bought
+  /**
+   * @constructor
+   * @param {ArticleParams} param0  */
   constructor({ name, qty, price }) {
     super({ name, qty, price })
     this.bought = false
@@ -30,6 +47,11 @@ export const ARTICLE_TYPES = {
 }
 
 export class ArticleFactory {
+  /**
+  * @param {object} param0
+  * @param {string} param0.type
+  * @param {ArticleParams} param0.articleData
+  * @returns { Article | UsualProduct }  */
   create({ type, articleData }) {
     switch (type) {
       case ARTICLE_TYPES.USUAL:
