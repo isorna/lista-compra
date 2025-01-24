@@ -21,6 +21,8 @@ const appReducer = (state = INITIAL_STATE, action) => {
           action.article
         ]
       };
+    case ACTION_TYPES.READ_LIST:
+      return state
     case ACTION_TYPES.UPDATE_ARTICLE:
       return {
         ...state,
@@ -35,11 +37,6 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         articles: state.articles.filter((article) => article.id !== action.article.id)
-      };
-    case ACTION_TYPES.READ_LIST:
-      return {
-        ...state,
-        articles: action.articles
       };
     default:
       return state;
