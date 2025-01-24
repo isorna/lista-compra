@@ -78,9 +78,17 @@ const appReducer = (state = INITIAL_STATE, action) => {
 }
 
 /**
+ * @typedef {Object} PublicMethods
+ * @property {function} create
+ * @property {function} read
+ * @property {function} update
+ * @property {function} delete
+ * @property {function} getById
+ */
+/**
  * @typedef {Object} Store
  * @property {function} getState
- * @property {object} article
+ * @property {PublicMethods} article
  */
 /**
  * Creates the store singleton.
@@ -170,6 +178,7 @@ const createStore = (reducer) => {
   }
 
   // Namespaced actions
+  /** @type {PublicMethods} */
   const article = {
     create: createArticle,
     read: readList,
