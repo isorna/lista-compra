@@ -164,12 +164,17 @@ const createStore = (reducer) => {
     }, {});
   }
 
+  // Namespaced actions
+  const article = {
+    create: createArticle,
+    read: readList,
+    update: updateArticle,
+    delete: deleteArticle
+  }
+
   return {
     // Actions
-    createArticle,
-    readList,
-    updateArticle,
-    deleteArticle,
+    article,
     // Public methods
     getState,
     getArticleById
