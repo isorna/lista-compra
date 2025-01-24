@@ -21,5 +21,6 @@ const createStore = (reducer) => {
 
   // Public methods
 }
-// Store:
+
+// Export store
 export const store = createStore(appReducer);
