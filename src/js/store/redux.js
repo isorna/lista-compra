@@ -4,7 +4,7 @@ import { Article, UsualProduct } from "../classes/ShopArticle";
 /**
  * @typedef {Object} ActionType
  * @property {string} type
- * @property {Article |UsualProduct} article
+ * @property {Article | UsualProduct} article
  */
 const ACTION_TYPES = {
   CREATE_ARTICLE: 'CREATE_ARTICLE',
@@ -15,7 +15,7 @@ const ACTION_TYPES = {
 
 /**
  * @typedef {Object.<(string), any>} State
- * @property {Array<UsualProduct | Article>} articles
+ * @property {Array<Article | UsualProduct>} articles
  * @property {boolean} isLoading
  * @property {boolean} error
  */
@@ -34,24 +34,6 @@ const INITIAL_STATE = {
  * @param {State} state - The current state
  * @param {ActionType} action - The action to reduce
  * @returns {State} The new state
- * @example
- * const state = {
- *   articles: [
- *     { id: 1, name: 'Apple Watch' }
- *   ]
- * }
- * const action = {
- *   type: ACTION_TYPES.CREATE_ARTICLE,
- *   article: { id: 2, name: 'iPhone' }
- * }
- * const newState = appReducer(state, action)
- * console.log(newState)
- * // {
- * //   articles: [
- * //     { id: 1, name: 'Apple Watch' },
- * //     { id: 2, name: 'iPhone' }
- * //   ]
- * // }
  */
 const appReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
