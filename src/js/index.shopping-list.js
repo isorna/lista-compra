@@ -3,6 +3,7 @@ import { ArticleFactory, ARTICLE_TYPES, Article, UsualProduct } from 'classes/Sh
 import { shoppingList } from 'classes/Shop'
 import { simpleFetch } from '../js/lib/simpleFetch.js'
 import { HttpError } from './classes/HttpError.js'
+import { store } from './store/redux.js'
 
 const myFactory = new ArticleFactory
 
@@ -18,6 +19,8 @@ function onDomContentLoaded() {
   articleNameElement?.addEventListener('keyup', onArticleNameKeyUp)
   newArticleElement?.addEventListener('click', onNewArticleClick)
   newListElement?.addEventListener('click', onNewListClick)
+
+  console.log(store.article)
 
   readShoppingList()
   getShoppingListTotalAmount()

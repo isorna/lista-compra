@@ -1,5 +1,5 @@
 // @ts-check
-import { Article, UsualProduct } from "../classes/ShopArticle";
+import { Article, UsualProduct } from "../classes/ShopArticle.js";
 
 /**
  * @typedef {Object} ActionTypeArticle
@@ -78,9 +78,14 @@ const appReducer = (state = INITIAL_STATE, action) => {
 }
 
 /**
+ * @typedef {Object} Store
+ * @property {function} getState
+ * @property {object} article
+ */
+/**
  * Creates the store singleton.
  * @param {appReducer} reducer
- * @returns {Object}
+ * @returns {Store}
  */
 const createStore = (reducer) => {
   let currentState = INITIAL_STATE
@@ -169,15 +174,15 @@ const createStore = (reducer) => {
     create: createArticle,
     read: readList,
     update: updateArticle,
-    delete: deleteArticle
+    delete: deleteArticle,
+    getById: getArticleById
   }
 
   return {
     // Actions
     article,
     // Public methods
-    getState,
-    getArticleById
+    getState
   }
 }
 
