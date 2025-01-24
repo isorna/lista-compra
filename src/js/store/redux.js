@@ -4,7 +4,7 @@ import { Article, UsualProduct } from "../classes/ShopArticle";
 /**
  * @typedef {Object} ActionType
  * @property {string} type
- * @property {Article | UsualProduct} article
+ * @property {Article | UsualProduct } [article]
  */
 const ACTION_TYPES = {
   CREATE_ARTICLE: 'CREATE_ARTICLE',
@@ -51,7 +51,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         articles: state.articles.map((/** @type {Article | UsualProduct} */article) => {
-          if (article.id === action.article.id) {
+          if (article.id === action?.article?.id) {
             return action.article
           }
           return article
@@ -60,7 +60,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case ACTION_TYPES.DELETE_ARTICLE:
       return {
         ...state,
-        articles: state.articles.filter((/** @type {Article | UsualProduct} */article) => article.id !== action.article.id)
+        articles: state.articles.filter((/** @type {Article | UsualProduct} */article) => article.id !== action?.article?.id)
       };
     default:
       return state;
@@ -83,6 +83,23 @@ const createStore = (reducer) => {
    * @returns void
    */
   const createArticle = (article) => _dispatch({ type: ACTION_TYPES.CREATE_ARTICLE, article });
+  /**
+   * Reads the list of articles
+   * @returns state
+   */
+  const readList = () => _dispatch({ type: ACTION_TYPES.READ_LIST });
+  /**
+   * Updates an article
+   * @param {Article} article
+   * @returns void
+   */
+  const updateArticle = (article) => _dispatch({ type: ACTION_TYPES.UPDATE_ARTICLE, article });
+  /**
+   * Deletes an article
+   * @param {Article} article
+   * @returns void
+   */
+  const deleteArticle = (article) => _dispatch({ type: ACTION_TYPES.DELETE_ARTICLE, article });
 
   // Public methods
   const getState = () => { return currentState };
@@ -140,6 +157,9 @@ const createStore = (reducer) => {
   return {
     // Actions
     createArticle,
+    readList,
+    updateArticle,
+    deleteArticle,
     // Public methods
     getState,
     getArticleById
