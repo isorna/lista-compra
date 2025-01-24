@@ -95,7 +95,7 @@ const createStore = (reducer) => {
   const createArticle = (article) => _dispatch({ type: ACTION_TYPES.CREATE_ARTICLE, article });
   /**
    * Reads the list of articles
-   * @returns state
+   * @returns void
    */
   const readList = () => _dispatch({ type: ACTION_TYPES.READ_LIST });
   /**
