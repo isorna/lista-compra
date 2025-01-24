@@ -20,7 +20,7 @@ function onDomContentLoaded() {
   newArticleElement?.addEventListener('click', onNewArticleClick)
   newListElement?.addEventListener('click', onNewListClick)
 
-  console.log(store.article)
+  console.log(store.article.getById('1'))
 
   readShoppingList()
   getShoppingListTotalAmount()
