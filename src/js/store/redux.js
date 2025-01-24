@@ -2,9 +2,18 @@
 import { Article, UsualProduct } from "../classes/ShopArticle";
 
 /**
- * @typedef {Object} ActionType
+ * @typedef {Object} ActionTypeArticle
  * @property {string} type
  * @property {Article | UsualProduct } [article]
+ */
+/**
+ * @typedef {Object} Product
+ * @property {string} name
+ */
+/**
+ * @typedef {Object} ActionTypeProduct
+ * @property {string} type
+ * @property {Product} [product]
  */
 const ACTION_TYPES = {
   CREATE_ARTICLE: 'CREATE_ARTICLE',
@@ -32,17 +41,18 @@ const INITIAL_STATE = {
  * Reducer for the app state.
  *
  * @param {State} state - The current state
- * @param {ActionType} action - The action to reduce
+ * @param {ActionTypeArticle | ActionTypeProduct} action - The action to reduce
  * @returns {State} The new state
  */
 const appReducer = (state = INITIAL_STATE, action) => {
+  const actionWithArticle = /** @type {ActionTypeArticle} */(action)
   switch (action.type) {
     case ACTION_TYPES.CREATE_ARTICLE:
       return {
         ...state,
         articles: [
           ...state.articles,
-          action.article
+          actionWithArticle.article
         ]
       };
     case ACTION_TYPES.READ_LIST:
@@ -51,8 +61,8 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         articles: state.articles.map((/** @type {Article | UsualProduct} */article) => {
-          if (article.id === action?.article?.id) {
-            return action.article
+          if (article.id === actionWithArticle?.article?.id) {
+            return actionWithArticle.article
           }
           return article
         })
@@ -60,7 +70,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case ACTION_TYPES.DELETE_ARTICLE:
       return {
         ...state,
-        articles: state.articles.filter((/** @type {Article | UsualProduct} */article) => article.id !== action?.article?.id)
+        articles: state.articles.filter((/** @type {Article | UsualProduct} */article) => article.id !== actionWithArticle?.article?.id)
       };
     default:
       return state;
@@ -113,7 +123,7 @@ const createStore = (reducer) => {
   // Private methods
   /**
    *
-   * @param {ActionType} action
+   * @param {ActionTypeArticle | ActionTypeProduct} action
    * @param {function | undefined} [onEventDispatched]
    */
   const _dispatch = (action, onEventDispatched) => {
