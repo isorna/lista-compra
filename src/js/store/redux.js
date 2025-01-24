@@ -13,17 +13,37 @@ const INITIAL_STATE = {
 
 const appReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-          case ACTION_TYPES.CREATE_ARTICLE:
-              return {
-                  ...state,
-                  articles: [
-                    ...state.articles,
-                    action.article
-                  ]
-              };
-          default:
-              return state;
-      }
+    case ACTION_TYPES.CREATE_ARTICLE:
+      return {
+        ...state,
+        articles: [
+          ...state.articles,
+          action.article
+        ]
+      };
+    case ACTION_TYPES.UPDATE_ARTICLE:
+      return {
+        ...state,
+        articles: state.articles.map((article) => {
+          if (article.id === action.article.id) {
+            return action.article
+          }
+          return article
+        })
+      };
+    case ACTION_TYPES.DELETE_ARTICLE:
+      return {
+        ...state,
+        articles: state.articles.filter((article) => article.id !== action.article.id)
+      };
+    case ACTION_TYPES.READ_LIST:
+      return {
+        ...state,
+        articles: action.articles
+      };
+    default:
+      return state;
+  }
 }
 
 const createStore = (reducer) => {
@@ -31,10 +51,11 @@ const createStore = (reducer) => {
   let currentReducer = reducer
 
   // Actions
-  const createArticle = (article) => _dispatch({ type: INITIAL_STATE.CREATE_ARTICLE, article });
+  const createArticle = (article) => _dispatch({ type: ACTION_TYPES.CREATE_ARTICLE, article });
 
   // Public methods
   const getState = () => { return currentState };
+  const getArticleById = (id) => { return currentState.articles.find((article) => article.id === id) };
 
   // Private methods
   const _dispatch = (action, onEventDispatched) => {
@@ -65,8 +86,11 @@ const createStore = (reducer) => {
   }
 
   return {
+    // Actions
+    createArticle,
+    // Public methods
     getState,
-    createArticle
+    getArticleById
   }
 }
 
