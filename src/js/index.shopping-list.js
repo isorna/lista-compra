@@ -20,7 +20,7 @@ function onDomContentLoaded() {
   newArticleElement?.addEventListener('click', onNewArticleClick)
   newListElement?.addEventListener('click', onNewListClick)
 
-  console.log(store.article.getById('1'))
+  console.log(store.article.getAll())
 
   readShoppingList()
   getShoppingListTotalAmount()
@@ -112,9 +112,11 @@ function createShoppingListItem() {
     price: getInputValue(priceElement)
   }
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
+  store.article.create(newArticle)
 
-  shoppingList.get().push(newArticle)
+  // shoppingList.get().push(newArticle)
   // Save shoppingList on localStorage
+  console.log(store.getState())
   localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
   getShoppingListTotalAmount()
   addNewRowToShoppingListTable(newArticle)
@@ -230,9 +232,11 @@ function updateShoppingListItem() {
 function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // 1. Delete item from shoppingList
   // 1.1. Find item inside shoppingList
-  const itemIndex = shoppingList.get().findIndex((/** @type {UsualProduct} shoppingListItem */shoppingListItem) => shoppingListItem.id === itemIdToDelete)
+  // const itemIndex = shoppingList.get().findIndex((/** @type {UsualProduct} shoppingListItem */shoppingListItem) => shoppingListItem.id === itemIdToDelete)
   // 1.2. Delete item from shoppingList Array
-  shoppingList.get().splice(itemIndex, 1)
+  store.article.delete(store.article.getById(itemIdToDelete))
+  console.log(store.getState())
+  //shoppingList.get().splice(itemIndex, 1)
   rowToDelete.remove()
   getShoppingListTotalAmount()
   // Save shoppingList on localStorage

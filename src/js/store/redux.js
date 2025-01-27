@@ -46,6 +46,7 @@ const INITIAL_STATE = {
  */
 const appReducer = (state = INITIAL_STATE, action) => {
   const actionWithArticle = /** @type {ActionTypeArticle} */(action)
+  const actionWithProduct = /** @type {ActionTypeProduct} */(action)
   switch (action.type) {
     case ACTION_TYPES.CREATE_ARTICLE:
       return {
@@ -68,6 +69,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
         })
       };
     case ACTION_TYPES.DELETE_ARTICLE:
+      console.log(actionWithArticle.article)
       return {
         ...state,
         articles: state.articles.filter((/** @type {Article | UsualProduct} */article) => article.id !== actionWithArticle?.article?.id)
@@ -84,6 +86,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
  * @property {function} update
  * @property {function} delete
  * @property {function} getById
+ * @property {function} getAll
  */
 /**
  * @typedef {Object} Store
@@ -125,6 +128,10 @@ const createStore = (reducer) => {
   const deleteArticle = (article) => _dispatch({ type: ACTION_TYPES.DELETE_ARTICLE, article });
 
   // Public methods
+  /**
+   *
+   * @returns {State}
+   */
   const getState = () => { return currentState };
   /**
    * Returns the article with the specified id
@@ -132,6 +139,12 @@ const createStore = (reducer) => {
    * @returns {Article | UsualProduct | undefined}
    */
   const getArticleById = (id) => { return currentState.articles.find((/** @type {Article | UsualProduct} */article) => article.id === id) };
+
+  /**
+   * Returns all the articles
+   * @returns {Array<Article | UsualProduct>}
+   */
+  const getAllArticles = () => { return currentState.articles };
 
   // Private methods
   /**
@@ -184,7 +197,8 @@ const createStore = (reducer) => {
     read: readList,
     update: updateArticle,
     delete: deleteArticle,
-    getById: getArticleById
+    getById: getArticleById,
+    getAll: getAllArticles
   }
 
   return {
