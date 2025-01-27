@@ -5,6 +5,8 @@ import { simpleFetch } from '../js/lib/simpleFetch.js'
 import { HttpError } from './classes/HttpError.js'
 import { store } from './store/redux.js'
 
+/** @import {State} from './store/redux.js' */
+
 const myFactory = new ArticleFactory
 
 // Assign DOM Content Loaded event
@@ -275,7 +277,7 @@ async function getUsualProducts() {
   const dataListElement = document.getElementById('productos')
   const apiData = await getAPIData()
 
-  apiData.forEach((/** @type {UsualProduct} shoppingListItem */product) => {
+  apiData.forEach((/** @type {UsualProduct} */product) => {
     const newOptionElement = document.createElement('option')
     newOptionElement.value = product.name
     dataListElement?.appendChild(newOptionElement)
@@ -317,7 +319,7 @@ async function getAPIData() {
  * Get saved sopphing list data
  */
 function readShoppingList() {
-  /** @type {import('./store/redux.js').State} */
+  /** @type {State} */
   const storedData = JSON.parse(localStorage.getItem('shoppingList') || '[]')
   storedData?.articles.forEach((/** @type {Article | UsualProduct} */ savedArticle) => {
     store.article.create(savedArticle)
@@ -327,7 +329,7 @@ function readShoppingList() {
 
 /**
  * Saves shopping list on localStorage
- * @param {Array<Article | UsualProduct} storeValue
+ * @param {Array<Article | UsualProduct>} storeValue
  */
 function updateLocalStorage(storeValue) {
   localStorage.setItem('shoppingList', JSON.stringify(storeValue))

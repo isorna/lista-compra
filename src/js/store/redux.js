@@ -2,6 +2,10 @@
 import { Article, UsualProduct } from "../classes/ShopArticle.js";
 
 /**
+ * @module redux/store
+ */
+
+/**
  * @typedef {Object} ActionTypeArticle
  * @property {string} type
  * @property {Article | UsualProduct } [article]

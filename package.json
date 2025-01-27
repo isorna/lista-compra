@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build:docs": "jsdoc ./src -r",
     "tailwind": "npx tailwindcss -i ./src/css/styles.tailwind.css -o ./src/css/output.css --watch"
   },
   "repository": {
@@ -22,6 +23,7 @@
     "animate.css": "^4.1.1"
   },
   "devDependencies": {
+    "jsdoc": "^4.0.4",
     "stylelint": "^16.13.2",
     "stylelint-config-standard": "^37.0.0",
     "tailwindcss": "^3.4.17",
