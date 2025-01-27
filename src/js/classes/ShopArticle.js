@@ -27,7 +27,7 @@ export class Article {
 // Mixin / Herencia
 /**
  * @extends {Article}
- * @property {boolean=false} [bought=false]
+ * @property {boolean} [bought=false]
  */
 export class UsualProduct extends Article {
   bought
