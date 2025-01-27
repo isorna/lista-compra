@@ -106,26 +106,30 @@ const createStore = (reducer) => {
   /**
    * Creates a new Article inside the store
    * @param {Article} article
+   * @param {function | undefined} [onEventDispatched]
    * @returns void
    */
-  const createArticle = (article) => _dispatch({ type: ACTION_TYPES.CREATE_ARTICLE, article });
+  const createArticle = (article, onEventDispatched) => _dispatch({ type: ACTION_TYPES.CREATE_ARTICLE, article }, onEventDispatched);
   /**
    * Reads the list of articles
+   * @param {function | undefined} [onEventDispatched]
    * @returns void
    */
-  const readList = () => _dispatch({ type: ACTION_TYPES.READ_LIST });
+  const readList = (onEventDispatched) => _dispatch({ type: ACTION_TYPES.READ_LIST }, onEventDispatched);
   /**
    * Updates an article
    * @param {Article} article
+   * @param {function | undefined} [onEventDispatched]
    * @returns void
    */
-  const updateArticle = (article) => _dispatch({ type: ACTION_TYPES.UPDATE_ARTICLE, article });
+  const updateArticle = (article, onEventDispatched) => _dispatch({ type: ACTION_TYPES.UPDATE_ARTICLE, article }, onEventDispatched);
   /**
    * Deletes an article
    * @param {Article} article
+   * @param {function | undefined} [onEventDispatched]
    * @returns void
    */
-  const deleteArticle = (article) => _dispatch({ type: ACTION_TYPES.DELETE_ARTICLE, article });
+  const deleteArticle = (article, onEventDispatched) => _dispatch({ type: ACTION_TYPES.DELETE_ARTICLE, article }, onEventDispatched);
 
   // Public methods
   /**
@@ -159,14 +163,20 @@ const createStore = (reducer) => {
     // TODO: CHECK IF IS MORE ADDECUATE TO SWITCH TO EventTarget: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
     window.dispatchEvent(new CustomEvent('stateChanged', {
         detail: {
-            changes: _getDifferences(previousValue, currentValue)
+          type: action.type,
+          changes: _getDifferences(previousValue, currentValue)
         },
         cancelable: true,
         composed: true,
         bubbles: true
     }));
     if (onEventDispatched) {
-        onEventDispatched();
+      console.log('onEventDispatched', onEventDispatched);
+      onEventDispatched();
+      // onEventDispatched.call(this, {
+      //   type: action.type,
+      //   changes: _getDifferences(previousValue, currentValue)
+      // })
     }
   }
   /**
