@@ -9,9 +9,10 @@ body {
     form {
       flex-wrap: wrap;
       gap: 1em .5em;
-      
-      
-      
+
+      label + label {
+        width: 80px;
+      }
 
       label:first-of-type {
         width: 100%;
