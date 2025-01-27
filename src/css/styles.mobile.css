@@ -7,8 +7,12 @@ body {
     grid-column-start: span 12;
 
     form {
-      flex-direction: column;
-      row-gap: .5em;
+      flex-wrap: wrap;
+      gap: 1em .5em;
+
+      label:first-of-type {
+        width: 100%;
+      }
 
       button {
         line-height: 2em;

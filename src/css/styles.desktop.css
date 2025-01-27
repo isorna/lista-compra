@@ -1,5 +1,4 @@
 body {
-
   header {
     grid-column-start: span 12;
   }
@@ -7,6 +6,18 @@ body {
   main {
     grid-column-start: span 9;
     display: flex;
+
+    form {
+      label {
+        &:first-of-type {
+          input {
+            min-width: 100px;
+            max-width: calc(100% - 15px);
+            width: 100%;
+          }
+        }
+      }
+    }
   }
 
   aside {
