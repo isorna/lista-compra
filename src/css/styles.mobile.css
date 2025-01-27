@@ -1,11 +1,29 @@
 body {
-
   header {
     grid-column-start: span 12;
   }
 
   main {
     grid-column-start: span 12;
+
+    form {
+      flex-direction: column;
+      row-gap: .5em;
+
+      button {
+        line-height: 2em;
+      }
+    }
+
+    table {
+      tfoot td,
+      th:nth-child(4),
+      td:nth-child(4),
+      th:nth-child(3),
+      td:nth-child(3) {
+        display: none;
+      }
+    }
   }
 
   aside {

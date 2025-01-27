@@ -20,7 +20,9 @@ function onDomContentLoaded() {
   newArticleElement?.addEventListener('click', onNewArticleClick)
   newListElement?.addEventListener('click', onNewListClick)
 
-  console.log(store.article.getAll())
+  window.addEventListener('stateChanged', (event) => {
+    console.log('stateChanged', /** @type {CustomEvent} */(event).detail)
+  })
 
   readShoppingList()
   getShoppingListTotalAmount()
@@ -112,12 +114,11 @@ function createShoppingListItem() {
     price: getInputValue(priceElement)
   }
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
-  store.article.create(newArticle)
+  store.article.create(newArticle, () => {updateLocalStorage(store.getState())})
 
-  // shoppingList.get().push(newArticle)
-  // Save shoppingList on localStorage
-  console.log(store.getState())
-  localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
+  // // Save shoppingList on localStorage
+  // updateLocalStorage(store.getState())
+  // Update html
   getShoppingListTotalAmount()
   addNewRowToShoppingListTable(newArticle)
   resetFocus()
@@ -172,13 +173,11 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableRow.appendChild(newArticleTableCellPrice)
   newArticleTableRow.appendChild(newArticleTableCellSubtotal)
   newArticleTableRow.appendChild(newArticleDeleteButtonCell)
-  if (newArticleObject instanceof UsualProduct) {
-    if (newArticleObject?.bought === true) {
-      const cellToUpdate = newArticleTableRow.querySelector('td:nth-child(2)')
-      newArticleTableRow.classList.add('bought')
-      if (cellToUpdate) {
-        cellToUpdate.innerHTML = '🗹 ' + cellToUpdate.innerHTML
-      }
+  if (/** @type {UsualProduct} */(newArticleObject)?.bought === true) {
+    const cellToUpdate = newArticleTableRow.querySelector('td:nth-child(2)')
+    newArticleTableRow.classList.add('bought')
+    if (cellToUpdate) {
+      cellToUpdate.innerHTML = '[COMPRADO] ' + cellToUpdate.innerHTML
     }
   }
   // 2. Append the new Table Row to the shoppingListTableBodyElement
@@ -193,27 +192,25 @@ function addNewRowToShoppingListTable(newArticleObject){
  */
 function buyArticle(e, itemId, rowToUpdate) {
   // Find item inside shoppingList
-  const itemIndex = shoppingList.get().findIndex((/** @type {UsualProduct} shoppingListItem */shoppingListItem) => shoppingListItem.id === itemId)
+  const itemToUpdate = store.article.getById(itemId)
   const cellToUpdate = rowToUpdate.querySelector('td:nth-child(2)')
-  if (shoppingList.get()[itemIndex].bought !== true) {
-    shoppingList.get()[itemIndex].bought = true
-    // Save shoppingList on localStorage
-    localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
-    // Update html
+  // Update html
+  if (itemToUpdate.bought !== true) {
     rowToUpdate.classList.add('bought')
     if (cellToUpdate) {
-      cellToUpdate.innerHTML = '🗹 ' + cellToUpdate.innerHTML
+      cellToUpdate.innerHTML = '[COMPRADO] ' + cellToUpdate.innerHTML
     }
   } else {
-    shoppingList.get()[itemIndex].bought = false
-    // Save shoppingList on localStorage
-    localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
-    // Update html
     rowToUpdate.classList.remove('bought')
     if (cellToUpdate) {
-      cellToUpdate.innerHTML = cellToUpdate.innerHTML.replace('🗹 ', '')
+      cellToUpdate.innerHTML = cellToUpdate.innerHTML.replace('[COMPRADO] ', '')
     }
   }
+  // Modify Article data
+  itemToUpdate.bought = !itemToUpdate.bought
+  store.article.update(itemToUpdate, () => {updateLocalStorage(store.getState())})
+  // // Save shoppingList on localStorage
+  // updateLocalStorage(store.getState())
 }
 
 /**
@@ -230,17 +227,13 @@ function updateShoppingListItem() {
  * @param {HTMLElement} rowToDelete
  */
 function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
-  // 1. Delete item from shoppingList
-  // 1.1. Find item inside shoppingList
-  // const itemIndex = shoppingList.get().findIndex((/** @type {UsualProduct} shoppingListItem */shoppingListItem) => shoppingListItem.id === itemIdToDelete)
-  // 1.2. Delete item from shoppingList Array
-  store.article.delete(store.article.getById(itemIdToDelete))
-  console.log(store.getState())
-  //shoppingList.get().splice(itemIndex, 1)
+  // Delete item from store
+  store.article.delete(store.article.getById(itemIdToDelete), () => {updateLocalStorage(store.getState())})
+  // Update html
   rowToDelete.remove()
   getShoppingListTotalAmount()
-  // Save shoppingList on localStorage
-  localStorage.setItem('shoppingList', JSON.stringify(shoppingList.get()))
+  // // Save shoppingList on localStorage
+  // updateLocalStorage(store.getState())
 }
 
 /**
@@ -327,41 +320,21 @@ async function getAPIData() {
 }
 
 /**
- * Save new article to API
- * @param {UsualProduct} newArticle
- */
-// function saveNewArticleToAPI(newArticle) {
-//   // API endpoint
-//   const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
-
-//   fetch(API_USUAL_PRODUCTS_URL, { body: newArticle })
-//     .then((response) => {
-//       if (!response.ok) {
-//         showError(response.status)
-//       }
-
-//       console.log('Articulo guardado')
-//     })
-// }
-
-/**
- * Show error to user
- */
-// TODO: create an error layer/popup
-// function showError(errorMessage) {
-//   window.alert(errorMessage)
-//   console.error(errorMessage)
-//   throw new Error(`HTTP error! Status: ${errorMessage}`);
-// }
-
-/**
  * Get saved sopphing list data
  */
 function readShoppingList() {
-  /** @type {Array<UsualProduct>} */
+  /** @type {import('./store/redux.js').State} */
   const storedData = JSON.parse(localStorage.getItem('shoppingList') || '[]')
-  storedData.forEach(savedArticle => {
-    shoppingList.get().push(savedArticle)
+  storedData?.articles.forEach((/** @type {Article | UsualProduct} */ savedArticle) => {
+    store.article.create(savedArticle)
     addNewRowToShoppingListTable(savedArticle)
   });
+}
+
+/**
+ * Saves shopping list on localStorage
+ * @param {Array<Article | UsualProduct} storeValue
+ */
+function updateLocalStorage(storeValue) {
+  localStorage.setItem('shoppingList', JSON.stringify(storeValue))
 }

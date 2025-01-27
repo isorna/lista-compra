@@ -90,6 +90,8 @@ body {
       width: 100%;
       border-radius: var(--border-radius);
       background-color: var(--card-bg-color);
+      
+      
 
       th,
       td {
