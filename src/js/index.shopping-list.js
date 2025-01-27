@@ -116,8 +116,6 @@ function createShoppingListItem() {
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
   store.article.create(newArticle, () => {updateLocalStorage(store.getState())})
 
-  // // Save shoppingList on localStorage
-  // updateLocalStorage(store.getState())
   // Update html
   getShoppingListTotalAmount()
   addNewRowToShoppingListTable(newArticle)
@@ -209,8 +207,6 @@ function buyArticle(e, itemId, rowToUpdate) {
   // Modify Article data
   itemToUpdate.bought = !itemToUpdate.bought
   store.article.update(itemToUpdate, () => {updateLocalStorage(store.getState())})
-  // // Save shoppingList on localStorage
-  // updateLocalStorage(store.getState())
 }
 
 /**
@@ -232,8 +228,6 @@ function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // Update html
   rowToDelete.remove()
   getShoppingListTotalAmount()
-  // // Save shoppingList on localStorage
-  // updateLocalStorage(store.getState())
 }
 
 /**
