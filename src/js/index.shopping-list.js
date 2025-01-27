@@ -163,8 +163,8 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableCellName.addEventListener('click', buyArticle.bind(newArticleTableCellName, clickEvent, newArticleObject.id, newArticleTableRow))
   newArticleTableCellPrice.innerText = String(newArticleObject.price)
   newArticleTableCellSubtotal.innerText = String(newArticleObject.qty * newArticleObject.price)
-  newArticleDeleteButton.innerText = '🗑'
-  newArticleDeleteButton.className = 'delete-button'
+  newArticleDeleteButton.innerHTML = '&#128473;&#xfe0e;'
+  newArticleDeleteButton.className = 'icon-button delete-button'
   newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(newArticleDeleteButton, clickEvent, newArticleObject.id, newArticleTableRow))
   newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
   // 1.2. Append Table Cells to Table Row
@@ -177,7 +177,7 @@ function addNewRowToShoppingListTable(newArticleObject){
     const cellToUpdate = newArticleTableRow.querySelector('td:nth-child(2)')
     newArticleTableRow.classList.add('bought')
     if (cellToUpdate) {
-      cellToUpdate.innerHTML = '[COMPRADO] ' + cellToUpdate.innerHTML
+      cellToUpdate.innerHTML = '&#128505; ' + cellToUpdate.innerHTML
     }
   }
   // 2. Append the new Table Row to the shoppingListTableBodyElement
@@ -198,12 +198,12 @@ function buyArticle(e, itemId, rowToUpdate) {
   if (itemToUpdate.bought !== true) {
     rowToUpdate.classList.add('bought')
     if (cellToUpdate) {
-      cellToUpdate.innerHTML = '[COMPRADO] ' + cellToUpdate.innerHTML
+      cellToUpdate.innerHTML = '&#128505; ' + cellToUpdate.innerHTML
     }
   } else {
     rowToUpdate.classList.remove('bought')
     if (cellToUpdate) {
-      cellToUpdate.innerHTML = cellToUpdate.innerHTML.replace('[COMPRADO] ', '')
+      cellToUpdate.innerHTML = cellToUpdate.innerHTML.replace('🗹 ', '')
     }
   }
   // Modify Article data

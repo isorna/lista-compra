@@ -9,6 +9,9 @@ body {
     form {
       flex-wrap: wrap;
       gap: 1em .5em;
+      
+      
+      
 
       label:first-of-type {
         width: 100%;
@@ -16,6 +19,7 @@ body {
 
       button {
         line-height: 2em;
+        flex-grow: 1;
       }
     }
 
