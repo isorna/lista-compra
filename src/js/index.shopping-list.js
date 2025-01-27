@@ -152,6 +152,7 @@ function addNewRowToShoppingListTable(newArticleObject){
   const newArticleTableCellSubtotal = document.createElement('td')
   const newArticleDeleteButtonCell = document.createElement('td')
   const newArticleDeleteButton = document.createElement('button')
+  const newArticleImg = document.createElement('img')
   const clickEvent = new MouseEvent('click', {
     bubbles: true,
     cancelable: true,
@@ -163,8 +164,11 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableCellName.addEventListener('click', buyArticle.bind(newArticleTableCellName, clickEvent, newArticleObject.id, newArticleTableRow))
   newArticleTableCellPrice.innerText = String(newArticleObject.price)
   newArticleTableCellSubtotal.innerText = String(newArticleObject.qty * newArticleObject.price)
-  newArticleDeleteButton.innerHTML = '&#128473;&#xfe0e;'
+  // newArticleDeleteButton.innerHTML = '&#128473;&#xfe0e;'
   newArticleDeleteButton.className = 'icon-button delete-button'
+  newArticleImg.src = './assets/img/cancel.png'
+  newArticleImg.setAttribute('alt', 'Eliminar')
+  newArticleDeleteButton.appendChild(newArticleImg)
   newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(newArticleDeleteButton, clickEvent, newArticleObject.id, newArticleTableRow))
   newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
   // 1.2. Append Table Cells to Table Row
@@ -174,11 +178,7 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableRow.appendChild(newArticleTableCellSubtotal)
   newArticleTableRow.appendChild(newArticleDeleteButtonCell)
   if (/** @type {UsualProduct} */(newArticleObject)?.bought === true) {
-    const cellToUpdate = newArticleTableRow.querySelector('td:nth-child(2)')
     newArticleTableRow.classList.add('bought')
-    if (cellToUpdate) {
-      cellToUpdate.innerHTML = '&#128505; ' + cellToUpdate.innerHTML
-    }
   }
   // 2. Append the new Table Row to the shoppingListTableBodyElement
   shoppingListTableBodyElement?.appendChild(newArticleTableRow)
@@ -197,14 +197,8 @@ function buyArticle(e, itemId, rowToUpdate) {
   // Update html
   if (itemToUpdate.bought !== true) {
     rowToUpdate.classList.add('bought')
-    if (cellToUpdate) {
-      cellToUpdate.innerHTML = '&#128505; ' + cellToUpdate.innerHTML
-    }
   } else {
     rowToUpdate.classList.remove('bought')
-    if (cellToUpdate) {
-      cellToUpdate.innerHTML = cellToUpdate.innerHTML.replace('🗹 ', '')
-    }
   }
   // Modify Article data
   itemToUpdate.bought = !itemToUpdate.bought
