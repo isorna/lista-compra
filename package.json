@@ -5,7 +5,7 @@
   "description": "proyecto de prácticas para el bootcamp de Neoland",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "build:docs": "jsdoc ./src -r",
     "tailwind": "npx tailwindcss -i ./src/css/styles.tailwind.css -o ./src/css/output.css --watch"
   },
