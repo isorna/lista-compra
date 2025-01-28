@@ -5,7 +5,7 @@
   "description": "proyecto de prácticas para el bootcamp de Neoland",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build:docs": "jsdoc ./src -r",
     "tailwind": "npx tailwindcss -i ./src/css/styles.tailwind.css -o ./src/css/output.css --watch"
   },
@@ -23,6 +23,7 @@
     "animate.css": "^4.1.1"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "jsdoc": "^4.0.4",
     "stylelint": "^16.13.2",
     "stylelint-config-standard": "^37.0.0",
