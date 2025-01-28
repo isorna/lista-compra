@@ -282,13 +282,14 @@ async function getUsualProducts() {
  * Get data from API
  * @returns {Promise<Array<UsualProduct>>}
  */
-async function getAPIData() {
+async function getAPIData(apiURL = 'api/get.articles.json') {
   // API endpoint
-  const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
+  // const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
   let apiData
 
   try {
-    apiData = await simpleFetch(API_USUAL_PRODUCTS_URL, {
+    // apiData = await simpleFetch(API_USUAL_PRODUCTS_URL, {
+    apiData = await simpleFetch(apiURL, {
       // Si la petición tarda demasiado, la abortamos
       signal: AbortSignal.timeout(3000),
     });
@@ -306,6 +307,8 @@ async function getAPIData() {
     }
   }
 
+  console.log('apiData: ' + apiURL, apiData)
+
   return apiData
 }
 
@@ -314,7 +317,7 @@ async function getAPIData() {
  */
 function readShoppingList() {
   /** @type {State} */
-  const storedData = JSON.parse(localStorage.getItem('shoppingList') || '[]')
+  const storedData = getDataFromLocalStorage()
   storedData?.articles.forEach((/** @type {Article | UsualProduct} */ savedArticle) => {
     store.article.create(savedArticle)
     addNewRowToShoppingListTable(savedArticle)
@@ -327,4 +330,27 @@ function readShoppingList() {
  */
 function updateLocalStorage(storeValue) {
   localStorage.setItem('shoppingList', JSON.stringify(storeValue))
+}
+
+/**
+ * Retrieves the shopping list data from local storage.
+ *
+ * @returns {Array<Article | UsualProduct>} An array of shopping list items.
+ * If no data is found, returns an empty array.
+ */
+
+function getDataFromLocalStorage() {
+  return JSON.parse(localStorage.getItem('shoppingList') || '[]')
+}
+
+/**
+ * Exports for testing
+ */
+export {
+  addNewRowToShoppingListTable,
+  updateShoppingListItem,
+  deleteShoppingListItem,
+  getShoppingListTotalAmount,
+  getDataFromLocalStorage,
+  readShoppingList
 }
