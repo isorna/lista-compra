@@ -340,7 +340,8 @@ function updateLocalStorage(storeValue) {
  */
 
 function getDataFromLocalStorage() {
-  return JSON.parse(localStorage.getItem('shoppingList') || '[]')
+  const defaultValue = '{"articles": [], "error": false, "isLoading": false}'
+  return JSON.parse(localStorage.getItem('shoppingList') || defaultValue)
 }
 
 /**
