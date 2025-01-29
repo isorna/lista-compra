@@ -1,5 +1,5 @@
 // @ts-check
-import { Article, UsualProduct } from "../classes/ShopArticle.js";
+/** @import {Article, UsualProduct} from '../classes/ShopArticle.js' */
 
 /**
  * @module redux/store
@@ -50,7 +50,6 @@ const INITIAL_STATE = {
  */
 const appReducer = (state = INITIAL_STATE, action) => {
   const actionWithArticle = /** @type {ActionTypeArticle} */(action)
-  const actionWithProduct = /** @type {ActionTypeProduct} */(action)
   switch (action.type) {
     case ACTION_TYPES.CREATE_ARTICLE:
       return {

@@ -1,11 +1,12 @@
 // @ts-check
-import { ArticleFactory, ARTICLE_TYPES, Article, UsualProduct } from 'classes/ShopArticle'
+import { ArticleFactory, ARTICLE_TYPES } from 'classes/ShopArticle'
 import { shoppingList } from 'classes/Shop'
 import { simpleFetch } from '../js/lib/simpleFetch.js'
 import { HttpError } from './classes/HttpError.js'
 import { store } from './store/redux.js'
 
 /** @import {State} from './store/redux.js' */
+/** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
 
 const myFactory = new ArticleFactory
 
@@ -31,11 +32,7 @@ function onDomContentLoaded() {
   getUsualProducts()
 }
 
-/**
- *
- * @param {KeyboardEvent} e
- */
-function onArticleNameKeyUp(e) {
+function onArticleNameKeyUp() {
   const articleNameElement = document.getElementById('articleName')
   const newArticleElement = document.getElementById('newArticle')
 
@@ -46,20 +43,12 @@ function onArticleNameKeyUp(e) {
   }
 }
 
-/**
- *
- * @param {MouseEvent} e
- */
-function onNewArticleClick(e) {
+function onNewArticleClick() {
   createShoppingListItem()
   cleanUpForm()
 }
 
-/**
- *
- * @param {MouseEvent} e
- */
-function onNewListClick(e) {
+function onNewListClick() {
   resetShoppingList()
 }
 
@@ -193,7 +182,6 @@ function addNewRowToShoppingListTable(newArticleObject){
 function buyArticle(e, itemId, rowToUpdate) {
   // Find item inside shoppingList
   const itemToUpdate = store.article.getById(itemId)
-  const cellToUpdate = rowToUpdate.querySelector('td:nth-child(2)')
   // Update html
   if (itemToUpdate.bought !== true) {
     rowToUpdate.classList.add('bought')
