@@ -1,68 +1,80 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El noticiero de Neoland - Cuarto día del bootcamp de Fullstack</title>
+<html>
+  <link>
+    <title>Práctica del Bootcamp de Fullstack</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "classes/Article": "./js/classes/Article.js",
+          "classes/ShoppingList": "./js/classes/ShoppingList.js",
+          "classes/LocalStore": "./js/classes/LocalStore.js",
+          "classes/HttpError": "./js/classes/HttpError.js",
+          "decorators/log": "./js/decorators/log.js",
+          "decorators/validate": "./js/decorators/validate.js",
+          "utils/translate": "./js/utils/translate.js",
+          "utils/simpleFetch": "./js/utils/simpleFetch.js",
+          "classes/ShopArticle": "./js/classes/ShopArticle.js",
+          "classes/Shop": "./js/classes/Shop.js"
+        }
+      }
+    </script>
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/img/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/img/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/img/favicon-16x16.png"/>
+    <script type="module" src="./js/index.shopping-list.js"></script>
     <link rel="stylesheet" href="./css/reset.css"/>
-    <link rel="stylesheet" href="./css/styles.typography.css"/>
-    <link rel="stylesheet" href="./css/styles.noticia.css"/>
-    <link rel="stylesheet" href="./css/styles.noticia.mobile.css" media="screen and (max-width: 768px)"/>
-    <link rel="stylesheet" href="./css/styles.noticia.desktop.css" media="screen and (min-width: 769px)"/>
+    <link rel="stylesheet" href="./css/styles.css"/>
+    <!-- <link href="./css/output.css" rel="stylesheet"> -->
+    <!-- <link rel="stylesheet" href="../node_modules/animate.css/animate.css"/> -->
+    <link rel="stylesheet" href="./css/styles.mobile.css" media="screen and (max-width: 768px)"/>
+    <link rel="stylesheet" href="./css/styles.desktop.css" media="screen and (min-width: 769px)"/>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet'/>
+    <link rel="manifest" href="./manifest.json" />
+    <script>navigator.serviceWorker.register("./js/service-worker.js")</script>
   </head>
-  <body id="app-wrapper">
+  <body>
     <header>
-      <h1>Cuarto día del bootcamp de Fullstack</h1>
-      <nav>
-        <ol>
-          <li><a href="./" title="inicio">Home</a></li>
-          <li><a href="./resumen-semanal.html#resumen-semanal" title="resumen semanal">Resumen semanal</a></li>
-          <li><a href="./resumen-semanal.html#resumen-semanal" title="resumen semanal">Resumen semanal</a></li>
-        </ol>
-      </nav>
+      <h1>Lista de la compra <span hidden id="total"></span></h1>
     </header>
-    <article>
-      <h1>Los alumnos sobreviven al segundo día del bootcamp</h1>
-      <img src="./assets/img/600x400.svg" />
-      <p>A pesar de las dificultades, <span>han conseguido subir su primera</span> página web al repositorio.</p>
-      <p><q>No se lo podían creer.</q></p>
-      <p><em>Editorial</em></p>
-    </article>
-    <section>
-      <h1>Comentarios</h1>
-      <ul class="lista-comentarios">
-        <li>
-          <img src="./assets/img/avatar.png" />
-          <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
-        </li>
-        <li style="--color-comentarios: red">
-          <img src="./assets/img/avatar.png" />
-          <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
-        </li>
-        <li class="color-verde">
-          <img src="./assets/img/avatar.png" />
-          <q><strong>Álvaro (el profe):</strong> siempre confié en ellos</q>
-        </li>
-      </ul>
-      <form action="./informacion.html" id="comentarios">
-        <input type="hidden" name="sesion" value="SESSION_ALVARO" />
-        <fieldset>
-          <label>Usuario:</label>
-          <input type="text" name="usuario" placeholder="tu nombre de usuario" />
-        </fieldset>
-        <fieldset>
-          <label>Contraseña:</label>
-          <input type="password" name="pwd" />
-        </fieldset>
-        <fieldset>
-          <label>Fecha de nacimiento:</label>
-          <input type="date" name="fecha" />
-        </fieldset>
-        <button type="submit">enviar</button>
+    <main>
+      <h1>Añadir a la lista</h1>
+      <form id="articleForm">
+        <datalist id="productos"></datalist>
+        <label>Nombre: <input type="text" id="articleName" placeholder="nuevo artículo" list="productos" autocomplete="off" /></label>
+        <label>Cantidad: <input type="number" id="qty" placeholder="0" min="0" max="10" step="1" /></label>
+        <label>Precio: <input type="number" id="price" placeholder="0€" min="0" max="100" step="1" /></label>
+        <button type="button" id="newArticle" class="icon-button add-button" disabled><img src="./assets/img/check-mark.png" alt="Añadir" /></button>
+        <button type="reset" id="newList" class="icon-button new-button"><img src="./assets/img/anticlockwise-rotation.png" alt="Nueva lista" /></button>
       </form>
-    </section>
-    <footer>
-      <p>&copy; Neoland.es</p>
-    </footer>
+      <table id="shoppingListTable">
+        <thead>
+          <tr>
+            <th>cantidad</th>
+            <th>nombre del artículo</th>
+            <th>precio</th>
+            <th>subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="shoppingListTableBody">
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="4">TOTAL: <span id="shoppingListTableTotal">XXXX</span> €</th>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </main>
+    <aside id="menu">
+      <nav>
+        <ul>
+          <li><a href="#">Histórico</a></li>
+          <li><a href="#">Menús</a></li>
+          <li><a href="#">Estadísticas</a></li>
+        </ul>
+      </nav>
+    </aside>
   </body>
 </html>
