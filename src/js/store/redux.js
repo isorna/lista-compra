@@ -23,7 +23,8 @@ const ACTION_TYPES = {
   CREATE_ARTICLE: 'CREATE_ARTICLE',
   READ_LIST: 'READ_LIST',
   UPDATE_ARTICLE: 'UPDATE_ARTICLE',
-  DELETE_ARTICLE: 'DELETE_ARTICLE'
+  DELETE_ARTICLE: 'DELETE_ARTICLE',
+  DELETE_ALL_ARTICLES: 'DELETE_ALL_ARTICLES',
 }
 
 /**
@@ -35,7 +36,7 @@ const ACTION_TYPES = {
 /**
  * @type {State}
  */
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   articles: [],
   isLoading: false,
   error: false
@@ -72,10 +73,14 @@ const appReducer = (state = INITIAL_STATE, action) => {
         })
       };
     case ACTION_TYPES.DELETE_ARTICLE:
-      console.log(actionWithArticle.article)
       return {
         ...state,
         articles: state.articles.filter((/** @type {Article | UsualProduct} */article) => article.id !== actionWithArticle?.article?.id)
+      };
+    case ACTION_TYPES.DELETE_ALL_ARTICLES:
+      return {
+        ...state,
+        articles: []
       };
     default:
       return state;
@@ -90,6 +95,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
  * @property {function} delete
  * @property {function} getById
  * @property {function} getAll
+ * @property {function} deleteAll
  */
 /**
  * @typedef {Object} Store
@@ -133,6 +139,13 @@ const createStore = (reducer) => {
    * @returns void
    */
   const deleteArticle = (article, onEventDispatched) => _dispatch({ type: ACTION_TYPES.DELETE_ARTICLE, article }, onEventDispatched);
+
+  /**
+   * Deletes all the articles
+   * @param {function | undefined} [onEventDispatched]
+   * @returns void
+   * */
+  const deleteAllArticles = (onEventDispatched) => _dispatch({ type: ACTION_TYPES.DELETE_ALL_ARTICLES }, onEventDispatched);
 
   // Public methods
   /**
@@ -211,7 +224,8 @@ const createStore = (reducer) => {
     update: updateArticle,
     delete: deleteArticle,
     getById: getArticleById,
-    getAll: getAllArticles
+    getAll: getAllArticles,
+    deleteAll: deleteAllArticles
   }
 
   return {
