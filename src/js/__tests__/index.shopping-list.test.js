@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { getDataFromLocalStorage, readShoppingList } from "../index.shopping-list";
 import mockData from '../../api/get.articles.json' with { type: 'json' }
 
