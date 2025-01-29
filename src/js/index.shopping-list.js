@@ -1,9 +1,8 @@
 // @ts-check
 import { ArticleFactory, ARTICLE_TYPES } from 'classes/ShopArticle'
-import { shoppingList } from 'classes/Shop'
 import { simpleFetch } from '../js/lib/simpleFetch.js'
 import { HttpError } from './classes/HttpError.js'
-import { store } from './store/redux.js'
+import { INITIAL_STATE, store } from './store/redux.js'
 
 /** @import {State} from './store/redux.js' */
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
@@ -59,8 +58,7 @@ function onNewListClick() {
  */
 function resetShoppingList() {
   // 1. Empty the shopping list
-  localStorage.removeItem('shoppingList')
-  shoppingList.get().empty()
+  store.article.deleteAll(() => {updateLocalStorage(store.getState())})
   // 2. Empty Table Element
   emptyTableElement()
   // 3. Update Table total amount cell
@@ -232,7 +230,8 @@ function emptyTableElement() {
 function getShoppingListTotalAmount() {
   const shoppingListTableTotalElement = document.getElementById('shoppingListTableTotal')
   let totalAmount = 0
-  for (let article of shoppingList.get()) {
+
+  for (let article of store.article.getAll()) {
     // 1. Calculate subtotals for each article
     const subtotal = article.qty * article.price
     // 2. Add all subtotals
@@ -328,7 +327,7 @@ function updateLocalStorage(storeValue) {
  */
 
 function getDataFromLocalStorage() {
-  const defaultValue = '{"articles": [], "error": false, "isLoading": false}'
+  const defaultValue = JSON.stringify(INITIAL_STATE)
   return JSON.parse(localStorage.getItem('shoppingList') || defaultValue)
 }
 
