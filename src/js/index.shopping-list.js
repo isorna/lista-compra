@@ -3,6 +3,7 @@ import { ArticleFactory, ARTICLE_TYPES } from 'classes/ShopArticle'
 import { simpleFetch } from '../js/lib/simpleFetch.js'
 import { HttpError } from './classes/HttpError.js'
 import { INITIAL_STATE, store } from './store/redux.js'
+import { installRouter } from './lib/router.js'
 
 /** @import {State} from './store/redux.js' */
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
@@ -17,6 +18,9 @@ function onDomContentLoaded() {
   const articleNameElement = document.getElementById('articleName')
   const newArticleElement = document.getElementById('newArticle')
   const newListElement = document.getElementById('newList')
+
+  // Activate router
+  installRouter((/** @type {Location} */ location) => {handleNavigation(location)})
 
   articleNameElement?.addEventListener('keyup', onArticleNameKeyUp)
   newArticleElement?.addEventListener('click', onNewArticleClick)
@@ -329,6 +333,55 @@ function updateLocalStorage(storeValue) {
 function getDataFromLocalStorage() {
   const defaultValue = JSON.stringify(INITIAL_STATE)
   return JSON.parse(localStorage.getItem('shoppingList') || defaultValue)
+}
+
+/**
+ * Handles navigation changes
+ * @param {Location} location - The new location
+ */
+function handleNavigation(location) {
+  const newLocation = location.pathname.replace(/\/src/, '')
+
+  switch (newLocation) {
+    case '/':
+      document?.getElementById('login')?.classList.add('hidden')
+      document?.getElementById('diary')?.classList.add('hidden')
+      document?.getElementById('menus')?.classList.add('hidden')
+      document?.getElementById('stats')?.classList.add('hidden')
+      document?.getElementById('home')?.classList.remove('hidden')
+      break
+    case '/login':
+      document?.getElementById('diary')?.classList.add('hidden')
+      document?.getElementById('menus')?.classList.add('hidden')
+      document?.getElementById('stats')?.classList.add('hidden')
+      document?.getElementById('home')?.classList.add('hidden')
+      document?.getElementById('login')?.classList.remove('hidden')
+      break
+    case '/diary':
+      document?.getElementById('login')?.classList.add('hidden')
+      document?.getElementById('menus')?.classList.add('hidden')
+      document?.getElementById('stats')?.classList.add('hidden')
+      document?.getElementById('home')?.classList.add('hidden')
+      document?.getElementById('diary')?.classList.remove('hidden')
+      break
+    case '/menus':
+      document?.getElementById('login')?.classList.add('hidden')
+      document?.getElementById('diary')?.classList.add('hidden')
+      document?.getElementById('stats')?.classList.add('hidden')
+      document?.getElementById('home')?.classList.add('hidden')
+      document?.getElementById('menus')?.classList.remove('hidden')
+      break
+    case '/stats':
+      document?.getElementById('login')?.classList.add('hidden')
+      document?.getElementById('diary')?.classList.add('hidden')
+      document?.getElementById('menus')?.classList.add('hidden')
+      document?.getElementById('home')?.classList.add('hidden')
+      document?.getElementById('stats')?.classList.remove('hidden')
+      break
+    default:
+      console.log('404', newLocation)
+      break
+  }
 }
 
 /**
