@@ -5,7 +5,7 @@ import { HttpError } from './classes/HttpError.js'
 import { INITIAL_STATE, store } from './store/redux.js'
 import { installRouter } from './lib/router.js'
 
-/** @import {State} from './store/redux.js' */
+/** @import {State, User} from './store/redux.js' */
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
 
 const myFactory = new ArticleFactory
@@ -18,14 +18,20 @@ function onDomContentLoaded() {
   const articleNameElement = document.getElementById('articleName')
   const newArticleElement = document.getElementById('newArticle')
   const newListElement = document.getElementById('newList')
+  const loginForm = document.getElementById('loginForm')
+  const logoutButton = document.getElementById('logoutButton')
 
   // Activate router
   installRouter((/** @type {Location} */ location) => {handleNavigation(location)})
-
+  // Home page
   articleNameElement?.addEventListener('keyup', onArticleNameKeyUp)
   newArticleElement?.addEventListener('click', onNewArticleClick)
   newListElement?.addEventListener('click', onNewListClick)
+  // Login
+  loginForm?.addEventListener('submit', onLoginFormSubmit)
+  logoutButton?.addEventListener('click', onLogoutClick)
 
+  // REMOVE: Log store changes
   window.addEventListener('stateChanged', (event) => {
     console.log('stateChanged', /** @type {CustomEvent} */(event).detail)
   })
@@ -55,6 +61,64 @@ function onNewListClick() {
   resetShoppingList()
 }
 
+/**
+ * Handle form submit event from login form
+ * @param {Event} e
+ */
+async function onLoginFormSubmit(e){
+  const emailElement = document.getElementById('email')
+  const passwordElement = document.getElementById('password')
+  const loginData = {
+    email: getInputValue(emailElement),
+    password: getInputValue(passwordElement)
+  }
+
+  e.preventDefault()
+
+  if (loginData.email !== '' && loginData.password !== '') {
+    const apiData = await getAPIData('api/get.users.json')
+
+    let userData = apiData.find((itemData) => {
+      const user = /** @type {User} */(itemData)
+
+      return user.email === loginData.email && user.password === loginData.password
+    })
+
+    console.log('userData', apiData, userData)
+
+    if (!userData) {
+      // Show error
+      alert('El usuario no existe')
+    } else {
+      const loginLink = document.getElementById('loginLink')
+      const logoutButton = document.getElementById('logoutButton')
+      // Login user
+      store.user.login(userData, setLocalStorageFromStore)
+      // Redirect to home
+      navigateTo('/')
+      // Update UI
+      loginLink?.classList.add('hidden')
+      logoutButton?.classList.remove('hidden')
+    }
+  }
+}
+
+/**
+ * Logs out the user
+ * @returns void
+ */
+function onLogoutClick() {
+  const loginLink = document.getElementById('loginLink')
+  const logoutButton = document.getElementById('logoutButton')
+  // Logout user
+  store.user.logout(setLocalStorageFromStore)
+  // Update UI
+  loginLink?.classList.remove('hidden')
+  logoutButton?.classList.add('hidden')
+  // Redirect to home
+  navigateTo('/')
+}
+
 // ======== METHODS ======== //
 
 /**
@@ -62,7 +126,7 @@ function onNewListClick() {
  */
 function resetShoppingList() {
   // 1. Empty the shopping list
-  store.article.deleteAll(() => {updateLocalStorage(store.getState())})
+  store.article.deleteAll(setLocalStorageFromStore)
   // 2. Empty Table Element
   emptyTableElement()
   // 3. Update Table total amount cell
@@ -107,7 +171,7 @@ function createShoppingListItem() {
     price: getInputValue(priceElement)
   }
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
-  store.article.create(newArticle, () => {updateLocalStorage(store.getState())})
+  store.article.create(newArticle, setLocalStorageFromStore)
 
   // Update html
   getShoppingListTotalAmount()
@@ -192,7 +256,7 @@ function buyArticle(e, itemId, rowToUpdate) {
   }
   // Modify Article data
   itemToUpdate.bought = !itemToUpdate.bought
-  store.article.update(itemToUpdate, () => {updateLocalStorage(store.getState())})
+  store.article.update(itemToUpdate, setLocalStorageFromStore)
 }
 
 /**
@@ -210,7 +274,7 @@ function updateShoppingListItem() {
  */
 function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // Delete item from store
-  store.article.delete(store.article.getById(itemIdToDelete), () => {updateLocalStorage(store.getState())})
+  store.article.delete(store.article.getById(itemIdToDelete), setLocalStorageFromStore)
   // Update html
   rowToDelete.remove()
   getShoppingListTotalAmount()
@@ -262,7 +326,8 @@ async function getUsualProducts() {
   const dataListElement = document.getElementById('productos')
   const apiData = await getAPIData()
 
-  apiData.forEach((/** @type {UsualProduct} */product) => {
+  apiData.forEach((itemData) => {
+    const product = /** @type {UsualProduct} */(itemData)
     const newOptionElement = document.createElement('option')
     newOptionElement.value = product.name
     dataListElement?.appendChild(newOptionElement)
@@ -271,7 +336,7 @@ async function getUsualProducts() {
 
 /**
  * Get data from API
- * @returns {Promise<Array<UsualProduct>>}
+ * @returns {Promise<Array<UsualProduct | User>>}
  */
 async function getAPIData(apiURL = 'api/get.articles.json') {
   // API endpoint
@@ -317,10 +382,17 @@ function readShoppingList() {
 
 /**
  * Saves shopping list on localStorage
- * @param {Array<Article | UsualProduct>} storeValue
+ * @param {State} storeValue
  */
 function updateLocalStorage(storeValue) {
   localStorage.setItem('shoppingList', JSON.stringify(storeValue))
+}
+
+/**
+ * Saves the current state of the store in local storage.
+ */
+function setLocalStorageFromStore() {
+  updateLocalStorage(store.getState())
 }
 
 /**
@@ -341,9 +413,9 @@ function getDataFromLocalStorage() {
  */
 function handleNavigation(location) {
   const newLocation = location.pathname.replace(/\/src/, '')
-  console.log('route before navigation', store.route.get())
+  // console.log('route before navigation', store.route.get())
   store.route.set(newLocation)
-  console.log('route after navigation', store.route.get())
+  // console.log('route after navigation', store.route.get())
 
   switch (newLocation) {
     case '/':
@@ -385,6 +457,19 @@ function handleNavigation(location) {
       console.log('404', newLocation)
       break
   }
+}
+
+/**
+ * Navigates to the specified path
+ * @param {string} pathname
+ */
+function navigateTo(pathname) {
+  const newLocation = {
+    ...window.location,
+    pathname
+  }
+  window.history.pushState({}, '', pathname)
+  handleNavigation(newLocation)
 }
 
 /**
