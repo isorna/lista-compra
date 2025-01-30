@@ -11,13 +11,9 @@
  * @property {Article | UsualProduct } [article]
  */
 /**
- * @typedef {Object} Product
- * @property {string} name
- */
-/**
- * @typedef {Object} ActionTypeProduct
+ * @typedef {Object} ActionTypeRoute
  * @property {string} type
- * @property {Product} [product]
+ * @property {string} [route]
  */
 const ACTION_TYPES = {
   CREATE_ARTICLE: 'CREATE_ARTICLE',
@@ -25,6 +21,7 @@ const ACTION_TYPES = {
   UPDATE_ARTICLE: 'UPDATE_ARTICLE',
   DELETE_ARTICLE: 'DELETE_ARTICLE',
   DELETE_ALL_ARTICLES: 'DELETE_ALL_ARTICLES',
+  SET_ROUTE: 'SET_ROUTE',
 }
 
 /**
@@ -39,18 +36,20 @@ const ACTION_TYPES = {
 export const INITIAL_STATE = {
   articles: [],
   isLoading: false,
-  error: false
+  error: false,
+  route: '/',
 }
 
 /**
  * Reducer for the app state.
  *
  * @param {State} state - The current state
- * @param {ActionTypeArticle | ActionTypeProduct} action - The action to reduce
+ * @param {ActionTypeArticle | ActionTypeRoute} action - The action to reduce
  * @returns {State} The new state
  */
 const appReducer = (state = INITIAL_STATE, action) => {
   const actionWithArticle = /** @type {ActionTypeArticle} */(action)
+  const actionWithRoute = /** @type {ActionTypeRoute} */(action)
   switch (action.type) {
     case ACTION_TYPES.CREATE_ARTICLE:
       return {
@@ -82,6 +81,11 @@ const appReducer = (state = INITIAL_STATE, action) => {
         ...state,
         articles: []
       };
+    case ACTION_TYPES.SET_ROUTE:
+      return {
+        ...state,
+        route: actionWithRoute.route
+      };
     default:
       return state;
   }
@@ -98,9 +102,15 @@ const appReducer = (state = INITIAL_STATE, action) => {
  * @property {function} deleteAll
  */
 /**
+ * @typedef {Object} PublicRoute
+ * @property {function} set
+ * @property {function} get
+ */
+/**
  * @typedef {Object} Store
  * @property {function} getState
  * @property {PublicMethods} article
+ * @property {PublicRoute} route
  */
 /**
  * Creates the store singleton.
@@ -166,10 +176,17 @@ const createStore = (reducer) => {
    */
   const getAllArticles = () => { return currentState.articles };
 
+  /**
+   * Gets current route
+   * @param {string} route
+   * @returns string
+   */
+  const getRoute = (route) => _dispatch({ type: ACTION_TYPES.SET_ROUTE, route })
+
   // Private methods
   /**
    *
-   * @param {ActionTypeArticle | ActionTypeProduct} action
+   * @param {ActionTypeArticle | ActionTypeRoute} action
    * @param {function | undefined} [onEventDispatched]
    */
   const _dispatch = (action, onEventDispatched) => {
@@ -228,9 +245,16 @@ const createStore = (reducer) => {
     deleteAll: deleteAllArticles
   }
 
+  /** @type {PublicRoute} */
+  const route = {
+    get: () => currentState.route,
+    set: getRoute
+  }
+
   return {
     // Actions
     article,
+    route,
     // Public methods
     getState
   }
