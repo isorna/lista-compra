@@ -1,7 +1,7 @@
 /* stylelint-disable no-descending-specificity */
 [hidden],
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 
@@ -40,6 +40,73 @@ body {
     }
   }
 
+  button {
+    flex-grow: 1;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+
+    &.icon-button {
+      display: block;
+      line-height: 40px;
+      width: 80px;
+      max-width: 80px;
+      font-size: 36px;
+      color: var(--main-color);
+      transition: all 0.2s ease-in-out;
+
+      &.add-button {
+        background-color: mediumslateblue;
+        border: 1px solid blue;
+
+        &:disabled {
+          opacity: 0.5;
+        }
+
+        &:hover:not(:disabled) {
+          border-color: mediumslateblue;
+          background-color: blue;
+        }
+      }
+
+      &.logout-button,
+      &.new-button {
+        background-color: orange;
+        border: 1px solid red;
+
+        &:hover {
+          border-color: orange;
+          background-color: red;
+        }
+      }
+
+      &.logout-button {
+        max-width: 40px;
+      }
+
+      &.delete-button {
+        line-height: 1.5em;
+        height: 50px;
+        width: 100%;
+        max-width: 60px;
+        margin: 0 auto;
+        background-color: orange;
+        border: 1px solid red;
+
+        &:hover {
+          border-color: orange;
+          background-color: red;
+        }
+      }
+
+      img {
+        display: block;
+        width: 80%;
+        height: 80%;
+        margin: auto;
+      }
+    }
+  }
+
   main {
     display: flex;
     flex-direction: column;
@@ -55,68 +122,6 @@ body {
     button:focus,
     button:active {
       outline-color: var(--focus-color);
-    }
-
-    button {
-      flex-grow: 1;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-
-      &.icon-button {
-        display: block;
-        line-height: 40px;
-        width: 80px;
-        max-width: 80px;
-        font-size: 36px;
-        color: var(--main-color);
-        transition: all 0.2s ease-in-out;
-
-        &.add-button {
-          background-color: mediumslateblue;
-          border: 1px solid blue;
-
-          &:disabled {
-            opacity: 0.5;
-          }
-
-          &:hover:not(:disabled) {
-            border-color: mediumslateblue;
-            background-color: blue;
-          }
-        }
-
-        &.new-button {
-          background-color: orange;
-          border: 1px solid red;
-
-          &:hover {
-            border-color: orange;
-            background-color: red;
-          }
-        }
-
-        &.delete-button {
-          line-height: 1.5em;
-          height: 50px;
-          width: 100%;
-          max-width: 60px;
-          margin: 0 auto;
-          background-color: orange;
-          border: 1px solid red;
-
-          &:hover {
-            border-color: orange;
-            background-color: red;
-          }
-        }
-
-        img {
-          display: block;
-          width: 80%;
-          height: 80%;
-          margin: auto;
-        }
-      }
     }
 
     form {

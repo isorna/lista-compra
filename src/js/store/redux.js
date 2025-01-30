@@ -15,13 +15,32 @@
  * @property {string} type
  * @property {string} [route]
  */
+/**
+ * @typedef {Object} User
+ * @property {string} id
+ * @property {string} name
+ * @property {string} email
+ * @property {string} [password]
+ * @property {string} token
+ * @property {string} role
+ */
+/**
+ * @typedef {Object} ActionTypeUser
+ * @property {string} type
+ * @property {User} [user]
+ */
 const ACTION_TYPES = {
+  // Article
   CREATE_ARTICLE: 'CREATE_ARTICLE',
   READ_LIST: 'READ_LIST',
   UPDATE_ARTICLE: 'UPDATE_ARTICLE',
   DELETE_ARTICLE: 'DELETE_ARTICLE',
   DELETE_ALL_ARTICLES: 'DELETE_ALL_ARTICLES',
+  // Route
   SET_ROUTE: 'SET_ROUTE',
+  // User
+  LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
 }
 
 /**
@@ -29,6 +48,8 @@ const ACTION_TYPES = {
  * @property {Array<Article | UsualProduct>} articles
  * @property {boolean} isLoading
  * @property {boolean} error
+ * @property {string} route
+ * @property {User} user
  */
 /**
  * @type {State}
@@ -38,18 +59,20 @@ export const INITIAL_STATE = {
   isLoading: false,
   error: false,
   route: '/',
+  user: {}
 }
 
 /**
  * Reducer for the app state.
  *
  * @param {State} state - The current state
- * @param {ActionTypeArticle | ActionTypeRoute} action - The action to reduce
+ * @param {ActionTypeArticle | ActionTypeRoute | ActionTypeUser} action - The action to reduce
  * @returns {State} The new state
  */
 const appReducer = (state = INITIAL_STATE, action) => {
   const actionWithArticle = /** @type {ActionTypeArticle} */(action)
   const actionWithRoute = /** @type {ActionTypeRoute} */(action)
+  const actionWithUser = /** @type {ActionTypeUser} */(action)
   switch (action.type) {
     case ACTION_TYPES.CREATE_ARTICLE:
       return {
@@ -86,6 +109,16 @@ const appReducer = (state = INITIAL_STATE, action) => {
         ...state,
         route: actionWithRoute.route
       };
+    case ACTION_TYPES.LOGIN:
+      return {
+        ...state,
+        user: actionWithUser.user
+      };
+    case ACTION_TYPES.LOGOUT:
+      return {
+        ...state,
+        user: {}
+      };
     default:
       return state;
   }
@@ -107,10 +140,16 @@ const appReducer = (state = INITIAL_STATE, action) => {
  * @property {function} get
  */
 /**
+ * @typedef {Object} PublicUser
+ * @property {function} login
+ * @property {function} logout
+ */
+/**
  * @typedef {Object} Store
  * @property {function} getState
  * @property {PublicMethods} article
  * @property {PublicRoute} route
+ * @property {PublicUser} user
  */
 /**
  * Creates the store singleton.
@@ -183,10 +222,25 @@ const createStore = (reducer) => {
    */
   const getRoute = (route) => _dispatch({ type: ACTION_TYPES.SET_ROUTE, route })
 
+  /**
+   * Logs in the user
+   * @param {User} user
+   * @param {function | undefined} [onEventDispatched]
+   * @returns void
+   */
+  const login = (user, onEventDispatched) => _dispatch({ type: ACTION_TYPES.LOGIN, user }, onEventDispatched)
+
+  /**
+   * Logs out the user
+   * @param {function | undefined} [onEventDispatched]
+   * @returns void
+   */
+  const logout = (onEventDispatched) => _dispatch({ type: ACTION_TYPES.LOGOUT }, onEventDispatched)
+
   // Private methods
   /**
    *
-   * @param {ActionTypeArticle | ActionTypeRoute} action
+   * @param {ActionTypeArticle | ActionTypeRoute | ActionTypeUser} action
    * @param {function | undefined} [onEventDispatched]
    */
   const _dispatch = (action, onEventDispatched) => {
@@ -251,10 +305,17 @@ const createStore = (reducer) => {
     set: getRoute
   }
 
+  /** @type {PublicUser} */
+  const user = {
+    login,
+    logout
+  }
+
   return {
     // Actions
     article,
     route,
+    user,
     // Public methods
     getState
   }

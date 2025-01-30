@@ -34,6 +34,7 @@
   <body>
     <header>
       <h1><a href="./">Lista de la compra</a></h1>
+      <button id="logoutButton" class="hidden icon-button logout-button"><img src="./assets/img/power-button.png" alt="Salir" /></button>
     </header>
     <main id="home">
       <h1>Añadir a la lista</h1>
@@ -67,6 +68,11 @@
     </main>
     <main id="login" class="hidden">
       <h1>Login</h1>
+      <form id="loginForm">
+        <label>Usuario: <input type="text" id="email" placeholder="email" /></label>
+        <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
+        <button type="submit" id="loginButton">Login</button>
+      </form>
     </main>
     <main id="diary" class="hidden">
       <h1>Historico</h1>
@@ -80,7 +86,7 @@
     <aside id="menu">
       <nav>
         <ul>
-          <li><a href="login">Login</a></li>
+          <li id="loginLink"><a href="login">Login</a></li>
           <li><a href="diary">Histórico</a></li>
           <li><a href="menus">Menús</a></li>
           <li><a href="stats">Estadísticas</a></li>
