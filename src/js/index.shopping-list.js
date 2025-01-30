@@ -341,6 +341,9 @@ function getDataFromLocalStorage() {
  */
 function handleNavigation(location) {
   const newLocation = location.pathname.replace(/\/src/, '')
+  console.log('route before navigation', store.route.get())
+  store.route.set(newLocation)
+  console.log('route after navigation', store.route.get())
 
   switch (newLocation) {
     case '/':
