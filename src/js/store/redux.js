@@ -258,7 +258,7 @@ const createStore = (reducer) => {
         bubbles: true
     }));
     if (onEventDispatched) {
-      console.log('onEventDispatched', onEventDispatched);
+      // console.log('onEventDispatched', onEventDispatched);
       onEventDispatched();
       // onEventDispatched.call(this, {
       //   type: action.type,

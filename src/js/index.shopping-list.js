@@ -36,6 +36,7 @@ function onDomContentLoaded() {
     console.log('stateChanged', /** @type {CustomEvent} */(event).detail)
   })
 
+  checkLoginStatus()
   readShoppingList()
   getShoppingListTotalAmount()
   getUsualProducts()
@@ -84,21 +85,17 @@ async function onLoginFormSubmit(e){
       return user.email === loginData.email && user.password === loginData.password
     })
 
-    console.log('userData', apiData, userData)
-
     if (!userData) {
       // Show error
       alert('El usuario no existe')
     } else {
-      const loginLink = document.getElementById('loginLink')
-      const logoutButton = document.getElementById('logoutButton')
+      const storeUserData = /** @type {User} */(userData)
+      delete storeUserData.password
       // Login user
-      store.user.login(userData, setLocalStorageFromStore)
+      store.user.login(storeUserData, setLocalStorageFromStore)
       // Redirect to home
+      activateLoggedInUI(true)
       navigateTo('/')
-      // Update UI
-      loginLink?.classList.add('hidden')
-      logoutButton?.classList.remove('hidden')
     }
   }
 }
@@ -108,13 +105,9 @@ async function onLoginFormSubmit(e){
  * @returns void
  */
 function onLogoutClick() {
-  const loginLink = document.getElementById('loginLink')
-  const logoutButton = document.getElementById('logoutButton')
   // Logout user
   store.user.logout(setLocalStorageFromStore)
-  // Update UI
-  loginLink?.classList.remove('hidden')
-  logoutButton?.classList.add('hidden')
+  activateLoggedInUI(false)
   // Redirect to home
   navigateTo('/')
 }
@@ -470,6 +463,39 @@ function navigateTo(pathname) {
   }
   window.history.pushState({}, '', pathname)
   handleNavigation(newLocation)
+}
+
+
+/**
+ * Check user login status
+ */
+function checkLoginStatus() {
+  /** @type {State} */
+  const storedData = getDataFromLocalStorage()
+  if (storedData?.user?.token) {
+    const storeUserData = /** @type {User} */(storedData?.user)
+    delete storeUserData.password
+    store.user.login(storeUserData)
+    activateLoggedInUI(true)
+  }
+}
+
+/**
+ * Updates the UI to show either the login link or the logout button
+ * based on the given isLoggedIn flag
+ * @param {boolean} [isLoggedIn=false]
+ */
+function activateLoggedInUI(isLoggedIn = false) {
+  const loginLink = document.getElementById('loginLink')
+  const logoutButton = document.getElementById('logoutButton')
+  // Update UI
+  if (isLoggedIn) {
+    loginLink?.classList.add('hidden')
+    logoutButton?.classList.remove('hidden')
+  } else {
+    logoutButton?.classList.add('hidden')
+    loginLink?.classList.remove('hidden')
+  }
 }
 
 /**
