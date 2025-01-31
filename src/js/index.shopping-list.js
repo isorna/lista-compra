@@ -92,7 +92,8 @@ async function onLoginFormSubmit(e){
       const storeUserData = /** @type {User} */(userData)
       delete storeUserData.password
       // Login user
-      store.user.login(storeUserData, setLocalStorageFromStore)
+      // store.user.login(storeUserData, setLocalStorageFromStore)
+      store.user.login(storeUserData, setSessionStorageFromStore)
       // Redirect to home
       activateLoggedInUI(true)
       navigateTo('/')
@@ -106,7 +107,8 @@ async function onLoginFormSubmit(e){
  */
 function onLogoutClick() {
   // Logout user
-  store.user.logout(setLocalStorageFromStore)
+  // store.user.logout(setLocalStorageFromStore)
+  store.user.logout(setSessionStorageFromStore)
   activateLoggedInUI(false)
   // Redirect to home
   navigateTo('/')
@@ -382,17 +384,43 @@ function updateLocalStorage(storeValue) {
 }
 
 /**
+ * Saves shopping list on sessionStorage
+ * @param {State} storeValue
+ */
+function updateSessionStorage(storeValue) {
+  sessionStorage.setItem('shoppingList', JSON.stringify(storeValue))
+}
+
+/**
  * Saves the current state of the store in local storage.
+ * Removes the user's data from the store before saving.
  */
 function setLocalStorageFromStore() {
-  updateLocalStorage(store.getState())
+  // Remove user data from store before saving
+  const storeState = store.getState()
+  delete storeState.user
+  updateLocalStorage(storeState)
+}
+
+/**
+ * Saves the current state of the store in session storage.
+ * Removes all data except the user data from the store before saving.
+ */
+function setSessionStorageFromStore() {
+  // Remove unused data from store before saving
+  const storeState = store.getState()
+  delete storeState.articles
+  delete storeState.error
+  delete storeState.isLoading
+  delete storeState.route
+  updateSessionStorage(storeState)
 }
 
 /**
  * Retrieves the shopping list data from local storage.
  *
- * @returns {Array<Article | UsualProduct>} An array of shopping list items.
- * If no data is found, returns an empty array.
+ * @returns {State} Saved state.
+ * If no data is found, returns an empty State object.
  */
 
 function getDataFromLocalStorage() {
@@ -401,14 +429,24 @@ function getDataFromLocalStorage() {
 }
 
 /**
+ * Retrieves the shopping list data from session storage.
+ *
+ * @returns {State} Saved state.
+ * If no data is found, returns an empty State object.
+ */
+
+function getDataFromSessionStorage() {
+  const defaultValue = JSON.stringify(INITIAL_STATE)
+  return JSON.parse(sessionStorage.getItem('shoppingList') || defaultValue)
+}
+
+/**
  * Handles navigation changes
  * @param {Location} location - The new location
  */
 function handleNavigation(location) {
   const newLocation = location.pathname.replace(/\/src/, '')
-  // console.log('route before navigation', store.route.get())
   store.route.set(newLocation)
-  // console.log('route after navigation', store.route.get())
 
   switch (newLocation) {
     case '/':
@@ -471,7 +509,7 @@ function navigateTo(pathname) {
  */
 function checkLoginStatus() {
   /** @type {State} */
-  const storedData = getDataFromLocalStorage()
+  const storedData = getDataFromSessionStorage()
   if (storedData?.user?.token) {
     const storeUserData = /** @type {User} */(storedData?.user)
     delete storeUserData.password
