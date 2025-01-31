@@ -4,6 +4,7 @@ import { simpleFetch } from '../js/lib/simpleFetch.js'
 import { HttpError } from './classes/HttpError.js'
 import { INITIAL_STATE, store } from './store/redux.js'
 import { installRouter } from './lib/router.js'
+// import { icons } from './lib/icons.js'
 
 /** @import {State, User} from './store/redux.js' */
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
@@ -35,6 +36,14 @@ function onDomContentLoaded() {
   window.addEventListener('stateChanged', (event) => {
     console.log('stateChanged', /** @type {CustomEvent} */(event).detail)
   })
+
+  // This is just a test
+  // for (let icon in icons) {
+  //   let iconElement = document.createElement('div')
+  //   // @ts-expect-error testing
+  //   iconElement.innerHTML = icons[icon]
+  //   document.getElementById('menu')?.appendChild(iconElement)
+  // }
 
   checkLoginStatus()
   readShoppingList()
@@ -358,7 +367,7 @@ async function getAPIData(apiURL = 'api/get.articles.json') {
     }
   }
 
-  console.log('apiData: ' + apiURL, apiData)
+  // console.log('apiData: ' + apiURL, apiData)
 
   return apiData
 }
