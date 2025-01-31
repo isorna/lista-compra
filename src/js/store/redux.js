@@ -105,7 +105,6 @@ const appReducer = (state = INITIAL_STATE, action) => {
         articles: []
       };
     case ACTION_TYPES.SET_ROUTE:
-      console.log('actionWithRoute.route', actionWithRoute.route)
       return {
         ...state,
         route: actionWithRoute.route
