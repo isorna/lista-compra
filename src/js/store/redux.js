@@ -105,6 +105,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
         articles: []
       };
     case ACTION_TYPES.SET_ROUTE:
+      console.log('actionWithRoute.route', actionWithRoute.route)
       return {
         ...state,
         route: actionWithRoute.route
@@ -136,8 +137,8 @@ const appReducer = (state = INITIAL_STATE, action) => {
  */
 /**
  * @typedef {Object} PublicRoute
- * @property {function} set
  * @property {function} get
+ * @property {function} set
  */
 /**
  * @typedef {Object} PublicUser
@@ -216,11 +217,12 @@ const createStore = (reducer) => {
   const getAllArticles = () => { return currentState.articles };
 
   /**
-   * Gets current route
+   * Sets current route
    * @param {string} route
+   * @param {function | undefined} onEventDispatched
    * @returns string
    */
-  const getRoute = (route) => _dispatch({ type: ACTION_TYPES.SET_ROUTE, route })
+  const setRoute = (route, onEventDispatched) => _dispatch({ type: ACTION_TYPES.SET_ROUTE, route }, onEventDispatched)
 
   /**
    * Logs in the user
@@ -302,7 +304,7 @@ const createStore = (reducer) => {
   /** @type {PublicRoute} */
   const route = {
     get: () => currentState.route,
-    set: getRoute
+    set: setRoute
   }
 
   /** @type {PublicUser} */

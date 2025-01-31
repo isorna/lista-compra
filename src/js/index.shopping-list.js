@@ -446,7 +446,7 @@ function getDataFromSessionStorage() {
  */
 function handleNavigation(location) {
   const newLocation = location.pathname.replace(/\/src/, '')
-  store.route.set(newLocation)
+  store.route.set(newLocation, setLocalStorageFromStore)
 
   switch (newLocation) {
     case '/':

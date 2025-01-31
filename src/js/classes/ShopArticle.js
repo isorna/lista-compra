@@ -56,7 +56,6 @@ export class ArticleFactory {
     switch (type) {
       case ARTICLE_TYPES.USUAL:
         return new UsualProduct(articleData)
-        break
       case ARTICLE_TYPES.BASIC:
       default:
         return new Article(articleData)
