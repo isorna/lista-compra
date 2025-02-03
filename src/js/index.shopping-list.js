@@ -86,7 +86,8 @@ async function onLoginFormSubmit(e){
   e.preventDefault()
 
   if (loginData.email !== '' && loginData.password !== '') {
-    const apiData = await getAPIData('api/get.users.json')
+    // const apiData = await getAPIData('api/get.users.json')
+    const apiData = await getAPIData(`http://${location.hostname}:1337/get.users.json`)
     // const apiData = await getAPIData('http://127.0.0.1:1337')
 
     let userData = apiData.find((itemData) => {
@@ -329,7 +330,8 @@ function resetFocus(){
  */
 async function getUsualProducts() {
   const dataListElement = document.getElementById('productos')
-  const apiData = await getAPIData(`http://${location.hostname}:1337`)
+  // const apiData = await getAPIData(`http://${location.hostname}:1337`)
+  const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json`)
 
   apiData.forEach((itemData) => {
     const product = /** @type {UsualProduct} */(itemData)
