@@ -41,6 +41,7 @@ http.createServer(function server_onRequest (request, response) {
     console.log(`Request for ${pathname} received.`);
     // console.log(request.headers);
 
+    // Set Up CORS
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Content-Type', 'application/json');
     response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
