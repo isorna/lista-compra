@@ -86,9 +86,7 @@ async function onLoginFormSubmit(e){
   e.preventDefault()
 
   if (loginData.email !== '' && loginData.password !== '') {
-    // const apiData = await getAPIData('api/get.users.json')
     const apiData = await getAPIData(`http://${location.hostname}:1337/get.users.json`)
-    // const apiData = await getAPIData('http://127.0.0.1:1337')
 
     let userData = apiData.find((itemData) => {
       const user = /** @type {User} */(itemData)
@@ -103,7 +101,6 @@ async function onLoginFormSubmit(e){
       const storeUserData = /** @type {User} */(userData)
       delete storeUserData.password
       // Login user
-      // store.user.login(storeUserData, setLocalStorageFromStore)
       store.user.login(storeUserData, setSessionStorageFromStore)
       // Redirect to home
       activateLoggedInUI(true)
