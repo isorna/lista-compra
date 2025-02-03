@@ -328,7 +328,7 @@ function resetFocus(){
 async function getUsualProducts() {
   const dataListElement = document.getElementById('productos')
   // const apiData = await getAPIData(`http://${location.hostname}:1337`)
-  const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json`)
+  const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json?search=prueba`)
 
   apiData.forEach((itemData) => {
     const product = /** @type {UsualProduct} */(itemData)
