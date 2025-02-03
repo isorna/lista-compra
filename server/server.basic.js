@@ -1,4 +1,4 @@
-// /server/server.js
+// /server/server.basic.js
 import * as http from 'node:http';
 import * as url from 'node:url';
 
