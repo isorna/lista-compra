@@ -87,6 +87,7 @@ async function onLoginFormSubmit(e){
 
   if (loginData.email !== '' && loginData.password !== '') {
     const apiData = await getAPIData('api/get.users.json')
+    // const apiData = await getAPIData('http://127.0.0.1:1337')
 
     let userData = apiData.find((itemData) => {
       const user = /** @type {User} */(itemData)
@@ -328,7 +329,7 @@ function resetFocus(){
  */
 async function getUsualProducts() {
   const dataListElement = document.getElementById('productos')
-  const apiData = await getAPIData()
+  const apiData = await getAPIData('http://127.0.0.1:1337')
 
   apiData.forEach((itemData) => {
     const product = /** @type {UsualProduct} */(itemData)
@@ -352,6 +353,11 @@ async function getAPIData(apiURL = 'api/get.articles.json') {
     apiData = await simpleFetch(apiURL, {
       // Si la petición tarda demasiado, la abortamos
       signal: AbortSignal.timeout(3000),
+      headers: {
+        'Content-Type': 'application/json',
+        // Add cross-origin header
+        'Access-Control-Allow-Origin': '*',
+      },
     });
   } catch (/** @type {any | HttpError} */err) {
     if (err.name === 'AbortError') {
