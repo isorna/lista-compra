@@ -2,7 +2,6 @@ import fs from 'fs';
 import { read } from './read.js';
 
 export function create(file, data, callback) {
-  console.log('create', file, data)
   if (!fs.existsSync(file)) {
     fs.appendFile(file, '[]', function (err) {
       if (err) {
@@ -19,8 +18,7 @@ async function insertData(file, data, callback) {
   let parsedData = []
   await read(file, (readData) => {
     parsedData = [...readData];
-    console.log('insertData parsedData', parsedData);
-    parsedData.push(data);
+    parsedData.push(Object.fromEntries(data));
 
     fs.writeFile(file, JSON.stringify(parsedData), function (err) {
       if (err) {
