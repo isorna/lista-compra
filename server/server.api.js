@@ -1,7 +1,5 @@
-// server.statics.js
-// import * as fs from "node:fs";
+// server.api.js
 import * as http from "node:http";
-// import * as path from "node:path";
 import { crud } from "./server.crud.js";
 
 const MIME_TYPES = {
@@ -25,9 +23,6 @@ http
     const url = new URL(`http://${request.headers.host}${request.url}`);
     const statusCode = 200
     let responseData = []
-    console.log(`${request.method} ${request.url} ${statusCode}`);
-    // Determine if the request is creating a new user
-
     console.log(url.pathname, url.searchParams);
     // Set Up CORS
     response.setHeader('Access-Control-Allow-Origin', '*');
@@ -44,7 +39,6 @@ http
           responseData = data
 
           response.write(JSON.stringify(responseData));
-          response.end();
         });
         break;
       case '/read/articles':
@@ -53,7 +47,6 @@ http
           responseData = data
 
           response.write(JSON.stringify(responseData));
-          response.end();
         });
         break;
       case '/filter/articles':
@@ -62,18 +55,15 @@ http
           responseData = data
 
           response.write(JSON.stringify(responseData));
-          response.end();
         })
         break;
       default:
         console.log('no se encontro el endpoint');
 
         response.write(JSON.stringify('no se encontro el endpoint'));
-        response.end();
         break;
     }
-
-
+    response.end();
   })
   .listen(process.env.API_PORT, process.env.IP);
 
