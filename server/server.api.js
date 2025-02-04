@@ -39,6 +39,7 @@ http
           responseData = data
 
           response.write(JSON.stringify(responseData));
+          response.end();
         });
         break;
       case '/read/articles':
@@ -47,6 +48,7 @@ http
           responseData = data
 
           response.write(JSON.stringify(responseData));
+          response.end();
         });
         break;
       case '/filter/articles':
@@ -55,15 +57,16 @@ http
           responseData = data
 
           response.write(JSON.stringify(responseData));
+          response.end();
         })
         break;
       default:
         console.log('no se encontro el endpoint');
 
         response.write(JSON.stringify('no se encontro el endpoint'));
+        response.end();
         break;
     }
-    response.end();
   })
   .listen(process.env.API_PORT, process.env.IP);
 
