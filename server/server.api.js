@@ -44,7 +44,7 @@ http
     switch (url.pathname) {
       case '/create/articles':
         crud.create(ARTICLES_URL, urlParams, (data) => {
-          console.log(`server ${data.name} creado`, data)
+          console.log(`server create article ${data.name} creado`, data)
           responseData = data
 
           response.write(JSON.stringify(responseData));
