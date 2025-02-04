@@ -173,6 +173,7 @@ function createShoppingListItem() {
     qty: getInputValue(qtyElement),
     price: getInputValue(priceElement)
   }
+  // Send fetch to API, create new article
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
   store.article.create(newArticle, setLocalStorageFromStore)
 
