@@ -175,7 +175,7 @@ async function createShoppingListItem() {
   }
   // Send fetch to API, create new article
   const searchParams = new URLSearchParams(articleData).toString()
-  const apiData = await getAPIData(`http://${location.hostname}:1337/api/articles?${searchParams}`)
+  const apiData = await getAPIData(`http://${location.hostname}:1337/create/articles?${searchParams}`)
   // const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
   // TODO: fix this "any" type assignment
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: /** @type {any} */(apiData) })
@@ -332,7 +332,8 @@ function resetFocus(){
  */
 async function getUsualProducts() {
   const dataListElement = document.getElementById('productos')
-  const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json`)
+  // const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json`)
+  const apiData = await getAPIData(`http://${location.hostname}:1337/read/articles`)
 
   apiData.forEach((itemData) => {
     const product = /** @type {UsualProduct} */(itemData)
