@@ -23,7 +23,7 @@ http
     const url = new URL(`http://${request.headers.host}${request.url}`);
     const statusCode = 200
     let responseData = []
-    console.log(url.pathname, url.searchParams);
+    console.log(request.method, url.pathname, url.searchParams);
     // Set Up CORS
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Content-Type', MIME_TYPES.json);
@@ -32,6 +32,13 @@ http
     response.setHeader('Access-Control-Max-Age', 2592000); // 30 days
     response.writeHead(statusCode);
 
+    // Return on OPTIONS request
+    // More info: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS
+    if (request.method === 'OPTIONS') {
+      response.end();
+      return;
+    }
+    // Continue on GET request
     switch (url.pathname) {
       case '/create/articles':
         crud.create(ARTICLES_URL, url.searchParams, (data) => {
