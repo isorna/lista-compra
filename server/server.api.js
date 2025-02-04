@@ -21,9 +21,10 @@ const ARTICLES_URL = './server/BBDD/articles.json'
 http
   .createServer(async (request, response) => {
     const url = new URL(`http://${request.headers.host}${request.url}`);
+    const urlParams = Object.fromEntries(url.searchParams);
     const statusCode = 200
     let responseData = []
-    console.log(request.method, url.pathname, url.searchParams);
+    console.log(request.method, url.pathname, urlParams);
     // Set Up CORS
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Content-Type', MIME_TYPES.json);
@@ -39,9 +40,10 @@ http
       return;
     }
     // Continue on GET request
+    // TODO: use POST/PUT/DELETE methods when needed
     switch (url.pathname) {
       case '/create/articles':
-        crud.create(ARTICLES_URL, url.searchParams, (data) => {
+        crud.create(ARTICLES_URL, urlParams, (data) => {
           console.log(`server ${data.name} creado`, data)
           responseData = data
 
@@ -59,7 +61,7 @@ http
         });
         break;
       case '/filter/articles':
-        crud.filter(ARTICLES_URL, url.searchParams, (data) => {
+        crud.filter(ARTICLES_URL, urlParams, (data) => {
           console.log('server filter articles', data)
           responseData = data
 

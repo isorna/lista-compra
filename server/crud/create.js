@@ -18,7 +18,7 @@ async function insertData(file, data, callback) {
   let parsedData = []
   await read(file, (readData) => {
     parsedData = [...readData];
-    parsedData.push(Object.fromEntries(data));
+    parsedData.push(data);
 
     fs.writeFile(file, JSON.stringify(parsedData), function (err) {
       if (err) {

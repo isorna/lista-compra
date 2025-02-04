@@ -48,7 +48,7 @@ function onDomContentLoaded() {
   checkLoginStatus()
   readShoppingList()
   getShoppingListTotalAmount()
-  getUsualProducts()
+  // getUsualProducts()
 }
 
 function onArticleNameKeyUp() {
@@ -330,18 +330,18 @@ function resetFocus(){
 /**
  * Get usual products and put them on datalist
  */
-async function getUsualProducts() {
-  const dataListElement = document.getElementById('productos')
-  // const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json`)
-  const apiData = await getAPIData(`http://${location.hostname}:1337/read/articles`)
+// async function getUsualProducts() {
+//   const dataListElement = document.getElementById('productos')
+//   // const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json`)
+//   const apiData = await getAPIData(`http://${location.hostname}:1337/read/articles`)
 
-  apiData.forEach((itemData) => {
-    const product = /** @type {UsualProduct} */(itemData)
-    const newOptionElement = document.createElement('option')
-    newOptionElement.value = product.name
-    dataListElement?.appendChild(newOptionElement)
-  })
-}
+//   apiData.forEach((itemData) => {
+//     const product = /** @type {UsualProduct} */(itemData)
+//     const newOptionElement = document.createElement('option')
+//     newOptionElement.value = product.name
+//     dataListElement?.appendChild(newOptionElement)
+//   })
+// }
 
 /**
  * Get data from API
@@ -380,8 +380,13 @@ async function getAPIData(apiURL = 'api/get.articles.json') {
 /**
  * Get saved sopphing list data
  */
-function readShoppingList() {
+async function readShoppingList() {
   /** @type {State} */
+  const apiData = await getAPIData(`http://${location.hostname}:1337/read/articles`)
+  const storeData = {
+    articles: apiData
+  }
+  updateLocalStorage(storeData)
   const storedData = getDataFromLocalStorage()
   storedData?.articles.forEach((/** @type {Article | UsualProduct} */ savedArticle) => {
     store.article.create(savedArticle)
