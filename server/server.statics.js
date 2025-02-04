@@ -2,7 +2,6 @@
 import * as fs from "node:fs";
 import * as http from "node:http";
 import * as path from "node:path";
-import { crud } from "./server.crud.js";
 
 const MIME_TYPES = {
   default: "application/octet-stream",
@@ -17,7 +16,7 @@ const MIME_TYPES = {
   svg: "image/svg+xml",
 };
 
-const STATIC_PATH = path.join(process.cwd(), "./src/api");
+const STATIC_PATH = path.join(process.cwd(), "./src");
 
 const toBool = [() => true, () => false];
 
@@ -40,10 +39,8 @@ http
     const file = await prepareFile(url.pathname);
     const statusCode = file.found ? 200 : 404;
     const mimeType = MIME_TYPES[file.ext] || MIME_TYPES.default;
-    console.log(`${request.method} ${request.url} ${statusCode}`);
-    // Determine if the request is creating a new user
 
-    console.log(url.searchParams, crud);
+    console.log(url.pathname);
 
     // Set Up CORS
     response.setHeader('Access-Control-Allow-Origin', '*');

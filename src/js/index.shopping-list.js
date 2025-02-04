@@ -163,7 +163,7 @@ function cleanUpForm() {
 /**
  * Create new shopping list item
  */
-function createShoppingListItem() {
+async function createShoppingListItem() {
   const articleNameElement = document.getElementById('articleName')
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
@@ -174,7 +174,11 @@ function createShoppingListItem() {
     price: getInputValue(priceElement)
   }
   // Send fetch to API, create new article
-  const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
+  const searchParams = new URLSearchParams(articleData).toString()
+  const apiData = await getAPIData(`http://${location.hostname}:1337/api/articles?${searchParams}`)
+  // const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
+  // TODO: fix this "any" type assignment
+  const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: /** @type {any} */(apiData) })
   store.article.create(newArticle, setLocalStorageFromStore)
 
   // Update html
@@ -328,8 +332,7 @@ function resetFocus(){
  */
 async function getUsualProducts() {
   const dataListElement = document.getElementById('productos')
-  // const apiData = await getAPIData(`http://${location.hostname}:1337`)
-  const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json?search=prueba`)
+  const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json`)
 
   apiData.forEach((itemData) => {
     const product = /** @type {UsualProduct} */(itemData)
@@ -344,12 +347,9 @@ async function getUsualProducts() {
  * @returns {Promise<Array<UsualProduct | User>>}
  */
 async function getAPIData(apiURL = 'api/get.articles.json') {
-  // API endpoint
-  // const API_USUAL_PRODUCTS_URL = 'api/get.articles.json'
   let apiData
 
   try {
-    // apiData = await simpleFetch(API_USUAL_PRODUCTS_URL, {
     apiData = await simpleFetch(apiURL, {
       // Si la petición tarda demasiado, la abortamos
       signal: AbortSignal.timeout(3000),
@@ -372,8 +372,6 @@ async function getAPIData(apiURL = 'api/get.articles.json') {
       }
     }
   }
-
-  // console.log('apiData: ' + apiURL, apiData)
 
   return apiData
 }
