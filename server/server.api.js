@@ -16,7 +16,7 @@ const MIME_TYPES = {
   svg: "image/svg+xml",
 };
 
-// const USERS_URL = './server/BBDD/users.json'
+const USERS_URL = './server/BBDD/users.json'
 const ARTICLES_URL = './server/BBDD/articles.json'
 
 /**
@@ -60,6 +60,7 @@ http
     // Continue on GET request
     // TODO: use POST/PUT/DELETE methods when needed
     switch (action.name) {
+      // 1. Shopping list Articles
       case '/create/articles':
         request.on('data', (chunk) => {
           chunks.push(chunk)
@@ -118,6 +119,16 @@ http
           response.write(JSON.stringify(responseData));
           response.end();
         })
+        break;
+      // 2. Users
+      case '/read/users':
+        crud.read(USERS_URL, (data) => {
+          console.log('server read users', data)
+          responseData = data
+
+          response.write(JSON.stringify(responseData));
+          response.end();
+        });
         break;
       default:
         console.log('no se encontro el endpoint');
