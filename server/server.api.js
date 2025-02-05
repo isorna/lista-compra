@@ -1,5 +1,7 @@
 // server.api.js
 import * as http from "node:http";
+import * as qs from "node:querystring";
+// import * as concat from "concat-stream";
 import { crud } from "./server.crud.js";
 
 const MIME_TYPES = {
@@ -24,6 +26,7 @@ http
     const urlParams = Object.fromEntries(url.searchParams);
     const statusCode = 200
     let responseData = []
+    let chunks = []
     console.log(request.method, url.pathname, urlParams);
     // Set Up CORS
     response.setHeader('Access-Control-Allow-Origin', '*');
@@ -43,13 +46,21 @@ http
     // TODO: use POST/PUT/DELETE methods when needed
     switch (url.pathname) {
       case '/create/articles':
-        crud.create(ARTICLES_URL, urlParams, (data) => {
-          console.log(`server create article ${data.name} creado`, data)
-          responseData = data
+        request.on('data', (chunk) => {
+          chunks.push(chunk)
+        })
+        request.on('end', () => {
+          let body = Buffer.concat(chunks)
+          let parsedData = qs.parse(body.toString())
+          console.log('create article - body', parsedData)
+          crud.create(ARTICLES_URL, parsedData, (data) => {
+            console.log(`server create article ${data.name} creado`, data)
+            responseData = data
 
-          response.write(JSON.stringify(responseData));
-          response.end();
-        });
+            response.write(JSON.stringify(responseData));
+            response.end();
+          });
+        })
         break;
       case '/read/articles':
         crud.read(ARTICLES_URL, (data) => {

@@ -174,9 +174,9 @@ async function createShoppingListItem() {
     price: getInputValue(priceElement)
   }
   // Send fetch to API, create new article
-  const searchParams = new URLSearchParams(articleData).toString()
-  const apiData = await getAPIData(`http://${location.hostname}:1337/create/articles?${searchParams}`)
-  // const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: articleData })
+  // const searchParams = new URLSearchParams(articleData).toString()
+  // const apiData = await getAPIData(`http://${location.hostname}:1337/create/articles?${searchParams}`)
+  const apiData = await getAPIData(`http://${location.hostname}:1337/create/articles`, 'POST', articleData)
   // TODO: fix this "any" type assignment
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: /** @type {any} */(apiData) })
   store.article.create(newArticle, setLocalStorageFromStore)
@@ -345,20 +345,30 @@ function resetFocus(){
 
 /**
  * Get data from API
+ * @param {string} apiURL
+ * @param {string} method
+ * @param {Object} [data]
  * @returns {Promise<Array<UsualProduct | User>>}
  */
-async function getAPIData(apiURL = 'api/get.articles.json') {
+async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data) {
   let apiData
 
+  console.log('getAPIData', method, data)
   try {
+    let headers = new Headers()
+
+    headers.append('Content-Type', data ? 'application/json' : 'application/x-www-form-urlencoded')
+    headers.append('Access-Control-Allow-Origin', '*')
+    if (data) {
+      headers.append('Content-Length', String(JSON.stringify(data).length))
+    }
     apiData = await simpleFetch(apiURL, {
       // Si la petición tarda demasiado, la abortamos
       signal: AbortSignal.timeout(3000),
-      headers: {
-        'Content-Type': 'application/json',
-        // Add cross-origin header
-        'Access-Control-Allow-Origin': '*',
-      },
+      method: method,
+      // @ts-expect-error TODO
+      body: data ? new URLSearchParams(data) : undefined,
+      headers: headers
     });
   } catch (/** @type {any | HttpError} */err) {
     if (err.name === 'AbortError') {
