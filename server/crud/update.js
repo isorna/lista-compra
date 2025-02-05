@@ -1,6 +1,7 @@
 import fs from 'fs';
 
 export async function update(file, id, modifiedData, callback) {
+  let updatedItem
   try {
     if (fs.existsSync(file)) {
       await fs.readFile(file, function (err, data) {
@@ -10,10 +11,12 @@ export async function update(file, id, modifiedData, callback) {
           if (item.id !== id) {
             return item
           } else {
-            return {
+            updatedItem = {
               ...item,
               ...modifiedData
             }
+            // TODO return only updated data
+            return updatedItem
           }
         });
 
@@ -23,7 +26,7 @@ export async function update(file, id, modifiedData, callback) {
             return;
           }
           if (callback) {
-            callback(updatedData);
+            callback(updatedItem);
           }
         })
         // Return updated data
@@ -32,7 +35,7 @@ export async function update(file, id, modifiedData, callback) {
           return;
         }
         if (callback && !err) {
-          callback(updatedData);
+          callback(updatedItem);
           return;
         }
       });
