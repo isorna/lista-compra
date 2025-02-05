@@ -66,9 +66,7 @@ http
         })
         request.on('end', () => {
           let body = Buffer.concat(chunks)
-          // console.log('create article - body BUFFER', body)
           let parsedData = qs.parse(body.toString())
-          // console.log('create article - body', parsedData)
           crud.create(ARTICLES_URL, parsedData, (data) => {
             console.log(`server create article ${data.name} creado`, data)
             responseData = data
@@ -79,15 +77,12 @@ http
         })
         break;
       case '/update/articles':
-        // console.log('UPDATE', action.id)
         request.on('data', (chunk) => {
           chunks.push(chunk)
         })
         request.on('end', () => {
           let body = Buffer.concat(chunks)
-          // console.log('update article - body BUFFER', body)
           let parsedData = qs.parse(body.toString())
-          // console.log('update article - body', parsedData)
           crud.update(ARTICLES_URL, action.id, parsedData, (data) => {
             console.log(`server update article ${action.id} modificado`, data)
             responseData = data
