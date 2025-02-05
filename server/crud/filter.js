@@ -18,7 +18,7 @@ export async function filter(file, filterParams, callback) {
         }
         // Return filtered data
         if (err) {
-          console.log('read', err);
+          console.log('filter', err);
           return;
         }
         if (callback && !err) {
@@ -27,12 +27,12 @@ export async function filter(file, filterParams, callback) {
         }
       });
     } else {
-      console.log('read', 'El fichero no existe');
+      console.log('filter', 'El fichero no existe');
       if (callback) {
         callback('El fichero no existe');
       }
     }
   } catch (err) {
-    console.log('read', `Error: ${err}`);
+    console.log('filter', `Error: ${err}`);
   }
 }
