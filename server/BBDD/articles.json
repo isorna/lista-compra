@@ -1,1 +1,1 @@
-[{"name":"platanos","qty":"20","price":"2","id":"1738756266188"},{"name":"fruta","qty":"2","price":"13","id":"1738756267107"},{"name":"fruta","qty":"2","price":"13","id":"1738756267963"},{"name":"fresas","qty":"2","price":"13","id":"1738757292095"}]
+[{"name":"platanos","qty":"20","price":"2","id":"1738756266188","bought":"false"},{"name":"fruta","qty":"2","price":"13","id":"1738756267107","bought":"true"},{"name":"fruta","qty":"2","price":"13","id":"1738756267963"},{"name":"fresas","qty":"2","price":"13","id":"1738757292095"}]

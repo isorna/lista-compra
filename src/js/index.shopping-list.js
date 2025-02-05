@@ -253,7 +253,7 @@ function addNewRowToShoppingListTable(newArticleObject){
  * @param {string} itemId
  * @param {HTMLElement} rowToUpdate
  */
-function buyArticle(e, itemId, rowToUpdate) {
+async function buyArticle(e, itemId, rowToUpdate) {
   // Find item inside shoppingList
   const itemToUpdate = store.article.getById(itemId)
   // Update html
@@ -264,6 +264,13 @@ function buyArticle(e, itemId, rowToUpdate) {
   }
   // Modify Article data
   itemToUpdate.bought = !itemToUpdate.bought
+
+  const updatedData = {
+    bought: itemToUpdate.bought
+  }
+  // Send fetch to API, update article
+  const apiData = await getAPIData(`http://${location.hostname}:1337/update/articles/${itemToUpdate.id}`, 'PUT', updatedData)
+  console.log('after update on API', apiData)
   store.article.update(itemToUpdate, setLocalStorageFromStore)
 }
 

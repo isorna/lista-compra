@@ -46,7 +46,7 @@ http
     // Set Up CORS
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Content-Type', MIME_TYPES.json);
-    response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+    response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, DELETE, POST');
     response.setHeader("Access-Control-Allow-Headers", "*");
     response.setHeader('Access-Control-Max-Age', 2592000); // 30 days
     response.writeHead(statusCode);
