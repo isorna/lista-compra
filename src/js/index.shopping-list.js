@@ -364,7 +364,7 @@ async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data
   try {
     let headers = new Headers()
 
-    headers.append('Content-Type', data ? 'application/json' : 'application/x-www-form-urlencoded')
+    headers.append('Content-Type', !data ? 'application/json' : 'application/x-www-form-urlencoded')
     headers.append('Access-Control-Allow-Origin', '*')
     if (data) {
       headers.append('Content-Length', String(JSON.stringify(data).length))

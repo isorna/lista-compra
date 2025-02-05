@@ -2,6 +2,7 @@
 
 /**
  * @typedef {Object} ArticleParams
+ * @property {string} id
  * @property {string} name
  * @property {string} qty
  * @property {string} price
@@ -15,9 +16,10 @@ export class Article {
   /**
    * @param {ArticleParams} param0
    *  */
-  constructor({ name, qty, price }){
-    const timestamp = new Date()
-    this.id = name + '_' + String(timestamp.getTime())
+  constructor({ id, name, qty, price }){
+    // const timestamp = new Date()
+    // this.id = name + '_' + String(timestamp.getTime())
+    this.id = id
     this.name = name
     this.qty = Number(qty)
     this.price = Number(price)
@@ -34,8 +36,8 @@ export class UsualProduct extends Article {
   /**
    * @constructor
    * @param {ArticleParams} param0  */
-  constructor({ name, qty, price }) {
-    super({ name, qty, price })
+  constructor({ id, name, qty, price }) {
+    super({ id, name, qty, price })
     this.bought = false
   }
 }
