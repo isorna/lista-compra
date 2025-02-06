@@ -69,7 +69,7 @@ http
           let body = Buffer.concat(chunks)
           let parsedData = qs.parse(body.toString())
           crud.create(ARTICLES_URL, parsedData, (data) => {
-            console.log(`server create article ${data.name} creado`, data)
+            // console.log(`server create article ${data.name} creado`, data)
             responseData = data
 
             response.write(JSON.stringify(responseData));
@@ -85,7 +85,7 @@ http
           let body = Buffer.concat(chunks)
           let parsedData = qs.parse(body.toString())
           crud.update(ARTICLES_URL, action.id, parsedData, (data) => {
-            console.log(`server update article ${action.id} modificado`, data)
+            // console.log(`server update article ${action.id} modificado`, data)
             responseData = data
 
             response.write(JSON.stringify(responseData));
@@ -95,7 +95,7 @@ http
         break;
       case '/delete/articles':
         crud.delete(ARTICLES_URL, action.id, (data) => {
-          console.log('server delete article', action.id, data)
+          // console.log('server delete article', action.id, data)
           responseData = data
 
           response.write(JSON.stringify(responseData));
@@ -104,7 +104,7 @@ http
         break;
       case '/read/articles':
         crud.read(ARTICLES_URL, (data) => {
-          console.log('server read articles', data)
+          // console.log('server read articles', data)
           responseData = data
 
           response.write(JSON.stringify(responseData));
@@ -113,7 +113,7 @@ http
         break;
       case '/filter/articles':
         crud.filter(ARTICLES_URL, urlParams, (data) => {
-          console.log('server filter articles', data)
+          // console.log('server filter articles', data)
           responseData = data
 
           response.write(JSON.stringify(responseData));
@@ -123,7 +123,7 @@ http
       // 2. Users
       case '/read/users':
         crud.read(USERS_URL, (data) => {
-          console.log('server read users', data)
+          // console.log('server read users', data)
           responseData = data
 
           response.write(JSON.stringify(responseData));

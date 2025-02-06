@@ -174,8 +174,6 @@ async function createShoppingListItem() {
     price: getInputValue(priceElement)
   }
   // Send fetch to API, create new article
-  // const searchParams = new URLSearchParams(articleData).toString()
-  // const apiData = await getAPIData(`http://${location.hostname}:1337/create/articles?${searchParams}`)
   const apiData = await getAPIData(`http://${location.hostname}:1337/create/articles`, 'POST', articleData)
   // TODO: fix this "any" type assignment
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: /** @type {any} */(apiData) })
@@ -269,8 +267,8 @@ async function buyArticle(e, itemId, rowToUpdate) {
     bought: itemToUpdate.bought
   }
   // Send fetch to API, update article
-  const apiData = await getAPIData(`http://${location.hostname}:1337/update/articles/${itemToUpdate.id}`, 'PUT', updatedData)
-  console.log('after update on API', apiData)
+  await getAPIData(`http://${location.hostname}:1337/update/articles/${itemToUpdate.id}`, 'PUT', updatedData)
+  // console.log('after update on API', apiData)
   store.article.update(itemToUpdate, setLocalStorageFromStore)
 }
 
@@ -360,7 +358,7 @@ function resetFocus(){
 async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data) {
   let apiData
 
-  console.log('getAPIData', method, data)
+  // console.log('getAPIData', method, data)
   try {
     let headers = new Headers()
 
