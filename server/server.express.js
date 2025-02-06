@@ -36,8 +36,8 @@ app.put('/update/articles/:id', (req, res) => {
     res.json(data)
   });
 })
-app.delete('/delete/articles/:id', async (req, res) => {
-  await crud.delete(ARTICLES_URL, req.params.id, (data) => {
+app.delete('/delete/articles/:id', (req, res) => {
+  crud.delete(ARTICLES_URL, req.params.id, (data) => {
     res.json(data)
   });
 })

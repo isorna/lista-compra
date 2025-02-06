@@ -174,8 +174,9 @@ async function createShoppingListItem() {
     qty: getInputValue(qtyElement),
     price: getInputValue(priceElement)
   }
+  const payload = JSON.stringify(articleData)
   // Send fetch to API, create new article
-  const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/create/articles`, 'POST', articleData)
+  const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/create/articles`, 'POST', payload)
   // TODO: fix this "any" type assignment
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: /** @type {any} */(apiData) })
   store.article.create(newArticle, setLocalStorageFromStore)
