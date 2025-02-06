@@ -23,9 +23,6 @@ export async function filter(file, filterParams, callback) {
           console.log('filter', err);
           return err;
         }
-        // if (callback && !err) {
-        //   return callback(filteredData);
-        // }
       });
     } else {
       console.log('filter', 'El fichero no existe');

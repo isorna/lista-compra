@@ -25,9 +25,6 @@ export async function deleteById(file, id, callback) {
           console.log('deleteById', err);
           return err;
         }
-        // if (callback && !err) {
-        //   return callback(updatedData);
-        // }
       });
     } else {
       console.log('deleteById', 'El fichero no existe');

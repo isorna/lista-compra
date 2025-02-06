@@ -34,12 +34,9 @@ export async function update(file, id, modifiedData, callback) {
           console.log('update', err);
           return err;
         }
-        // if (callback && !err) {
-        //   return callback(updatedItem);
-        // }
       });
     } else {
-      // console.log('update', 'El fichero no existe');
+      console.log('update', 'El fichero no existe');
       if (callback) {
         return callback('El fichero no existe');
       }
