@@ -265,10 +265,15 @@ async function buyArticle(e, itemId, rowToUpdate) {
   itemToUpdate.bought = !itemToUpdate.bought
 
   const updatedData = {
-    bought: itemToUpdate.bought
+    bought: itemToUpdate.bought,
+    test: {
+      miPrueba: true,
+      otraPrueba: [1,2,3]
+    }
   }
+  const payload = JSON.stringify(updatedData)
   // Send fetch to API, update article
-  await getAPIData(`http://${location.hostname}:${API_PORT}/update/articles/${itemToUpdate.id}`, 'PUT', updatedData)
+  await getAPIData(`http://${location.hostname}:${API_PORT}/update/articles/${itemToUpdate.id}`, 'PUT', payload)
   // console.log('after update on API', apiData)
   store.article.update(itemToUpdate, setLocalStorageFromStore)
 }
@@ -286,7 +291,9 @@ function updateShoppingListItem() {
  * @param {string} itemIdToDelete
  * @param {HTMLElement} rowToDelete
  */
-function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
+async function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
+  // Send fetch to API, delete article
+  await getAPIData(`http://${location.hostname}:${API_PORT}/delete/articles/${itemIdToDelete}`, 'DELETE')
   // Delete item from store
   store.article.delete(store.article.getById(itemIdToDelete), setLocalStorageFromStore)
   // Update html
@@ -359,11 +366,9 @@ function resetFocus(){
 async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data) {
   let apiData
 
-  // console.log('getAPIData', method, data)
   try {
     let headers = new Headers()
-
-    headers.append('Content-Type', !data ? 'application/json' : 'application/x-www-form-urlencoded')
+    headers.append('Content-Type', 'application/json')
     headers.append('Access-Control-Allow-Origin', '*')
     if (data) {
       headers.append('Content-Length', String(JSON.stringify(data).length))
@@ -372,8 +377,7 @@ async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data
       // Si la petición tarda demasiado, la abortamos
       signal: AbortSignal.timeout(3000),
       method: method,
-      // @ts-expect-error TODO
-      body: data ? new URLSearchParams(data) : undefined,
+      body: data ?? undefined,
       headers: headers
     });
   } catch (/** @type {any | HttpError} */err) {
