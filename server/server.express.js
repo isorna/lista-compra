@@ -26,6 +26,11 @@ app.get('/read/articles', (req, res) => {
     res.json(data)
   });
 })
+app.get('/filter/articles', (req, res) => {
+  crud.filter(ARTICLES_URL, req.body, (data) => {
+    res.json(data)
+  });
+})
 app.put('/update/articles/:id', (req, res) => {
   crud.update(ARTICLES_URL, req.params.id, req.body, (data) => {
     res.json(data)

@@ -16,13 +16,17 @@ export async function filter(file, filterParams, callback) {
           if (callback) {
             return callback('No se encontraron resultados');
           }
-          return;
+          return [];
         }
-        // Return filtered data
         if (err) {
           console.log('filter', err);
           return err;
         }
+        // Return filtered data
+        if (callback) {
+          return callback(filteredData);
+        }
+        return filteredData
       });
     } else {
       console.log('filter', 'El fichero no existe');
@@ -34,5 +38,4 @@ export async function filter(file, filterParams, callback) {
     console.log('filter', `Error: ${err}`);
     return err;
   }
-  return filteredData;
 }
