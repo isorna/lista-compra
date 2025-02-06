@@ -10,6 +10,7 @@ import { installRouter } from './lib/router.js'
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
 
 const myFactory = new ArticleFactory
+const API_PORT = 3333
 
 // Assign DOM Content Loaded event
 document.addEventListener('DOMContentLoaded', onDomContentLoaded)
@@ -86,7 +87,7 @@ async function onLoginFormSubmit(e){
   e.preventDefault()
 
   if (loginData.email !== '' && loginData.password !== '') {
-    const apiData = await getAPIData(`http://${location.hostname}:1337/get.users.json`)
+    const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/get.users.json`)
 
     let userData = apiData.find((itemData) => {
       const user = /** @type {User} */(itemData)
@@ -174,7 +175,7 @@ async function createShoppingListItem() {
     price: getInputValue(priceElement)
   }
   // Send fetch to API, create new article
-  const apiData = await getAPIData(`http://${location.hostname}:1337/create/articles`, 'POST', articleData)
+  const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/create/articles`, 'POST', articleData)
   // TODO: fix this "any" type assignment
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: /** @type {any} */(apiData) })
   store.article.create(newArticle, setLocalStorageFromStore)
@@ -267,7 +268,7 @@ async function buyArticle(e, itemId, rowToUpdate) {
     bought: itemToUpdate.bought
   }
   // Send fetch to API, update article
-  await getAPIData(`http://${location.hostname}:1337/update/articles/${itemToUpdate.id}`, 'PUT', updatedData)
+  await getAPIData(`http://${location.hostname}:${API_PORT}/update/articles/${itemToUpdate.id}`, 'PUT', updatedData)
   // console.log('after update on API', apiData)
   store.article.update(itemToUpdate, setLocalStorageFromStore)
 }
@@ -337,8 +338,8 @@ function resetFocus(){
  */
 // async function getUsualProducts() {
 //   const dataListElement = document.getElementById('productos')
-//   // const apiData = await getAPIData(`http://${location.hostname}:1337/get.articles.json`)
-//   const apiData = await getAPIData(`http://${location.hostname}:1337/read/articles`)
+//   // const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/get.articles.json`)
+//   const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/read/articles`)
 
 //   apiData.forEach((itemData) => {
 //     const product = /** @type {UsualProduct} */(itemData)
@@ -397,7 +398,7 @@ async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data
  */
 async function readShoppingList() {
   /** @type {State} */
-  const apiData = await getAPIData(`http://${location.hostname}:1337/read/articles`)
+  const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/read/articles`)
   const storeData = {
     articles: apiData
   }
