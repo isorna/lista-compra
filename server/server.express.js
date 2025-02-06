@@ -26,8 +26,8 @@ app.get('/read/articles', (req, res) => {
     res.json(data)
   });
 })
-app.get('/filter/articles', (req, res) => {
-  crud.filter(ARTICLES_URL, req.body, (data) => {
+app.get('/filter/articles/:name', (req, res) => {
+  crud.filter(ARTICLES_URL, { name: req.params.name }, (data) => {
     res.json(data)
   });
 })
