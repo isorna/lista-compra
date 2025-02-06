@@ -224,7 +224,7 @@ function addNewRowToShoppingListTable(newArticleObject){
   // 1.1. Assign Table Cells values
   newArticleTableCellQty.innerText = String(newArticleObject.qty)
   newArticleTableCellName.innerText = newArticleObject.name
-  newArticleTableCellName.addEventListener('click', buyArticle.bind(newArticleTableCellName, clickEvent, newArticleObject.id, newArticleTableRow))
+  newArticleTableCellName.addEventListener('click', buyArticle.bind(newArticleTableCellName, clickEvent, newArticleObject._id, newArticleTableRow))
   newArticleTableCellPrice.innerText = String(newArticleObject.price)
   newArticleTableCellSubtotal.innerText = String(newArticleObject.qty * newArticleObject.price)
   // newArticleDeleteButton.innerHTML = '&#128473;&#xfe0e;'
@@ -232,7 +232,7 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleImg.src = './assets/img/cancel.png'
   newArticleImg.setAttribute('alt', 'Eliminar')
   newArticleDeleteButton.appendChild(newArticleImg)
-  newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(newArticleDeleteButton, clickEvent, newArticleObject.id, newArticleTableRow))
+  newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(newArticleDeleteButton, clickEvent, newArticleObject._id, newArticleTableRow))
   newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
   // 1.2. Append Table Cells to Table Row
   newArticleTableRow.appendChild(newArticleTableCellQty)
@@ -274,7 +274,7 @@ async function buyArticle(e, itemId, rowToUpdate) {
   }
   const payload = JSON.stringify(updatedData)
   // Send fetch to API, update article
-  await getAPIData(`http://${location.hostname}:${API_PORT}/update/articles/${itemToUpdate.id}`, 'PUT', payload)
+  await getAPIData(`http://${location.hostname}:${API_PORT}/update/articles/${itemToUpdate._id}`, 'PUT', payload)
   // console.log('after update on API', apiData)
   store.article.update(itemToUpdate, setLocalStorageFromStore)
 }
@@ -404,6 +404,7 @@ async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data
 async function readShoppingList() {
   /** @type {State} */
   const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/read/articles`)
+  console.log('apiData', apiData)
   const storeData = {
     articles: apiData
   }

@@ -88,7 +88,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         articles: state.articles.map((/** @type {Article | UsualProduct} */article) => {
-          if (article.id === actionWithArticle?.article?.id) {
+          if (article._id === actionWithArticle?.article?._id) {
             return actionWithArticle.article
           }
           return article
@@ -97,7 +97,7 @@ const appReducer = (state = INITIAL_STATE, action) => {
     case ACTION_TYPES.DELETE_ARTICLE:
       return {
         ...state,
-        articles: state.articles.filter((/** @type {Article | UsualProduct} */article) => article.id !== actionWithArticle?.article?.id)
+        articles: state.articles.filter((/** @type {Article | UsualProduct} */article) => article._id !== actionWithArticle?.article?._id)
       };
     case ACTION_TYPES.DELETE_ALL_ARTICLES:
       return {
@@ -207,7 +207,7 @@ const createStore = (reducer) => {
    * @param {string} id
    * @returns {Article | UsualProduct | undefined}
    */
-  const getArticleById = (id) => { return currentState.articles.find((/** @type {Article | UsualProduct} */article) => article.id === id) };
+  const getArticleById = (id) => { return currentState.articles.find((/** @type {Article | UsualProduct} */article) => article._id === id) };
 
   /**
    * Returns all the articles
