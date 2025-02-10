@@ -37,7 +37,7 @@ app.get('/read/users', async (req, res) => {
 app.get('/filter/users/:name', async (req, res) => {
   // TODO: ver parámetros de búsqueda
   // https://www.mongodb.com/docs/manual/reference/operator/query/
-  res.json(await db.articles.get({ name: req.params.name }))
+  res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
 
 app.listen(port, async () => {
