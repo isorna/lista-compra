@@ -17,7 +17,7 @@
  */
 /**
  * @typedef {Object} User
- * @property {string} id
+ * @property {string} _id
  * @property {string} name
  * @property {string} email
  * @property {string} [password]

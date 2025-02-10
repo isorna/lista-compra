@@ -9,7 +9,35 @@ export const db = {
     count: countArticles,
     update: updateArticle,
     delete: deleteArticle
+  },
+  users: {
+    get: getUsers,
+    count: countUsers
   }
+}
+
+/**
+ * Returns the number of users in the 'users' collection in the 'shoppingList' database.
+ *
+ * @returns {Promise<number>} The number of users in the collection.
+ */
+async function countUsers() {
+  const client = new MongoClient(URI);
+  const shoppinglistDB = client.db('shoppingList');
+  const usersCollection = shoppinglistDB.collection('users');
+  return await usersCollection.countDocuments()
+}
+
+/**
+ * Gets an array of users from the 'users' collection in the 'shoppingList' database.
+ *
+ * @returns {Promise<Array<object>>} - The array of users.
+ */
+async function getUsers(filter){
+  const client = new MongoClient(URI);
+  const shoppinglistDB = client.db('shoppingList');
+  const usersCollection = shoppinglistDB.collection('users');
+  return await usersCollection.find(filter).toArray()
 }
 
 /**
