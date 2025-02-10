@@ -87,7 +87,7 @@ async function onLoginFormSubmit(e){
   e.preventDefault()
 
   if (loginData.email !== '' && loginData.password !== '') {
-    const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/get.users.json`)
+    const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/read/users`)
 
     let userData = apiData.find((itemData) => {
       const user = /** @type {User} */(itemData)
