@@ -23,7 +23,7 @@ app.get('/read/articles', async (req, res) => {
   res.json(await db.articles.get())
 })
 app.get('/filter/articles/:name', async (req, res) => {
-  res.json(await db.articles.get({ name: req.params.name }))
+  res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
 app.put('/update/articles/:id', async (req, res) => {
   res.json(await db.articles.update(req.params.id, req.body))
