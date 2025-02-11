@@ -8,7 +8,8 @@ export const db = {
     create: createArticle,
     count: countArticles,
     update: updateArticle,
-    delete: deleteArticle
+    delete: deleteArticle,
+    deleteAll: deleteAllArticles
   },
   users: {
     get: getUsers,
@@ -125,4 +126,18 @@ async function deleteArticle(id) {
   const returnValue = await articlesCollection.deleteOne({ _id: new ObjectId(id) });
   console.log('db deleteArticle', returnValue, id)
   return id
+}
+
+/**
+ * Deletes all articles from the 'articles' collection in the 'shoppingList' database.
+ *
+ * @returns {Promise<DeleteResult>} The result of the delete operation.
+ */
+async function deleteAllArticles() {
+  const client = new MongoClient(URI);
+  const shoppinglistDB = client.db('shoppingList');
+  const articlesCollection = shoppinglistDB.collection('articles');
+  const returnValue = await articlesCollection.deleteMany();
+  console.log('db deleteAllArticles', returnValue)
+  return returnValue
 }

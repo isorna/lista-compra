@@ -132,15 +132,24 @@ function onLogoutClick() {
 /**
  * Reset shopping list
  */
-function resetShoppingList() {
-  // 1. Empty the shopping list
-  store.article.deleteAll(setLocalStorageFromStore)
-  // 2. Empty Table Element
-  emptyTableElement()
-  // 3. Update Table total amount cell
-  getShoppingListTotalAmount()
-  // 4. Clean Up form
-  cleanUpForm()
+async function resetShoppingList() {
+  // Reset database collection
+  const result = await getAPIData(`http://${location.hostname}:${API_PORT}/delete/all/articles`, 'DELETE')
+
+  if (!result) {
+    // Show error
+    alert('Error deleting all articles')
+    console.error('Error deleting all articles', result)
+  } else {
+    // 1. Empty the shopping list
+    store.article.deleteAll(setLocalStorageFromStore)
+    // 2. Empty Table Element
+    emptyTableElement()
+    // 3. Update Table total amount cell
+    getShoppingListTotalAmount()
+    // 4. Clean Up form
+    cleanUpForm()
+  }
 }
 
 /**
@@ -184,6 +193,7 @@ async function createShoppingListItem() {
   if (!apiData) {
     // Show error
     alert('Error creating article')
+    console.error('Error creating article', apiData)
     return
   }
   // TODO: fix this "any" type assignment
@@ -303,12 +313,19 @@ function updateShoppingListItem() {
  */
 async function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // Send fetch to API, delete article
-  await getAPIData(`http://${location.hostname}:${API_PORT}/delete/articles/${itemIdToDelete}`, 'DELETE')
-  // Delete item from store
-  store.article.delete(store.article.getById(itemIdToDelete), setLocalStorageFromStore)
-  // Update html
-  rowToDelete.remove()
-  getShoppingListTotalAmount()
+  const result = await getAPIData(`http://${location.hostname}:${API_PORT}/delete/articles/${itemIdToDelete}`, 'DELETE')
+
+  if (result) {
+    console.log('after delete on API', result)
+    // Delete item from store
+    store.article.delete(store.article.getById(itemIdToDelete), setLocalStorageFromStore)
+    // Update html
+    rowToDelete.remove()
+    getShoppingListTotalAmount()
+  } else {
+    alert('Error deleting article')
+    console.error('Error deleting article', result)
+  }
 }
 
 /**

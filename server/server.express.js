@@ -32,6 +32,9 @@ app.put('/update/articles/:id', requireAuth, async (req, res) => {
 app.delete('/delete/articles/:id', requireAuth, async (req, res) => {
   res.json(await db.articles.delete(req.params.id))
 })
+app.delete('/delete/all/articles/', requireAuth, async (req, res) => {
+  res.json(await db.articles.deleteAll())
+})
 app.get('/read/users', async (req, res) => {
   res.json(await db.users.get())
 })
