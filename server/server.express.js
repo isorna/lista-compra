@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { db } from "./server.mongodb.js";
+import { gooogleOauth2 } from './server.oauth.js';
 
 const app = express();
 const port = process.env.PORT;
@@ -45,7 +46,7 @@ app.post('/login', async (req, res) => {
     // TODO: use OAuth2
     // ...
     // Simulation of authentication (OAuth2)
-    user.token = '123456'
+    user.token = gooogleOauth2()
     // Remove password
     delete user.password
     res.json(user)
