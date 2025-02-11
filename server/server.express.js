@@ -6,7 +6,8 @@ import { gooogleOauth2 } from './server.oauth.js';
 const app = express();
 const port = process.env.PORT;
 
-app.use(express.static('src'))
+// Static server
+app.use(express.static('src'));
 // for parsing application/json
 app.use(bodyParser.json())
 // for parsing application/x-www-form-urlencoded
@@ -58,6 +59,11 @@ app.post('/login', async (req, res) => {
     res.status(401).send('Unauthorized')
   }
 })
+
+// Use a regexp that matches all 'diary', 'menus', 'stats' routes
+app.get('/diary', (req, res) => res.redirect('/'))
+app.get('/menus', (req, res) => res.redirect('/'))
+app.get('/stats', (req, res) => res.redirect('/'))
 
 app.listen(port, async () => {
   const articles = await db.articles.count()

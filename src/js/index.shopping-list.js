@@ -10,7 +10,7 @@ import { installRouter } from './lib/router.js'
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
 
 const myFactory = new ArticleFactory
-const API_PORT = 3333
+const API_PORT = location.port ? `:${location.port}` : ''
 
 // Assign DOM Content Loaded event
 document.addEventListener('DOMContentLoaded', onDomContentLoaded)
@@ -88,7 +88,7 @@ async function onLoginFormSubmit(e){
 
   if (loginData.email !== '' && loginData.password !== '') {
     const payload = JSON.stringify(loginData)
-    const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/login`, 'POST', payload)
+    const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/login`, 'POST', payload)
 
     if (!apiData) {
       // Show error
@@ -134,7 +134,7 @@ function onLogoutClick() {
  */
 async function resetShoppingList() {
   // Reset database collection
-  const result = await getAPIData(`http://${location.hostname}:${API_PORT}/delete/all/articles`, 'DELETE')
+  const result = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/delete/all/articles`, 'DELETE')
 
   if (!result) {
     // Show error
@@ -189,7 +189,7 @@ async function createShoppingListItem() {
   }
   const payload = JSON.stringify(articleData)
   // Send fetch to API, create new article
-  const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/create/articles`, 'POST', payload)
+  const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/create/articles`, 'POST', payload)
   if (!apiData) {
     // Show error
     alert('Error creating article')
@@ -293,7 +293,7 @@ async function buyArticle(e, itemId, rowToUpdate) {
   }
   const payload = JSON.stringify(updatedData)
   // Send fetch to API, update article
-  await getAPIData(`http://${location.hostname}:${API_PORT}/update/articles/${itemToUpdate._id}`, 'PUT', payload)
+  await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/update/articles/${itemToUpdate._id}`, 'PUT', payload)
   // console.log('after update on API', apiData)
   store.article.update(itemToUpdate, setLocalStorageFromStore)
 }
@@ -313,7 +313,7 @@ function updateShoppingListItem() {
  */
 async function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // Send fetch to API, delete article
-  const result = await getAPIData(`http://${location.hostname}:${API_PORT}/delete/articles/${itemIdToDelete}`, 'DELETE')
+  const result = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/delete/articles/${itemIdToDelete}`, 'DELETE')
 
   if (result) {
     console.log('after delete on API', result)
@@ -372,8 +372,8 @@ function resetFocus(){
  */
 // async function getUsualProducts() {
 //   const dataListElement = document.getElementById('productos')
-//   // const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/get.articles.json`)
-//   const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/read/articles`)
+//   // const apiData = await getAPIData(`http://${location.hostname}${API_PORT}/get.articles.json`)
+//   const apiData = await getAPIData(`http://${location.hostname}${API_PORT}/read/articles`)
 
 //   apiData.forEach((itemData) => {
 //     const product = /** @type {UsualProduct} */(itemData)
@@ -434,7 +434,7 @@ async function getAPIData(apiURL, method = 'GET', data) {
  */
 async function readShoppingList() {
   /** @type {State} */
-  const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/read/articles`)
+  const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/read/articles`)
   console.log('apiData', apiData)
   const storeData = {
     articles: apiData
@@ -533,6 +533,7 @@ function handleNavigation(location) {
 
   switch (newLocation) {
     case '/':
+    case '/index.html':
       document?.getElementById('login')?.classList.add('hidden')
       document?.getElementById('diary')?.classList.add('hidden')
       document?.getElementById('menus')?.classList.add('hidden')
