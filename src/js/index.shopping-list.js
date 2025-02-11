@@ -87,25 +87,28 @@ async function onLoginFormSubmit(e){
   e.preventDefault()
 
   if (loginData.email !== '' && loginData.password !== '') {
-    const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/read/users`)
+    const payload = JSON.stringify(loginData)
+    const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/login`, 'POST', payload)
 
-    let userData = apiData.find((itemData) => {
-      const user = /** @type {User} */(itemData)
-
-      return user.email === loginData.email && user.password === loginData.password
-    })
-
-    if (!userData) {
+    if (!apiData) {
       // Show error
       alert('El usuario no existe')
     } else {
-      const storeUserData = /** @type {User} */(userData)
-      delete storeUserData.password
-      // Login user
-      store.user.login(storeUserData, setSessionStorageFromStore)
-      // Redirect to home
-      activateLoggedInUI(true)
-      navigateTo('/')
+      if ('_id' in apiData
+        && 'name' in apiData
+        && 'email' in apiData
+        && 'token' in apiData
+        && 'role' in apiData) {
+        const userData = /** @type {User} */(apiData)
+        // store.user.login(userData, setSessionStorageFromStore)
+        // setSessionStorageFromStore()
+        updateSessionStorage({ user: userData })
+        // Redirect to home
+        activateLoggedInUI(true)
+        navigateTo('/')
+      } else {
+        alert('Invalid user data')
+      }
     }
   }
 }
@@ -117,7 +120,8 @@ async function onLoginFormSubmit(e){
 function onLogoutClick() {
   // Logout user
   // store.user.logout(setLocalStorageFromStore)
-  store.user.logout(setSessionStorageFromStore)
+  // store.user.logout(setSessionStorageFromStore)
+  updateSessionStorage({ user: {} })
   activateLoggedInUI(false)
   // Redirect to home
   navigateTo('/')
@@ -177,6 +181,11 @@ async function createShoppingListItem() {
   const payload = JSON.stringify(articleData)
   // Send fetch to API, create new article
   const apiData = await getAPIData(`http://${location.hostname}:${API_PORT}/create/articles`, 'POST', payload)
+  if (!apiData) {
+    // Show error
+    alert('Error creating article')
+    return
+  }
   // TODO: fix this "any" type assignment
   const newArticle = myFactory.create({ type: ARTICLE_TYPES.USUAL, articleData: /** @type {any} */(apiData) })
   store.article.create(newArticle, setLocalStorageFromStore)
@@ -364,7 +373,7 @@ function resetFocus(){
  * @param {Object} [data]
  * @returns {Promise<Array<UsualProduct | User>>}
  */
-async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data) {
+async function getAPIData(apiURL, method = 'GET', data) {
   let apiData
 
   try {
@@ -373,6 +382,11 @@ async function getAPIData(apiURL = 'api/get.articles.json', method = 'GET', data
     headers.append('Access-Control-Allow-Origin', '*')
     if (data) {
       headers.append('Content-Length', String(JSON.stringify(data).length))
+    }
+    // Set Bearer authorization if user is logged in
+    if (isUserLoggedIn()) {
+      const userData = getDataFromSessionStorage()
+      headers.append('Authorization', `Bearer ${userData?.user?.token}`)
     }
     apiData = await simpleFetch(apiURL, {
       // Si la petición tarda demasiado, la abortamos
@@ -447,15 +461,15 @@ function setLocalStorageFromStore() {
  * Saves the current state of the store in session storage.
  * Removes all data except the user data from the store before saving.
  */
-function setSessionStorageFromStore() {
-  // Remove unused data from store before saving
-  const storeState = store.getState()
-  delete storeState.articles
-  delete storeState.error
-  delete storeState.isLoading
-  delete storeState.route
-  updateSessionStorage(storeState)
-}
+// function setSessionStorageFromStore() {
+//   // Remove unused data from store before saving
+//   const storeState = store.getState()
+//   delete storeState.articles
+//   delete storeState.error
+//   delete storeState.isLoading
+//   delete storeState.route
+//   updateSessionStorage(storeState)
+// }
 
 /**
  * Retrieves the shopping list data from local storage.
@@ -467,6 +481,17 @@ function setSessionStorageFromStore() {
 function getDataFromLocalStorage() {
   const defaultValue = JSON.stringify(INITIAL_STATE)
   return JSON.parse(localStorage.getItem('shoppingList') || defaultValue)
+}
+
+/**
+ * Checks if there is a user logged in by verifying the presence of a token
+ * in the local storage.
+ *
+ * @returns {boolean} True if the user is logged in, false otherwise.
+ */
+function isUserLoggedIn() {
+  const userData = getDataFromSessionStorage()
+  return userData?.user?.token
 }
 
 /**
@@ -552,9 +577,9 @@ function checkLoginStatus() {
   /** @type {State} */
   const storedData = getDataFromSessionStorage()
   if (storedData?.user?.token) {
-    const storeUserData = /** @type {User} */(storedData?.user)
-    delete storeUserData.password
-    store.user.login(storeUserData)
+    // const storeUserData = /** @type {User} */(storedData?.user)
+    // delete storeUserData.password
+    // store.user.login(storeUserData)
     activateLoggedInUI(true)
   }
 }

@@ -16,7 +16,7 @@ app.get('/check/:nombre', async (req, res) => {
   res.send(`Hola ${req.params.nombre}, hay ${usuarios} usuarios`)
 })
 // CRUD
-app.post('/create/articles', async (req, res) => {
+app.post('/create/articles', requireAuth, async (req, res) => {
   res.json(await db.articles.create(req.body))
 })
 app.get('/read/articles', async (req, res) => {
@@ -25,10 +25,10 @@ app.get('/read/articles', async (req, res) => {
 app.get('/filter/articles/:name', async (req, res) => {
   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
-app.put('/update/articles/:id', async (req, res) => {
+app.put('/update/articles/:id', requireAuth, async (req, res) => {
   res.json(await db.articles.update(req.params.id, req.body))
 })
-app.delete('/delete/articles/:id', async (req, res) => {
+app.delete('/delete/articles/:id', requireAuth, async (req, res) => {
   res.json(await db.articles.delete(req.params.id))
 })
 app.get('/read/users', async (req, res) => {
@@ -39,9 +39,34 @@ app.get('/filter/users/:name', async (req, res) => {
   // https://www.mongodb.com/docs/manual/reference/operator/query/
   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
+app.post('/login', async (req, res) => {
+  const user = await db.users.logIn(req.body)
+  if (user) {
+    // TODO: use OAuth2
+    // ...
+    // Simulation of authentication (OAuth2)
+    user.token = '123456'
+    // Remove password
+    delete user.password
+    res.json(user)
+  } else {
+    // Unauthorized
+    res.status(401).send('Unauthorized')
+  }
+})
 
 app.listen(port, async () => {
   const articles = await db.articles.count()
   const usuarios = await db.users.count()
   console.log(`Shopping List listening on port ${port}: ${articles} articles, ${usuarios} users`);
 })
+
+function requireAuth(req, res, next) {
+  // Simulation of authentication (OAuth2)
+  if (req.headers.authorization === 'Bearer 123456') {
+    next()
+  } else {
+    // Unauthorized
+    res.status(401).send('Unauthorized')
+  }
+}

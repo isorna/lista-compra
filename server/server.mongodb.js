@@ -12,7 +12,8 @@ export const db = {
   },
   users: {
     get: getUsers,
-    count: countUsers
+    count: countUsers,
+    logIn: logInUser
   }
 }
 
@@ -38,6 +39,20 @@ async function getUsers(filter){
   const shoppinglistDB = client.db('shoppingList');
   const usersCollection = shoppinglistDB.collection('users');
   return await usersCollection.find(filter).toArray()
+}
+
+/**
+ * Finds a user in the 'users' collection in the 'shoppingList' database given
+ * an email and password.
+ *
+ * @param {{email: string, password: string}} data - The data to query the user.
+ * @returns {Promise<object>} The user object if found, null otherwise.
+ */
+async function logInUser({email, password}) {
+  const client = new MongoClient(URI);
+  const shoppinglistDB = client.db('shoppingList');
+  const usersCollection = shoppinglistDB.collection('users');
+  return await usersCollection.findOne({ email, password })
 }
 
 /**

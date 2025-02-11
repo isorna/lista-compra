@@ -39,8 +39,8 @@ const ACTION_TYPES = {
   // Route
   SET_ROUTE: 'SET_ROUTE',
   // User
-  LOGIN: 'LOGIN',
-  LOGOUT: 'LOGOUT',
+  // LOGIN: 'LOGIN',
+  // LOGOUT: 'LOGOUT',
 }
 
 /**
@@ -49,7 +49,6 @@ const ACTION_TYPES = {
  * @property {boolean} isLoading
  * @property {boolean} error
  * @property {string} route
- * @property {User} user
  */
 /**
  * @type {State}
@@ -59,7 +58,7 @@ export const INITIAL_STATE = {
   isLoading: false,
   error: false,
   route: '/',
-  user: {}
+  // user: {}
 }
 
 /**
@@ -72,7 +71,7 @@ export const INITIAL_STATE = {
 const appReducer = (state = INITIAL_STATE, action) => {
   const actionWithArticle = /** @type {ActionTypeArticle} */(action)
   const actionWithRoute = /** @type {ActionTypeRoute} */(action)
-  const actionWithUser = /** @type {ActionTypeUser} */(action)
+  // const actionWithUser = /** @type {ActionTypeUser} */(action)
   switch (action.type) {
     case ACTION_TYPES.CREATE_ARTICLE:
       return {
@@ -109,16 +108,16 @@ const appReducer = (state = INITIAL_STATE, action) => {
         ...state,
         route: actionWithRoute.route
       };
-    case ACTION_TYPES.LOGIN:
-      return {
-        ...state,
-        user: actionWithUser.user
-      };
-    case ACTION_TYPES.LOGOUT:
-      return {
-        ...state,
-        user: {}
-      };
+    // case ACTION_TYPES.LOGIN:
+    //   return {
+    //     ...state,
+    //     user: actionWithUser.user
+    //   };
+    // case ACTION_TYPES.LOGOUT:
+    //   return {
+    //     ...state,
+    //     user: {}
+    //   };
     default:
       return {...state};
   }
@@ -149,7 +148,6 @@ const appReducer = (state = INITIAL_STATE, action) => {
  * @property {function} getState
  * @property {PublicMethods} article
  * @property {PublicRoute} route
- * @property {PublicUser} user
  */
 /**
  * Creates the store singleton.
@@ -229,19 +227,19 @@ const createStore = (reducer) => {
    * @param {function | undefined} [onEventDispatched]
    * @returns void
    */
-  const login = (user, onEventDispatched) => _dispatch({ type: ACTION_TYPES.LOGIN, user }, onEventDispatched)
+  // const login = (user, onEventDispatched) => _dispatch({ type: ACTION_TYPES.LOGIN, user }, onEventDispatched)
 
   /**
    * Logs out the user
    * @param {function | undefined} [onEventDispatched]
    * @returns void
    */
-  const logout = (onEventDispatched) => _dispatch({ type: ACTION_TYPES.LOGOUT }, onEventDispatched)
+  // const logout = (onEventDispatched) => _dispatch({ type: ACTION_TYPES.LOGOUT }, onEventDispatched)
 
   // Private methods
   /**
    *
-   * @param {ActionTypeArticle | ActionTypeRoute | ActionTypeUser} action
+   * @param {ActionTypeArticle | ActionTypeRoute} action
    * @param {function | undefined} [onEventDispatched]
    */
   const _dispatch = (action, onEventDispatched) => {
@@ -307,16 +305,16 @@ const createStore = (reducer) => {
   }
 
   /** @type {PublicUser} */
-  const user = {
-    login,
-    logout
-  }
+  // const user = {
+  //   login,
+  //   logout
+  // }
 
   return {
     // Actions
     article,
     route,
-    user,
+    // user,
     // Public methods
     getState
   }
