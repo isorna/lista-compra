@@ -22,6 +22,7 @@ app.post('/create/articles', requireAuth, async (req, res) => {
   res.json(await db.articles.create(req.body))
 })
 app.get('/read/articles', async (req, res) => {
+  // res.json(await db.articles.get({}, { _id: 0, qty: 1 }))
   res.json(await db.articles.get())
 })
 app.get('/filter/articles/:name', async (req, res) => {

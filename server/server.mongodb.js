@@ -76,13 +76,14 @@ async function createArticle(article) {
  * The articles are filtered by the given filter.
  *
  * @param {object} [filter] - The filter to apply to the articles.
+ * @param {object} [projection] - The projection to apply to the articles.
  * @returns {Promise<Array<object>>} - The array of articles.
  */
-async function getArticles(filter) {
+async function getArticles(filter, projection) {
   const client = new MongoClient(URI);
   const shoppinglistDB = client.db('shoppingList');
   const articlesCollection = shoppinglistDB.collection('articles');
-  return await articlesCollection.find(filter).toArray();
+  return await articlesCollection.find(filter).project(projection).toArray();
 }
 
 /**
