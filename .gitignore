@@ -5,3 +5,5 @@ build
 out
 .env
 .env.prod
+# Local Netlify folder
+.netlify

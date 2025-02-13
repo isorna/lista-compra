@@ -6,15 +6,3 @@
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/api/:splat"
-[[redirects]]
-  from = "/diary"
-  status = 200
-  to = "/"
-[[redirects]]
-  from = "/menus"
-  status = 200
-  to = "/"
-[[redirects]]
-  from = "/stats"
-  status = 200
-  to = "/"
