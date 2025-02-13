@@ -4,8 +4,6 @@ import serverless from 'serverless-http';
 import { MongoClient, ObjectId } from "mongodb";
 
 const URI = process.env.MONGO_ATLAS;
-// const mongoClient = new MongoClient(URI);
-// const clientPromise = mongoClient.connect();
 const api = express();
 const router = Router();
 
@@ -15,20 +13,6 @@ router.post('/create/articles', requireAuth, async (req, res) => {
   res.json(await db.articles.create(req.body))
 })
 router.get('/read/articles', async (req, res) => {
-  // let returnValue
-  // try {
-  //   const database = (await clientPromise).db(process.env.MONGODB_DATABASE);
-  //   const collection = database.collection('articles');
-  //   const results = await collection.find({}).limit(10).toArray();
-  //   returnValue = {
-  //     statusCode: 200,
-  //     body: JSON.stringify(results),
-  //   }
-  //   res.json(returnValue)
-  // } catch (error) {
-  //   returnValue = { statusCode: 500, body: error.toString() }
-  //   res.json(returnValue)
-  // }
   res.json(await db.articles.get())
 })
 router.get('/filter/articles/:name', async (req, res) => {
@@ -57,7 +41,7 @@ router.post('/login', async (req, res) => {
     // TODO: use OAuth2
     // ...
     // Simulation of authentication (OAuth2)
-    user.token = '123456'
+    user.token = gooogleOauth2()
     // Remove password
     delete user.password
     res.json(user)
@@ -75,6 +59,10 @@ api.use(bodyParser.urlencoded({ extended: true }))
 api.use('/api/', router)
 
 export const handler = serverless(api);
+
+function gooogleOauth2() {
+  return '123456'
+}
 
 function requireAuth(req, res, next) {
   // Simulation of authentication (OAuth2)
