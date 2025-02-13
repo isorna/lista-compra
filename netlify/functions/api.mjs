@@ -13,10 +13,10 @@ const router = Router();
 // router.post('/create/articles', requireAuth, async (req, res) => {
 //   res.json(await db.articles.create(req.body))
 // })
-// router.get('/read/articles', async (req, res) => {
-//   // res.json(await db.articles.get({}, { _id: 0, qty: 1 }))
-//   res.json(await db.articles.get())
-// })
+router.get('/read/articles', async (req, res) => {
+  // res.json(await db.articles.get())
+  res.json('ok')
+})
 // router.get('/filter/articles/:name', async (req, res) => {
 //   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 // })
