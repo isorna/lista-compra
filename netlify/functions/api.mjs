@@ -4,7 +4,8 @@ import serverless from 'serverless-http';
 import { MongoClient, ObjectId } from "mongodb";
 
 const URI = process.env.MONGO_ATLAS;
-
+const mongoClient = new MongoClient(URI);
+const clientPromise = mongoClient.connect();
 const api = express();
 const router = Router();
 
@@ -14,8 +15,22 @@ const router = Router();
 //   res.json(await db.articles.create(req.body))
 // })
 router.get('/read/articles', async (req, res) => {
-  res.json(await db.articles.get())
-  res.json('ok')
+  let returnValue
+  try {
+    const database = (await clientPromise).db(process.env.MONGODB_DATABASE);
+    const collection = database.collection('articles');
+    const results = await collection.find({}).limit(10).toArray();
+    returnValue = {
+      statusCode: 200,
+      body: JSON.stringify(results),
+    }
+    res.json(returnValue)
+  } catch (error) {
+    returnValue = { statusCode: 500, body: error.toString() }
+    res.json(returnValue)
+  }
+  // res.json(await db.articles.get())
+  // res.json('ok')
 })
 // router.get('/filter/articles/:name', async (req, res) => {
 //   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
