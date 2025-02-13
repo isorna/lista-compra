@@ -14,7 +14,8 @@ export const db = {
   users: {
     get: getUsers,
     count: countUsers,
-    logIn: logInUser
+    logIn: logInUser,
+    logOut: logoutUser
   }
 }
 
@@ -53,7 +54,22 @@ async function logInUser({email, password}) {
   const client = new MongoClient(URI);
   const shoppinglistDB = client.db('shoppingList');
   const usersCollection = shoppinglistDB.collection('users');
+  // TODO: update token on DB
   return await usersCollection.findOne({ email, password }, { projection: { password: 0 } })
+}
+
+/**
+ * Logs out a user by setting the 'token' field to null in the 'users' collection
+ * in the 'shoppingList' database.
+ *
+ * @param {{id: string}} data - The data to query the user.
+ * @returns {Promise<UpdateResult>} The result of the update operation.
+ */
+async function logoutUser({id}) {
+  const client = new MongoClient(URI);
+  const shoppinglistDB = client.db('shoppingList');
+  const usersCollection = shoppinglistDB.collection('users');
+  return await usersCollection.updateOne({ _id: new ObjectId(id) }, { $set: { token: null } })
 }
 
 /**

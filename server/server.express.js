@@ -46,6 +46,7 @@ app.get('/api/filter/users/:name', async (req, res) => {
   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
 app.post('/api/login', async (req, res) => {
+  // TODO: update token on DB
   const user = await db.users.logIn(req.body)
   if (user) {
     // TODO: use OAuth2
@@ -59,6 +60,11 @@ app.post('/api/login', async (req, res) => {
     // Unauthorized
     res.status(401).send('Unauthorized')
   }
+})
+app.get('/api/logout/:id', async (req, res) => {
+  const response = await db.users.logOut(req.params.id)
+  console.log('logOut', response)
+  res.status(200).send('Logout')
 })
 
 // Use a regexp that matches all 'diary', 'menus', 'stats' routes

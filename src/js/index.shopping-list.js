@@ -124,10 +124,10 @@ async function onLoginFormSubmit(e){
  * Logs out the user
  * @returns void
  */
-function onLogoutClick() {
-  // Logout user
-  // store.user.logout(setLocalStorageFromStore)
-  // store.user.logout(setSessionStorageFromStore)
+async function onLogoutClick() {
+  const userData = getDataFromSessionStorage()
+  await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/logout/${userData.user._id}`, 'GET')
+
   updateSessionStorage({ user: {} })
   activateLoggedInUI(false)
   // Redirect to home
