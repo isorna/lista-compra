@@ -6,6 +6,10 @@ import { INITIAL_STATE, store } from './store/redux.js'
 import { installRouter } from './lib/router.js'
 // import { icons } from './lib/icons.js'
 
+// TODO: Web Components
+// @ ts-expect-error TS doesn't like this
+// import css from '../css/styles.css' with { type: 'css' }
+
 /** @import {State, User} from './store/redux.js' */
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
 
@@ -45,6 +49,9 @@ function onDomContentLoaded() {
   //   iconElement.innerHTML = icons[icon]
   //   document.getElementById('menu')?.appendChild(iconElement)
   // }
+
+  // TODO: Web Components
+  // console.log(css)
 
   checkLoginStatus()
   readShoppingList()
@@ -88,7 +95,7 @@ async function onLoginFormSubmit(e){
 
   if (loginData.email !== '' && loginData.password !== '') {
     const payload = JSON.stringify(loginData)
-    const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/login`, 'POST', payload)
+    const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/login`, 'POST', payload)
 
     if (!apiData) {
       // Show error
@@ -134,7 +141,7 @@ function onLogoutClick() {
  */
 async function resetShoppingList() {
   // Reset database collection
-  const result = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/delete/all/articles`, 'DELETE')
+  const result = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/delete/all/articles`, 'DELETE')
 
   if (!result) {
     // Show error
@@ -189,7 +196,7 @@ async function createShoppingListItem() {
   }
   const payload = JSON.stringify(articleData)
   // Send fetch to API, create new article
-  const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/create/articles`, 'POST', payload)
+  const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/create/articles`, 'POST', payload)
   if (!apiData) {
     // Show error
     alert('Error creating article')
@@ -293,7 +300,7 @@ async function buyArticle(e, itemId, rowToUpdate) {
   }
   const payload = JSON.stringify(updatedData)
   // Send fetch to API, update article
-  await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/update/articles/${itemToUpdate._id}`, 'PUT', payload)
+  await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/update/articles/${itemToUpdate._id}`, 'PUT', payload)
   // console.log('after update on API', apiData)
   store.article.update(itemToUpdate, setLocalStorageFromStore)
 }
@@ -313,7 +320,7 @@ function updateShoppingListItem() {
  */
 async function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
   // Send fetch to API, delete article
-  const result = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/delete/articles/${itemIdToDelete}`, 'DELETE')
+  const result = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/delete/articles/${itemIdToDelete}`, 'DELETE')
 
   if (result) {
     console.log('after delete on API', result)
@@ -434,7 +441,7 @@ async function getAPIData(apiURL, method = 'GET', data) {
  */
 async function readShoppingList() {
   /** @type {State} */
-  const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/read/articles`)
+  const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/read/articles`)
   console.log('apiData', apiData)
   const storeData = {
     articles: apiData

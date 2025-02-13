@@ -13,39 +13,39 @@ app.use(bodyParser.json())
 // for parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/check/:nombre', async (req, res) => {
+app.get('/api/check/:nombre', async (req, res) => {
   const usuarios = await db.users.count()
   res.send(`Hola ${req.params.nombre}, hay ${usuarios} usuarios`)
 })
 // CRUD
-app.post('/create/articles', requireAuth, async (req, res) => {
+app.post('/api/create/articles', requireAuth, async (req, res) => {
   res.json(await db.articles.create(req.body))
 })
-app.get('/read/articles', async (req, res) => {
+app.get('/api/read/articles', async (req, res) => {
   // res.json(await db.articles.get({}, { _id: 0, qty: 1 }))
   res.json(await db.articles.get())
 })
-app.get('/filter/articles/:name', async (req, res) => {
+app.get('/api/filter/articles/:name', async (req, res) => {
   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
-app.put('/update/articles/:id', requireAuth, async (req, res) => {
+app.put('/api/update/articles/:id', requireAuth, async (req, res) => {
   res.json(await db.articles.update(req.params.id, req.body))
 })
-app.delete('/delete/articles/:id', requireAuth, async (req, res) => {
+app.delete('/api/delete/articles/:id', requireAuth, async (req, res) => {
   res.json(await db.articles.delete(req.params.id))
 })
-app.delete('/delete/all/articles/', requireAuth, async (req, res) => {
+app.delete('/api/delete/all/articles/', requireAuth, async (req, res) => {
   res.json(await db.articles.deleteAll())
 })
-app.get('/read/users', async (req, res) => {
+app.get('/api/read/users', async (req, res) => {
   res.json(await db.users.get())
 })
-app.get('/filter/users/:name', async (req, res) => {
+app.get('/api/filter/users/:name', async (req, res) => {
   // TODO: ver parámetros de búsqueda
   // https://www.mongodb.com/docs/manual/reference/operator/query/
   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   const user = await db.users.logIn(req.body)
   if (user) {
     // TODO: use OAuth2
