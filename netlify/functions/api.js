@@ -10,34 +10,34 @@ const router = Router();
 
 
 // CRUD
-router.post('/api/create/articles', requireAuth, async (req, res) => {
+router.post('/create/articles', requireAuth, async (req, res) => {
   res.json(await db.articles.create(req.body))
 })
-router.get('/api/read/articles', async (req, res) => {
+router.get('/read/articles', async (req, res) => {
   // res.json(await db.articles.get({}, { _id: 0, qty: 1 }))
   res.json(await db.articles.get())
 })
-router.get('/api/filter/articles/:name', async (req, res) => {
+router.get('/filter/articles/:name', async (req, res) => {
   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
-router.put('/api/update/articles/:id', requireAuth, async (req, res) => {
+router.put('/update/articles/:id', requireAuth, async (req, res) => {
   res.json(await db.articles.update(req.params.id, req.body))
 })
-router.delete('/api/delete/articles/:id', requireAuth, async (req, res) => {
+router.delete('/delete/articles/:id', requireAuth, async (req, res) => {
   res.json(await db.articles.delete(req.params.id))
 })
-router.delete('/api/delete/all/articles/', requireAuth, async (req, res) => {
+router.delete('/delete/all/articles/', requireAuth, async (req, res) => {
   res.json(await db.articles.deleteAll())
 })
-router.get('/api/read/users', async (req, res) => {
+router.get('/read/users', async (req, res) => {
   res.json(await db.users.get())
 })
-router.get('/api/filter/users/:name', async (req, res) => {
+router.get('/filter/users/:name', async (req, res) => {
   // TODO: ver parámetros de búsqueda
   // https://www.mongodb.com/docs/manual/reference/operator/query/
   res.json(await db.articles.get({ $text: { $search: req.params.name } }))
 })
-router.post('/api/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   const user = await db.users.logIn(req.body)
   if (user) {
     // TODO: use OAuth2
