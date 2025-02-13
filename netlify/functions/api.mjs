@@ -50,7 +50,6 @@ router.post('/login', async (req, res) => {
     res.status(401).send('Unauthorized')
   }
 })
-router.get("/hello", (req, res) => res.send("Hello World!"));
 
 // for parsing application/json
 api.use(bodyParser.json())
