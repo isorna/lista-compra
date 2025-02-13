@@ -53,7 +53,7 @@ app.post('/api/login', async (req, res) => {
     // Simulation of authentication (OAuth2)
     user.token = gooogleOauth2()
     // Remove password
-    delete user.password
+    // delete user.password
     res.json(user)
   } else {
     // Unauthorized

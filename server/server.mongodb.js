@@ -53,7 +53,7 @@ async function logInUser({email, password}) {
   const client = new MongoClient(URI);
   const shoppinglistDB = client.db('shoppingList');
   const usersCollection = shoppinglistDB.collection('users');
-  return await usersCollection.findOne({ email, password })
+  return await usersCollection.findOne({ email, password }, { projection: { password: 0 } })
 }
 
 /**
