@@ -7,7 +7,6 @@ const URI = process.env.MONGO_ATLAS;
 const api = express();
 const router = Router();
 
-
 // CRUD
 router.post('/create/articles', requireAuth, async (req, res) => {
   res.json(await db.articles.create(req.body))
