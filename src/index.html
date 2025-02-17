@@ -34,7 +34,7 @@
   <body>
     <header>
       <h1><a href="./">Lista de la compra</a><span id="username" class="hidden"></span></h1>
-      <button id="logoutButton" class="hidden icon-button logout-button"><img src="./assets/img/power-button.png" alt="Salir" /></button>
+      <button id="logoutButton" class="hidden icon-button logout-button" title="Salir"><img src="./assets/img/power-button.png" alt="Salir" /></button>
     </header>
     <main id="home">
       <h1>Añadir a la lista</h1>
@@ -43,8 +43,8 @@
         <label>Nombre: <input type="text" id="articleName" placeholder="nuevo artículo" list="productos" autocomplete="off" /></label>
         <label>Cantidad: <input type="number" id="qty" placeholder="0" min="0" max="10" step="1" /></label>
         <label>Precio: <input type="number" id="price" placeholder="0€" min="0" max="100" step="1" /></label>
-        <button type="button" id="newArticle" class="icon-button add-button" disabled><img src="./assets/img/check-mark.png" alt="Añadir" /></button>
-        <button type="reset" id="newList" class="icon-button new-button"><img src="./assets/img/anticlockwise-rotation.png" alt="Nueva lista" /></button>
+        <button type="button" id="newArticle" class="icon-button add-button" title="Añadir" disabled><img src="./assets/img/check-mark.png" alt="Añadir" /></button>
+        <button type="reset" id="newList" class="icon-button new-button" title="Nueva lista"><img src="./assets/img/anticlockwise-rotation.png" alt="Nueva lista" /></button>
       </form>
       <table id="shoppingListTable">
         <thead>
@@ -71,7 +71,7 @@
       <form id="loginForm">
         <label>Usuario: <input type="text" id="email" placeholder="email" /></label>
         <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
-        <button type="submit" id="loginButton">Login</button>
+        <button type="submit" id="loginButton" title="Login">Login</button>
       </form>
     </main>
     <main id="diary" class="hidden">

@@ -254,6 +254,7 @@ function addNewRowToShoppingListTable(newArticleObject){
   newArticleTableCellPrice.innerText = String(newArticleObject.price)
   newArticleTableCellSubtotal.innerText = String(newArticleObject.qty * newArticleObject.price)
   // newArticleDeleteButton.innerHTML = '&#128473;&#xfe0e;'
+  newArticleDeleteButton.title = 'Eliminar'
   newArticleDeleteButton.className = 'icon-button delete-button'
   newArticleImg.src = './assets/img/cancel.png'
   newArticleImg.setAttribute('alt', 'Eliminar')
