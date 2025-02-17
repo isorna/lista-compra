@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 body {
   header {
     grid-column-start: span 12;
@@ -21,11 +22,39 @@ body {
 
     form {
       flex-wrap: wrap;
-      gap: 1em .5em;
 
       label {
         width: 48%;
         max-width: 48%;
+      }
+
+      &#articleForm {
+        label {
+          &:has(>input#articleName) {
+            min-width: 100px;
+            max-width: 100%;
+            width: 100%;
+          }
+        }
+      }
+
+      &#loginForm {
+        label {
+          min-width: 100px;
+          max-width: 100%;
+          width: 100%;
+        }
+      }
+
+      &#menuForm {
+        label {
+          &:has(>input#menuName),
+          &:has(>input#menuArticleName) {
+            min-width: 100px;
+            max-width: 100%;
+            width: 100%;
+          }
+        }
       }
 
       button {

@@ -49,8 +49,8 @@ body {
     &.icon-button {
       display: block;
       line-height: 40px;
-      width: 80px;
-      max-width: 80px;
+      width: 66px;
+      max-width: 66px;
       font-size: 36px;
       color: var(--main-color);
       transition: all 0.2s ease-in-out;
@@ -128,8 +128,8 @@ body {
     form {
       margin-top: 1em;
       display: flex;
-      column-gap: 5px;
-      flex-direction: row;
+      gap: 10px 5px;
+      flex-flow: row wrap;
       padding: calc(var(--border-radius)*2);
       border-radius: var(--border-radius);
       background-color: var(--card-bg-color);

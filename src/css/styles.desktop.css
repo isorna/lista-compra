@@ -1,3 +1,4 @@
+/* stylelint-disable no-descending-specificity */
 body {
   header {
     grid-column-start: span 12;
@@ -13,11 +14,43 @@ body {
     display: flex;
 
     form {
-      label {
-        &:first-of-type {
-          input {
+      gap: 20px 5px;
+
+      &#loginForm {
+        label {
+          min-width: 80px;
+          max-width: calc(100% / 2 - 50px);
+          width: 100%;
+        }
+      }
+
+      &#menuForm {
+        label {
+          min-width: 50px;
+          max-width: calc(100% / 4);
+
+          &:has(>input#menuName) {
+            max-width: 100%;
+            width: 100%;
+          }
+
+          &:has(>input#menuArticleName) {
             min-width: 100px;
-            max-width: calc(100% - 15px);
+            max-width: calc(calc(100% - 75px)/2);
+            width: 100%;
+          }
+        }
+
+      }
+
+      &#articleForm {
+        label {
+          min-width: 50px;
+          max-width: calc(100% / 8 + 14px);
+
+          &:has(>input#articleName) {
+            min-width: 100px;
+            max-width: calc(calc(100% - 200px)/1.5);
             width: 100%;
           }
         }

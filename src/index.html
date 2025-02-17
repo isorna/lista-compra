@@ -74,11 +74,18 @@
         <button type="submit" id="loginButton" title="Login">Login</button>
       </form>
     </main>
-    <main id="diary" class="hidden">
-      <h1>Histórico</h1>
-    </main>
     <main id="menus" class="hidden">
       <h1>Menús</h1>
+      <form id="menuForm">
+        <label>Nombre: <input type="text" id="menuName" placeholder="menú" /></label>
+        <label>Artículo: <input type="text" id="menuArticleName" placeholder="ingrediente" list="productos" autocomplete="off" /></label>
+        <label>Cantidad: <input type="number" id="menuQty" placeholder="0" min="0" max="10" step="1" /></label>
+        <label>Precio: <input type="number" id="menuPprice" placeholder="0€" min="0" max="100" step="1" /></label>
+        <button type="button" id="newMenuArticle" class="icon-button add-button" title="Añadir" disabled><img src="./assets/img/check-mark.png" alt="Añadir" /></button>
+      </form>
+    </main>
+    <main id="diary" class="hidden">
+      <h1>Histórico</h1>
     </main>
     <main id="stats" class="hidden">
       <h1>Estadísticas</h1>
@@ -87,8 +94,8 @@
       <nav>
         <ul>
           <li id="loginLink" class="hidden"><a href="login">Login</a></li>
-          <li><a href="diary">Histórico</a></li>
           <li><a href="menus">Menús</a></li>
+          <li><a href="diary">Histórico</a></li>
           <li><a href="stats">Estadísticas</a></li>
         </ul>
       </nav>
