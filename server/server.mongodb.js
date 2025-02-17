@@ -82,7 +82,11 @@ async function createArticle(article) {
   const client = new MongoClient(URI);
   const shoppinglistDB = client.db('shoppingList');
   const articlesCollection = shoppinglistDB.collection('articles');
-  const returnValue = await articlesCollection.insertOne(article);
+  const articleWithUserId = {
+    ...article,
+    user_id: new ObjectId(String(article.user_id))
+  };
+  const returnValue = await articlesCollection.insertOne(articleWithUserId);
   console.log('db createArticle', returnValue, article._id)
   return article
 }

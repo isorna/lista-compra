@@ -188,11 +188,13 @@ async function createShoppingListItem() {
   const articleNameElement = document.getElementById('articleName')
   const qtyElement = document.getElementById('qty')
   const priceElement = document.getElementById('price')
+  const userData = getDataFromSessionStorage()
 
   const articleData = {
     name: getInputValue(articleNameElement),
     qty: getInputValue(qtyElement),
-    price: getInputValue(priceElement)
+    price: getInputValue(priceElement),
+    user_id: userData?.user._id
   }
   const payload = JSON.stringify(articleData)
   // Send fetch to API, create new article
