@@ -599,14 +599,8 @@ function navigateTo(pathname) {
  * Check user login status
  */
 function checkLoginStatus() {
-  /** @type {State} */
   const storedData = getDataFromSessionStorage()
-  if (storedData?.user?.token) {
-    // const storeUserData = /** @type {User} */(storedData?.user)
-    // delete storeUserData.password
-    // store.user.login(storeUserData)
-    activateLoggedInUI(true)
-  }
+  activateLoggedInUI(storedData?.user?.token)
 }
 
 /**
@@ -617,13 +611,23 @@ function checkLoginStatus() {
 function activateLoggedInUI(isLoggedIn = false) {
   const loginLink = document.getElementById('loginLink')
   const logoutButton = document.getElementById('logoutButton')
+  const username = document.getElementById('username')
+  const storedData = getDataFromSessionStorage()
   // Update UI
   if (isLoggedIn) {
     loginLink?.classList.add('hidden')
     logoutButton?.classList.remove('hidden')
+    username?.classList.remove('hidden')
+    if (username) {
+      username.innerText = `¡Hola ${storedData?.user?.name}!`
+    }
   } else {
     logoutButton?.classList.add('hidden')
     loginLink?.classList.remove('hidden')
+    username?.classList.add('hidden')
+    if (username) {
+      username.innerText = ''
+    }
   }
 }
 

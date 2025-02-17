@@ -32,6 +32,12 @@ body {
       font-size: 2em;
       font-weight: bold;
       color: var(--main-color);
+      flex-grow: 2;
+
+      #username {
+        padding: 0 .5em;
+        float: right;
+      }
 
       a {
         color: inherit;
