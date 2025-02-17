@@ -34,11 +34,6 @@ body {
       color: var(--main-color);
       flex-grow: 2;
 
-      #username {
-        padding: 0 .5em;
-        float: right;
-      }
-
       a {
         color: inherit;
         text-decoration: none;
@@ -87,13 +82,14 @@ body {
 
       &.logout-button {
         max-width: 40px;
+        max-height: 40px;
       }
 
       &.delete-button {
         line-height: 1.5em;
         height: 50px;
         width: 100%;
-        max-width: 60px;
+        max-width: 50px;
         margin: 0 auto;
         background-color: orange;
         border: 1px solid red;
@@ -107,7 +103,6 @@ body {
       img {
         display: block;
         width: 80%;
-        height: 80%;
         margin: auto;
       }
     }

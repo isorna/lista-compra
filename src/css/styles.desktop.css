@@ -1,6 +1,11 @@
 body {
   header {
     grid-column-start: span 12;
+
+    #username {
+      padding: 0 .5em;
+      float: right;
+    }
   }
 
   main {

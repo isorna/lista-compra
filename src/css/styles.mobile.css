@@ -1,6 +1,19 @@
 body {
   header {
     grid-column-start: span 12;
+
+    h1 {
+      flex-grow: 1;
+
+      a {
+        display: block;
+      }
+
+      #username {
+        display: block;
+        margin-top: .3em;
+      }
+    }
   }
 
   main {
@@ -10,17 +23,25 @@ body {
       flex-wrap: wrap;
       gap: 1em .5em;
 
-      label + label {
-        width: 80px;
-      }
-
-      label:first-of-type {
-        width: 100%;
+      label {
+        width: 48%;
+        max-width: 48%;
       }
 
       button {
         line-height: 2em;
         flex-grow: 1;
+
+        &.icon-button {
+          height: 66px;
+          width: 66px;
+          max-width: 66px;
+          margin-left: 5px;
+
+          &+.icon-button {
+            margin-left: 15px;
+          }
+        }
       }
     }
 
