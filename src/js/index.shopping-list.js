@@ -136,6 +136,10 @@ function onNewListClick() {
  */
 function onLoginComponentSubmit(apiData) {
   console.log(`DESDE FUERA DEL COMPONENTE:`, apiData);
+  if (!apiData) {
+    alert('Usuario no encontrado')
+    return
+  }
   if ('_id' in apiData
     && 'name' in apiData
     && 'email' in apiData
@@ -147,7 +151,7 @@ function onLoginComponentSubmit(apiData) {
     activateLoggedInUI(true)
     navigateTo('/')
   } else {
-    alert('Invalid user data')
+    alert('La estructura devuelta por la API no corresponde con la clase Usuario')
   }
 }
 

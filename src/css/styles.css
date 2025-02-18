@@ -125,6 +125,17 @@ body {
       outline-color: var(--focus-color);
     }
 
+    login-form {
+      --card-bg-color: #00f6ff;
+
+      padding-top: 20px;
+
+      /* ESTO NO VA A FUNCIONAR NUNCA */
+      input {
+        background-color: blue;
+      }
+    }
+
     form {
       margin-top: 1em;
       display: flex;
