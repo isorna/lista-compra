@@ -37,7 +37,7 @@ export class LoginForm extends HTMLElement {
   }
   // Login form methods
   async connectedCallback() {
-    console.log("constructor: Custom element added to page.");
+    // console.log("constructor: Custom element added to page.");
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets.push(ResetCSS, AppCSS, LoginFormCSS);
 
@@ -63,7 +63,6 @@ export class LoginForm extends HTMLElement {
 
   // Private Methods
   _setUpContent() {
-    console.log(this.template)
     // Prevent render when disconnected or the template is not loaded
     if (this.shadowRoot && this.template) {
       this.shadowRoot.appendChild(this.template.content.cloneNode(true));
@@ -86,7 +85,7 @@ export class LoginForm extends HTMLElement {
       password: getInputValue(password)
     }
     let onFormSubmitEvent
-    console.log(`DESDE DENTRO DEL COMPONENTE Email: ${loginData.email}, Password: ${loginData.password}`);
+    // console.log(`DESDE DENTRO DEL COMPONENTE Email: ${loginData.email}, Password: ${loginData.password}`);
 
     if (loginData.email !== '' && loginData.password !== '') {
       const payload = JSON.stringify(loginData)

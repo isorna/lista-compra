@@ -127,13 +127,6 @@ body {
 
     login-form {
       --card-bg-color: #00f6ff;
-
-      padding-top: 20px;
-
-      /* ESTO NO VA A FUNCIONAR NUNCA */
-      input {
-        background-color: blue;
-      }
     }
 
     form {

@@ -37,11 +37,11 @@ function onDomContentLoaded() {
   logoutButton?.addEventListener('click', onLogoutClick)
 
   // REMOVE: Log store changes
-  window.addEventListener('stateChanged', (event) => {
-    console.log('stateChanged', /** @type {CustomEvent} */(event).detail)
-  })
+  // window.addEventListener('stateChanged', (event) => {
+  //   console.log('stateChanged', /** @type {CustomEvent} */(event).detail)
+  // })
   window.addEventListener('login-form-submit', (event) => {
-    console.log('login-form-submit', /** @type {CustomEvent} */(event).detail)
+    // console.log('login-form-submit', /** @type {CustomEvent} */(event).detail)
     onLoginComponentSubmit(/** @type {CustomEvent} */(event).detail)
   })
 
@@ -86,7 +86,7 @@ function onNewListClick() {
  * @returns void
  */
 function onLoginComponentSubmit(apiData) {
-  console.log(`DESDE FUERA DEL COMPONENTE:`, apiData);
+  // console.log(`DESDE FUERA DEL COMPONENTE:`, apiData);
   if (!apiData) {
     alert('Usuario no encontrado')
     return
@@ -431,7 +431,7 @@ export async function getAPIData(apiURL, method = 'GET', data) {
 async function readShoppingList() {
   /** @type {State} */
   const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/read/articles`)
-  console.log('apiData', apiData)
+  // console.log('apiData', apiData)
   const storeData = {
     articles: apiData
   }

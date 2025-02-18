@@ -5,7 +5,6 @@ export async function simpleFetch (url, options) {
   if (!result.ok) {
     throw new HttpError(result);
   }
-  console.log('simpleFetch', result)
   // Add support to html template files
   if (result.url.endsWith('.html')) {
     return (await result.text());
