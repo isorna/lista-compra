@@ -383,7 +383,7 @@ function resetFocus(){
  * Get data from API
  * @param {string} apiURL
  * @param {string} method
- * @param {Object} [data]
+ * @param {any} [data]
  * @returns {Promise<Array<UsualProduct | User>>}
  */
 export async function getAPIData(apiURL, method = 'GET', data) {
