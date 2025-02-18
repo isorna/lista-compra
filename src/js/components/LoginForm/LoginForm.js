@@ -44,12 +44,16 @@ export class LoginForm extends HTMLElement {
     this._setUpContent();
     // Add event listeners to form elements
     const form = this.shadowRoot.getElementById("loginForm");
+    // Optional: observe event from the store
+    window.addEventListener('stateChanged', this._handleStateChanged.bind(this), { passive: true });
 
     form.addEventListener("submit", this._onFormSubmit.bind(this));
   }
 
   disconnectedCallback() {
     console.log("disconnectedCallback: Custom element removed from page.");
+    // Don't forget to remove event listeners
+    window.removeEventListener('stateChanged', this._handleStateChanged);
   }
 
   adoptedCallback() {
@@ -62,6 +66,14 @@ export class LoginForm extends HTMLElement {
   }
 
   // Private Methods
+
+  /**
+   * Private method to set up the content of the web component.
+   *
+   * Only render if the web component is connected and the template is loaded.
+   * Replace any previous content with the template content.
+   * @private
+   */
   _setUpContent() {
     // Prevent render when disconnected or the template is not loaded
     if (this.shadowRoot && this.template) {
@@ -76,6 +88,15 @@ export class LoginForm extends HTMLElement {
       // </form>
       // `
     }
+  }
+
+  /**
+   * Handles a state change event from the store
+   * @param {import('../../store/redux').State} state - The new state
+   * @private
+   */
+  _handleStateChanged(state) {
+    console.log('stateChanged observed from component', state?.detail?.type);
   }
 
   async _onFormSubmit(e) {
