@@ -65,6 +65,8 @@ export class LoginForm extends HTMLElement {
   _setUpContent() {
     // Prevent render when disconnected or the template is not loaded
     if (this.shadowRoot && this.template) {
+      // Replace previous content
+      this.shadowRoot.innerHTML = '';
       this.shadowRoot.appendChild(this.template.content.cloneNode(true));
       // this.shadowRoot.innerHTML = `
       // <form id="loginForm">
