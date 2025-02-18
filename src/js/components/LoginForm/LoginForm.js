@@ -35,6 +35,7 @@ export class LoginForm extends HTMLElement {
   constructor() {
     super()
   }
+
   // ======================= Lifecycle Methods ======================= //
 
   async connectedCallback() {
@@ -84,13 +85,6 @@ export class LoginForm extends HTMLElement {
       // Replace previous content
       this.shadowRoot.innerHTML = '';
       this.shadowRoot.appendChild(this.template.content.cloneNode(true));
-      // this.shadowRoot.innerHTML = `
-      // <form id="loginForm">
-      //   <label>Usuario: <input type="text" id="email" placeholder="email" /></label>
-      //   <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
-      //   <button type="submit" id="loginButton" title="Login">Login</button>
-      // </form>
-      // `
     }
   }
 

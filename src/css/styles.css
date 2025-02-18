@@ -4,6 +4,10 @@
   display: none !important;
 }
 
+.hint {
+  margin-top: 10px;
+  color: red;
+}
 
 .debug {
   background-color: rgba(241 8 8 / 0.3);

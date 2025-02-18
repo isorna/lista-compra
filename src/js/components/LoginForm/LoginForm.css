@@ -1,4 +1,9 @@
 /* stylelint-disable media-feature-range-notation */
+
+::slotted(p) {
+  background-color: chartreuse;
+}
+
 form {
   margin-top: 1em;
   display: flex;
