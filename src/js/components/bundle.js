@@ -1,3 +1,3 @@
-import { LoginForm } from "./loginForm.js";
+import { LoginForm } from "./LoginForm/LoginForm.js";
 
 export { LoginForm }

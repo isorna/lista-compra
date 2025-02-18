@@ -1,5 +1,6 @@
-import { getAPIData, getInputValue, API_PORT } from '../index.shopping-list.js';
-import css from '../../css/styles.css' with { type: 'css' }
+import { getAPIData, getInputValue, API_PORT } from '../../index.shopping-list.js';
+import AppCSS from '../../../css/app.css' with { type: 'css' }
+import LoginFormCSS from './LoginForm.css' with { type: 'css' }
 /**
  * Login Form Web Component
  *
@@ -13,24 +14,14 @@ export class LoginForm extends HTMLElement {
   // Funcionalidad propia del formulario de login
   connectedCallback() {
     console.log("Custom element added to page.");
-    const shadow = this.attachShadow({ mode: "open" });
-    const style = document.createElement("style");
-    shadow.adoptedStyleSheets.push(css);
-    shadow.innerHTML = `
-    <form id="loginForm">
-      <label>Usuario: <input type="text" id="email" placeholder="email" /></label>
-      <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
-      <button type="submit" id="loginButton" title="Login">Login</button>
-    </form>
-    `
-    style.textContent = `
-      form { border: 5px solid black;}
-    `
-    shadow.appendChild(style);
-    // Add event listeners to form elements
-    const form = shadow.getElementById("loginForm");
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.adoptedStyleSheets.push(AppCSS, LoginFormCSS);
 
-    form.addEventListener("submit", this.onFormSubmit.bind(this));
+    this._setUpContent();
+    // Add event listeners to form elements
+    const form = this.shadowRoot.getElementById("loginForm");
+
+    form.addEventListener("submit", this._onFormSubmit.bind(this));
   }
 
   disconnectedCallback() {
@@ -47,7 +38,17 @@ export class LoginForm extends HTMLElement {
 
   // Private Methods
 
-  async onFormSubmit(e) {
+  _setUpContent() {
+    this.shadowRoot.innerHTML = `
+    <form id="loginForm">
+      <label>Usuario: <input type="text" id="email" placeholder="email" /></label>
+      <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
+      <button type="submit" id="loginButton" title="Login">Login</button>
+    </form>
+    `
+  }
+
+  async _onFormSubmit(e) {
     e.preventDefault();
     const email = this.shadowRoot.getElementById("email");
     const password = this.shadowRoot.getElementById("password");

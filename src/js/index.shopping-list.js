@@ -13,6 +13,11 @@ import { installRouter } from './lib/router.js'
 /** @import {State, User} from './store/redux.js' */
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
 
+/**
+ * @typedef {Event} AdaptedCustomEvent
+ * @property {any} detail
+ */
+
 const myFactory = new ArticleFactory
 export const API_PORT = location.port ? `:${location.port}` : ''
 
@@ -41,7 +46,10 @@ function onDomContentLoaded() {
   window.addEventListener('stateChanged', (event) => {
     console.log('stateChanged', /** @type {CustomEvent} */(event).detail)
   })
-  window.addEventListener('login-form-submit', onLoginComponentSubmit)
+  window.addEventListener('login-form-submit', (event) => {
+    console.log('login-form-submit', /** @type {CustomEvent} */(event).detail)
+    onLoginComponentSubmit(/** @type {CustomEvent} */(event).detail)
+  })
 
   // This is just a test
   // for (let icon in icons) {
@@ -123,11 +131,10 @@ function onNewListClick() {
 
 /**
  * Handles a successful login from the login component
- * @param {CustomEvent} customEvent - The user data returned from the API
+ * @param {Object} apiData - The user data returned from the API
  * @returns void
  */
-function onLoginComponentSubmit(customEvent) {
-  const apiData = customEvent.detail
+function onLoginComponentSubmit(apiData) {
   console.log(`DESDE FUERA DEL COMPONENTE:`, apiData);
   if ('_id' in apiData
     && 'name' in apiData

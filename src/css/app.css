@@ -1,0 +1,97 @@
+/* stylelint-disable no-descending-specificity */
+:root {
+  --border-radius: 5px;
+  --main-bg-color: darkgoldenrod;
+  --main-color: whitesmoke;
+  --focus-color: blue;
+  --card-bg-color: rgba(241 8 8 / 0.3);
+
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  background-color: var(--main-color);
+  font-family: 'Droid Sans', Arial, Helvetica, sans-serif;
+  font-size: 18px;
+}
+
+[hidden],
+.hidden {
+  display: none !important;
+}
+
+.debug {
+  background-color: rgba(241 8 8 / 0.3);
+}
+
+button {
+  flex-grow: 1;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+
+  &.icon-button {
+    display: block;
+    line-height: 40px;
+    width: 66px;
+    max-width: 66px;
+    font-size: 36px;
+    color: var(--main-color);
+    transition: all 0.2s ease-in-out;
+
+    &.add-button {
+      background-color: mediumslateblue;
+      border: 1px solid blue;
+
+      &:disabled {
+        opacity: 0.5;
+      }
+
+      &:hover:not(:disabled) {
+        border-color: mediumslateblue;
+        background-color: blue;
+      }
+    }
+
+    &.logout-button,
+    &.new-button {
+      background-color: orange;
+      border: 1px solid red;
+
+      &:hover {
+        border-color: orange;
+        background-color: red;
+      }
+    }
+
+    &.logout-button {
+      max-width: 40px;
+      max-height: 40px;
+    }
+
+    &.delete-button {
+      line-height: 1.5em;
+      height: 50px;
+      width: 100%;
+      max-width: 50px;
+      margin: 0 auto;
+      background-color: orange;
+      border: 1px solid red;
+
+      &:hover {
+        border-color: orange;
+        background-color: red;
+      }
+    }
+
+    img {
+      display: block;
+      width: 80%;
+      margin: auto;
+    }
+  }
+}
+
+input:focus,
+input:active,
+button:focus,
+button:active {
+  outline-color: var(--focus-color);
+}
