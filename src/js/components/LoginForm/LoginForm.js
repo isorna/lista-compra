@@ -35,16 +35,20 @@ export class LoginForm extends HTMLElement {
   constructor() {
     super()
   }
-  // Login form methods
+  // ======================= Lifecycle Methods ======================= //
+
   async connectedCallback() {
     // console.log("constructor: Custom element added to page.");
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets.push(ResetCSS, AppCSS, LoginFormCSS);
 
     this._setUpContent();
+    this._checkSmallScreenBehaviors();
     // Add event listeners to form elements
     const form = this.shadowRoot.getElementById("loginForm");
-    // Optional: observe event from the store
+    // Get updates when content is updated in the slot
+    this.shadowRoot.addEventListener('slotchange', this._handleSlotChanged.bind(this), { passive: true });
+    // Global store state listener
     window.addEventListener('stateChanged', this._handleStateChanged.bind(this), { passive: true });
 
     form.addEventListener("submit", this._onFormSubmit.bind(this));
@@ -65,7 +69,7 @@ export class LoginForm extends HTMLElement {
     this._setUpContent();
   }
 
-  // Private Methods
+  // ======================= Private Methods ======================= //
 
   /**
    * Private method to set up the content of the web component.
@@ -91,13 +95,52 @@ export class LoginForm extends HTMLElement {
   }
 
   /**
+   * Handles a slot change event from the shadow root
+   * @param {Event} e - The slot change event
+   * @private
+   */
+  _handleSlotChanged(e) {
+    // Notify the slot change event
+    console.log(['Slot changed', e])
+  }
+
+  /**
    * Handles a state change event from the store
    * @param {import('../../store/redux').State} state - The new state
    * @private
    */
   _handleStateChanged(state) {
+    // Do whatever is needed in this component after a particular state value changes
+    // Filter by the states needed in this component
     console.log('stateChanged observed from component', state?.detail?.type);
   }
+
+  /**
+   * Updates the visibility of the sidebar based on the screen size.
+   * If the screen width is 460px or less, the sidebar is hidden;
+   * otherwise, the sidebar is shown.
+   * @private
+   */
+  _checkSmallScreenBehaviors() {
+      if (window.matchMedia('(max-width: 460px)').matches) {
+          this.showSidebar = false;
+      } else {
+          this.showSidebar = true;
+      }
+  }
+
+/**
+ * Handles the form submission event for the login form.
+ * Prevents the default form submission behavior and gathers
+ * the user's email and password input values. If both fields
+ * are filled, sends a POST request to the login API endpoint
+ * with the login data. Dispatches a custom event with the API
+ * response data if the login is successful, otherwise dispatches
+ * an event with null detail.
+ *
+ * @param {Event} e - The form submission event.
+ * @private
+ */
 
   async _onFormSubmit(e) {
     e.preventDefault();
