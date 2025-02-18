@@ -8,6 +8,8 @@ import LoginFormCSS from './LoginForm.css' with { type: 'css' }
  * @emits 'login-form-submit'
  */
 export class LoginForm extends HTMLElement {
+  static observedAttributes = ['prueba'];
+
   constructor() {
     super()
   }
@@ -34,10 +36,10 @@ export class LoginForm extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     console.log(`Attribute ${name} has changed.`, oldValue, newValue);
+    this._setUpContent();
   }
 
   // Private Methods
-
   _setUpContent() {
     this.shadowRoot.innerHTML = `
     <form id="loginForm">
