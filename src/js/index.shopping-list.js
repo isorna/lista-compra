@@ -6,10 +6,6 @@ import { INITIAL_STATE, store } from './store/redux.js'
 import { installRouter } from './lib/router.js'
 // import { icons } from './lib/icons.js'
 
-// TODO: Web Components
-// @ ts-expect-error TS doesn't like this
-// import css from '../css/styles.css' with { type: 'css' }
-
 /** @import {State, User} from './store/redux.js' */
 /** @import {Article, UsualProduct} from './classes/ShopArticle.js' */
 
@@ -29,7 +25,6 @@ function onDomContentLoaded() {
   const articleNameElement = document.getElementById('articleName')
   const newArticleElement = document.getElementById('newArticle')
   const newListElement = document.getElementById('newList')
-  // const loginForm = document.getElementById('loginForm')
   const logoutButton = document.getElementById('logoutButton')
 
   // Activate router
@@ -39,7 +34,6 @@ function onDomContentLoaded() {
   newArticleElement?.addEventListener('click', onNewArticleClick)
   newListElement?.addEventListener('click', onNewListClick)
   // Login
-  // loginForm?.addEventListener('submit', onLoginFormSubmit)
   logoutButton?.addEventListener('click', onLogoutClick)
 
   // REMOVE: Log store changes
@@ -59,12 +53,10 @@ function onDomContentLoaded() {
   //   document.getElementById('menu')?.appendChild(iconElement)
   // }
 
-  // TODO: Web Components
-  // console.log(css)
-
   checkLoginStatus()
   readShoppingList()
   getShoppingListTotalAmount()
+  // TODO: Get usual products
   // getUsualProducts()
 }
 
@@ -87,47 +79,6 @@ function onNewArticleClick() {
 function onNewListClick() {
   resetShoppingList()
 }
-
-/**
- * Handle form submit event from login form
- * @param {Event} e
- */
-// async function onLoginFormSubmit(e){
-//   const emailElement = document.getElementById('email')
-//   const passwordElement = document.getElementById('password')
-//   const loginData = {
-//     email: getInputValue(emailElement),
-//     password: getInputValue(passwordElement)
-//   }
-
-//   e.preventDefault()
-
-//   if (loginData.email !== '' && loginData.password !== '') {
-//     const payload = JSON.stringify(loginData)
-//     const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/login`, 'POST', payload)
-
-//     if (!apiData) {
-//       // Show error
-//       alert('El usuario no existe')
-//     } else {
-//       if ('_id' in apiData
-//         && 'name' in apiData
-//         && 'email' in apiData
-//         && 'token' in apiData
-//         && 'role' in apiData) {
-//         const userData = /** @type {User} */(apiData)
-//         // store.user.login(userData, setSessionStorageFromStore)
-//         // setSessionStorageFromStore()
-//         updateSessionStorage({ user: userData })
-//         // Redirect to home
-//         activateLoggedInUI(true)
-//         navigateTo('/')
-//       } else {
-//         alert('Invalid user data')
-//       }
-//     }
-//   }
-// }
 
 /**
  * Handles a successful login from the login component

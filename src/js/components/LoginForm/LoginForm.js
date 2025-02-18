@@ -1,23 +1,45 @@
 import { getAPIData, getInputValue, API_PORT } from '../../index.shopping-list.js';
+import { importTemplate } from '../../lib/importTemplate.js';
+// @ ts-expect-error TS doesn't like this
+import ResetCSS from '../../../css/reset.css' with { type: 'css' }
+// @ ts-expect-error TS doesn't like this
 import AppCSS from '../../../css/app.css' with { type: 'css' }
+// @ ts-expect-error TS doesn't like this
 import LoginFormCSS from './LoginForm.css' with { type: 'css' }
+
+const TEMPLATE = {
+  id: 'loginFormTemplate',
+  url: './js/components/LoginForm/LoginForm.html'
+}
+// Wait for template to load
+await importTemplate(TEMPLATE.url);
+
 /**
  * Login Form Web Component
  *
  * @class LoginForm
+ * @property {string} prueba
  * @emits 'login-form-submit'
  */
 export class LoginForm extends HTMLElement {
   static observedAttributes = ['prueba'];
 
+  get prueba() {
+    return this.getAttribute('prueba');
+  }
+
+  get template(){
+    return document.getElementById(TEMPLATE.id);
+  }
+
   constructor() {
     super()
   }
-  // Funcionalidad propia del formulario de login
-  connectedCallback() {
-    console.log("Custom element added to page.");
+  // Login form methods
+  async connectedCallback() {
+    console.log("constructor: Custom element added to page.");
     this.attachShadow({ mode: "open" });
-    this.shadowRoot.adoptedStyleSheets.push(AppCSS, LoginFormCSS);
+    this.shadowRoot.adoptedStyleSheets.push(ResetCSS, AppCSS, LoginFormCSS);
 
     this._setUpContent();
     // Add event listeners to form elements
@@ -27,27 +49,32 @@ export class LoginForm extends HTMLElement {
   }
 
   disconnectedCallback() {
-    console.log("Custom element removed from page.");
+    console.log("disconnectedCallback: Custom element removed from page.");
   }
 
   adoptedCallback() {
-    console.log("Custom element moved to new page.");
+    console.log("adoptedCallback: Custom element moved to new page.");
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    console.log(`Attribute ${name} has changed.`, oldValue, newValue);
+    console.log(`attributeChangedCallback: Attribute ${name} has changed.`, oldValue, newValue);
     this._setUpContent();
   }
 
   // Private Methods
   _setUpContent() {
-    this.shadowRoot.innerHTML = `
-    <form id="loginForm">
-      <label>Usuario: <input type="text" id="email" placeholder="email" /></label>
-      <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
-      <button type="submit" id="loginButton" title="Login">Login</button>
-    </form>
-    `
+    console.log(this.template)
+    // Prevent render when disconnected or the template is not loaded
+    if (this.shadowRoot && this.template) {
+      this.shadowRoot.appendChild(this.template.content.cloneNode(true));
+      // this.shadowRoot.innerHTML = `
+      // <form id="loginForm">
+      //   <label>Usuario: <input type="text" id="email" placeholder="email" /></label>
+      //   <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
+      //   <button type="submit" id="loginButton" title="Login">Login</button>
+      // </form>
+      // `
+    }
   }
 
   async _onFormSubmit(e) {
