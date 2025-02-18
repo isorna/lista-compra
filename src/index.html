@@ -22,7 +22,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="./assets/img/apple-touch-icon.png"/>
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/img/favicon-32x32.png"/>
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/img/favicon-16x16.png"/>
-    <script type="module" src="./js/index.shopping-list.js"></script>
+    <script type="module" src="./js/components/bundle.js" defer></script>
+    <script type="module" src="./js/index.shopping-list.js" defer></script>
     <link rel="stylesheet" href="./css/reset.css"/>
     <link rel="stylesheet" href="./css/styles.css"/>
     <link rel="stylesheet" href="./css/styles.mobile.css" media="screen and (max-width: 768px)"/>
@@ -68,6 +69,7 @@
     </main>
     <main id="login" class="hidden">
       <h1>Login</h1>
+      <login-form></login-form>
       <form id="loginForm">
         <label>Usuario: <input type="text" id="email" placeholder="email" /></label>
         <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
