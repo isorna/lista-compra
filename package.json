@@ -30,6 +30,7 @@
     "serverless-http": "^3.2.0"
   },
   "devDependencies": {
+    "@eslint/css": "^0.3.0",
     "@eslint/js": "^9.19.0",
     "@types/express": "^5.0.0",
     "concat-stream": "^2.0.0",
