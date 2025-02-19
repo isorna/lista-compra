@@ -1,0 +1,64 @@
+/* stylelint-disable media-feature-range-notation */
+
+table {
+  margin-top: 1em;
+  width: 100%;
+  border-radius: var(--border-radius);
+  background-color: var(--card-bg-color);
+
+  th,
+  td {
+    border: 1px solid var(--main-color);
+    padding: calc(var(--border-radius)*2);
+    vertical-align: middle;
+  }
+
+  .bought td,
+  .bought th {
+    background-color: gold;
+  }
+
+  .bought td:nth-child(2) {
+    background-image: url('../../../assets/img/confirmed.png');
+    background-position-x: calc(100% - 10px);
+    background-position-y: 50%;
+    background-size: 60px;
+    background-repeat: no-repeat;
+  }
+
+  tbody {
+    td:nth-child(2) {
+      cursor: pointer;
+
+      &:hover {
+        background-color: goldenrod;
+      }
+    }
+
+    /* Text align right for number columns */
+    td:nth-child(1),
+    td:nth-child(3),
+    td:nth-child(4) {
+      text-align: right;
+    }
+  }
+
+  tfoot {
+    th,
+    td:nth-child(2) {
+      text-align: right;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  table {
+    tfoot td,
+    th:nth-child(4),
+    td:nth-child(4),
+    th:nth-child(3),
+    td:nth-child(3) {
+      display: none;
+    }
+  }
+}

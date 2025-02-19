@@ -48,25 +48,7 @@
         <button type="button" id="newArticle" class="icon-button add-button" title="Añadir" disabled><img src="./assets/img/check-mark.png" alt="Añadir" /></button>
         <button type="reset" id="newList" class="icon-button new-button" title="Nueva lista"><img src="./assets/img/anticlockwise-rotation.png" alt="Nueva lista" /></button>
       </form>
-      <table id="shoppingListTable">
-        <thead>
-          <tr>
-            <th>cantidad</th>
-            <th>nombre del artículo</th>
-            <th>precio</th>
-            <th>subtotal</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="shoppingListTableBody">
-        </tbody>
-        <tfoot>
-          <tr>
-            <th colspan="4">TOTAL: <span id="shoppingListTableTotal">XXXX</span> €</th>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
+      <article-list id="articleList"></article-list>
     </main>
     <main id="login" class="hidden">
       <h1>Login</h1>

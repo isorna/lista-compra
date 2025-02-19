@@ -50,7 +50,7 @@ export class LoginForm extends HTMLElement {
     // Get updates when content is updated in the slot
     this.shadowRoot.addEventListener('slotchange', this._handleSlotChanged.bind(this), { passive: true });
     // Global store state listener
-    window.addEventListener('stateChanged', this._handleStateChanged.bind(this), { passive: true });
+    // window.addEventListener('stateChanged', this._handleStateChanged.bind(this), { passive: true });
 
     form.addEventListener("submit", this._onFormSubmit.bind(this));
   }
@@ -58,7 +58,7 @@ export class LoginForm extends HTMLElement {
   disconnectedCallback() {
     console.log("disconnectedCallback: Custom element removed from page.");
     // Don't forget to remove event listeners
-    window.removeEventListener('stateChanged', this._handleStateChanged);
+    // window.removeEventListener('stateChanged', this._handleStateChanged);
   }
 
   adoptedCallback() {
@@ -103,11 +103,11 @@ export class LoginForm extends HTMLElement {
    * @param {import('../../store/redux').State} state - The new state
    * @private
    */
-  _handleStateChanged(state) {
-    // Do whatever is needed in this component after a particular state value changes
-    // Filter by the states needed in this component
-    console.log('stateChanged observed from component', state?.detail?.type);
-  }
+  // _handleStateChanged(state) {
+  //   // Do whatever is needed in this component after a particular state value changes
+  //   // Filter by the states needed in this component
+  //   console.log('stateChanged observed from component', state?.detail?.type);
+  // }
 
   /**
    * Updates the visibility of the sidebar based on the screen size.

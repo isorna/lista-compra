@@ -435,11 +435,13 @@ async function readShoppingList() {
   const storeData = {
     articles: apiData
   }
+  // Propagate article list to article-list component
+  document.getElementById('articleList')?.setAttribute('articles', JSON.stringify(apiData))
   updateLocalStorage(storeData)
   const storedData = getDataFromLocalStorage()
   storedData?.articles.forEach((/** @type {Article | UsualProduct} */ savedArticle) => {
     store.article.create(savedArticle)
-    addNewRowToShoppingListTable(savedArticle)
+    // addNewRowToShoppingListTable(savedArticle)
   });
 }
 
