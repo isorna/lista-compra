@@ -65,8 +65,17 @@ export class LoginForm extends HTMLElement {
     console.log("adoptedCallback: Custom element moved to new page.");
   }
 
+
+  /**
+   * Called when an observed attribute has changed.
+   *
+   * @param {String} name - The name of the attribute that changed.
+   * @param {String} oldValue - The old value of the attribute.
+   * @param {String} newValue - The new value of the attribute.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   attributeChangedCallback(name, oldValue, newValue) {
-    console.log(`attributeChangedCallback: Attribute ${name} has changed.`, oldValue, newValue);
+    // console.log(`attributeChangedCallback: Attribute ${name} has changed.`, oldValue, newValue);
     this._setUpContent();
   }
 
@@ -93,9 +102,10 @@ export class LoginForm extends HTMLElement {
    * @param {Event} e - The slot change event
    * @private
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _handleSlotChanged(e) {
     // Notify the slot change event
-    console.log(['Slot changed', e])
+    // console.log(['Slot changed', e])
   }
 
   /**
@@ -103,11 +113,11 @@ export class LoginForm extends HTMLElement {
    * @param {import('../../store/redux').State} state - The new state
    * @private
    */
-  // _handleStateChanged(state) {
-  //   // Do whatever is needed in this component after a particular state value changes
-  //   // Filter by the states needed in this component
-  //   console.log('stateChanged observed from component', state?.detail?.type);
-  // }
+  _handleStateChanged(state) {
+    // Do whatever is needed in this component after a particular state value changes
+    // Filter by the states needed in this component
+    console.log('stateChanged observed from component', state?.detail?.type);
+  }
 
   /**
    * Updates the visibility of the sidebar based on the screen size.

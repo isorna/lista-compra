@@ -1,4 +1,5 @@
-// import { getAPIData, getInputValue, API_PORT } from '../../index.shopping-list.js';
+import { getAPIData, setLocalStorageFromStore, API_PORT } from '../../index.shopping-list.js';
+import { store } from '../../store/redux.js'
 import { importTemplate } from '../../lib/importTemplate.js';
 // @ ts-expect-error TS doesn't like this
 import ResetCSS from '../../../css/reset.css' with { type: 'css' }
@@ -56,9 +57,17 @@ export class ArticleList extends HTMLElement {
     window.addEventListener('stateChanged', this._handleStateChanged.bind(this), { passive: true });
   }
 
+  /**
+   * Called when an observed attribute has changed.
+   *
+   * @param {String} name - The name of the attribute that changed.
+   * @param {String} oldValue - The old value of the attribute.
+   * @param {String} newValue - The new value of the attribute.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'articles') {
-      console.log(`attributeChangedCallback: Attribute ${name} has changed.`, oldValue, newValue);
+      // console.log(`attributeChangedCallback: Attribute ${name} has changed.`, oldValue, newValue);
       this._setUpContent();
     }
   }
@@ -89,6 +98,7 @@ export class ArticleList extends HTMLElement {
       articles.forEach((article) => {
         this._addNewRowToShoppingListTable(article)
       });
+      this._getShoppingListTotalAmount()
     }
   }
 
@@ -131,7 +141,7 @@ export class ArticleList extends HTMLElement {
     // 1.1. Assign Table Cells values
     newArticleTableCellQty.innerText = String(newArticleObject.qty)
     newArticleTableCellName.innerText = newArticleObject.name
-    newArticleTableCellName.addEventListener('click', this._buyArticle.bind(newArticleTableCellName, clickEvent, newArticleObject._id, newArticleTableRow))
+    newArticleTableCellName.addEventListener('click', this._buyArticle.bind(this, clickEvent, newArticleObject._id, newArticleTableRow))
     newArticleTableCellPrice.innerText = String(newArticleObject.price)
     newArticleTableCellSubtotal.innerText = String(newArticleObject.qty * newArticleObject.price)
     // newArticleDeleteButton.innerHTML = '&#128473;&#xfe0e;'
@@ -140,7 +150,7 @@ export class ArticleList extends HTMLElement {
     newArticleImg.src = './assets/img/cancel.png'
     newArticleImg.setAttribute('alt', 'Eliminar')
     newArticleDeleteButton.appendChild(newArticleImg)
-    newArticleDeleteButton.addEventListener('click', this._deleteShoppingListItem.bind(newArticleDeleteButton, clickEvent, newArticleObject._id, newArticleTableRow))
+    newArticleDeleteButton.addEventListener('click', this._deleteShoppingListItem.bind(this, clickEvent, newArticleObject._id, newArticleTableRow))
     newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
     // 1.2. Append Table Cells to Table Row
     newArticleTableRow.appendChild(newArticleTableCellQty)
@@ -155,12 +165,90 @@ export class ArticleList extends HTMLElement {
     shoppingListTableBodyElement?.appendChild(newArticleTableRow)
   }
 
-  _buyArticle(){
-    console.log('buy article')
+  /**
+   * Update item to bought
+   * @param {MouseEvent} e
+   * @param {string} itemId
+   * @param {HTMLElement} rowToUpdate
+   */
+  async _buyArticle(e, itemId, rowToUpdate) {
+    // Find item inside shoppingList
+    const itemToUpdate = store.article.getById(itemId)
+    // Update html
+    if (itemToUpdate.bought !== true) {
+      rowToUpdate.classList.add('bought')
+    } else {
+      rowToUpdate.classList.remove('bought')
+    }
+    // Modify Article data
+    itemToUpdate.bought = !itemToUpdate.bought
+
+    const updatedData = {
+      bought: itemToUpdate.bought,
+      test: {
+        miPrueba: true,
+        otraPrueba: [1,2,3]
+      }
+    }
+    const payload = JSON.stringify(updatedData)
+    // Send fetch to API, update article
+    await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/update/articles/${itemToUpdate._id}`, 'PUT', payload)
+    // console.log('after update on API', apiData)
+    store.article.update(itemToUpdate, setLocalStorageFromStore)
   }
 
-  _deleteShoppingListItem(){
-    console.log('delete article')
+  /**
+   * Delete existing shopping list item
+   * @param {MouseEvent} e
+   * @param {string} itemIdToDelete
+   * @param {HTMLElement} rowToDelete
+   */
+  async _deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
+    // Send fetch to API, delete article
+    const result = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/delete/articles/${itemIdToDelete}`, 'DELETE')
+
+    if (result) {
+      console.log('after delete on API', result)
+      // Delete item from store
+      store.article.delete(store.article.getById(itemIdToDelete), setLocalStorageFromStore)
+      // Update html
+      rowToDelete.remove()
+      this._getShoppingListTotalAmount()
+    } else {
+      alert('Error deleting article')
+      console.error('Error deleting article', result)
+    }
+  }
+
+  /**
+   * Calculate shopping list total amount
+   */
+  _getShoppingListTotalAmount() {
+    const shoppingListTableTotalElement = this.shadowRoot.getElementById('shoppingListTableTotal')
+    let totalAmount = 0
+
+    for (let article of store.article.getAll()) {
+      // 1. Calculate subtotals for each article
+      const subtotal = article.qty * article.price
+      // 2. Add all subtotals
+      totalAmount += subtotal
+    }
+    // 3. Show it on table total amount cell
+    if (shoppingListTableTotalElement) {
+      shoppingListTableTotalElement.innerText = String(totalAmount)
+    }
+  }
+
+  /**
+   * Empty table element
+   */
+  _emptyTableElement() {
+    const shoppingListTableBodyRowsList = this.shadowRoot.querySelectorAll('tbody>tr')
+    // 1. For each table row found
+    for (let tableRow of shoppingListTableBodyRowsList) {
+      // 2. Remove it from the table element
+      tableRow.remove()
+    }
   }
 }
 

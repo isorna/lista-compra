@@ -55,9 +55,6 @@ function onDomContentLoaded() {
 
   checkLoginStatus()
   readShoppingList()
-  getShoppingListTotalAmount()
-  // TODO: Get usual products
-  // getUsualProducts()
 }
 
 function onArticleNameKeyUp() {
@@ -137,10 +134,8 @@ async function resetShoppingList() {
     // 1. Empty the shopping list
     store.article.deleteAll(setLocalStorageFromStore)
     // 2. Empty Table Element
-    emptyTableElement()
-    // 3. Update Table total amount cell
-    getShoppingListTotalAmount()
-    // 4. Clean Up form
+    updateArticleList([])
+    // 3. Clean Up form
     cleanUpForm()
   }
 }
@@ -196,8 +191,7 @@ async function createShoppingListItem() {
   store.article.create(newArticle, setLocalStorageFromStore)
 
   // Update html
-  getShoppingListTotalAmount()
-  addNewRowToShoppingListTable(newArticle)
+  updateArticleList([...store.article.getAll()])
   resetFocus()
 }
 
@@ -211,147 +205,6 @@ export function getInputValue(inputElement) {
     return /** @type {HTMLInputElement} */(inputElement).value
   } else {
     return ''
-  }
-}
-
-/**
- * Add a new row to the shopping list table element
- * @param {Article | UsualProduct} newArticleObject
- * @returns {any}
- */
-function addNewRowToShoppingListTable(newArticleObject){
-  const shoppingListTableBodyElement = document.getElementById('shoppingListTableBody')
-  // 1. Create HTML Elements that represents the new article
-  const newArticleTableRow = document.createElement('tr')
-  const newArticleTableCellQty = document.createElement('td')
-  const newArticleTableCellName = document.createElement('td')
-  const newArticleTableCellPrice = document.createElement('td')
-  const newArticleTableCellSubtotal = document.createElement('td')
-  const newArticleDeleteButtonCell = document.createElement('td')
-  const newArticleDeleteButton = document.createElement('button')
-  const newArticleImg = document.createElement('img')
-  const clickEvent = new MouseEvent('click', {
-    bubbles: true,
-    cancelable: true,
-    view: window
-  })
-  // 1.1. Assign Table Cells values
-  newArticleTableCellQty.innerText = String(newArticleObject.qty)
-  newArticleTableCellName.innerText = newArticleObject.name
-  newArticleTableCellName.addEventListener('click', buyArticle.bind(newArticleTableCellName, clickEvent, newArticleObject._id, newArticleTableRow))
-  newArticleTableCellPrice.innerText = String(newArticleObject.price)
-  newArticleTableCellSubtotal.innerText = String(newArticleObject.qty * newArticleObject.price)
-  // newArticleDeleteButton.innerHTML = '&#128473;&#xfe0e;'
-  newArticleDeleteButton.title = 'Eliminar'
-  newArticleDeleteButton.className = 'icon-button delete-button'
-  newArticleImg.src = './assets/img/cancel.png'
-  newArticleImg.setAttribute('alt', 'Eliminar')
-  newArticleDeleteButton.appendChild(newArticleImg)
-  newArticleDeleteButton.addEventListener('click', deleteShoppingListItem.bind(newArticleDeleteButton, clickEvent, newArticleObject._id, newArticleTableRow))
-  newArticleDeleteButtonCell.appendChild(newArticleDeleteButton)
-  // 1.2. Append Table Cells to Table Row
-  newArticleTableRow.appendChild(newArticleTableCellQty)
-  newArticleTableRow.appendChild(newArticleTableCellName)
-  newArticleTableRow.appendChild(newArticleTableCellPrice)
-  newArticleTableRow.appendChild(newArticleTableCellSubtotal)
-  newArticleTableRow.appendChild(newArticleDeleteButtonCell)
-  if (/** @type {UsualProduct} */(newArticleObject)?.bought === true) {
-    newArticleTableRow.classList.add('bought')
-  }
-  // 2. Append the new Table Row to the shoppingListTableBodyElement
-  shoppingListTableBodyElement?.appendChild(newArticleTableRow)
-}
-
-/**
- * Update item to bought
- * @param {MouseEvent} e
- * @param {string} itemId
- * @param {HTMLElement} rowToUpdate
- */
-async function buyArticle(e, itemId, rowToUpdate) {
-  // Find item inside shoppingList
-  const itemToUpdate = store.article.getById(itemId)
-  // Update html
-  if (itemToUpdate.bought !== true) {
-    rowToUpdate.classList.add('bought')
-  } else {
-    rowToUpdate.classList.remove('bought')
-  }
-  // Modify Article data
-  itemToUpdate.bought = !itemToUpdate.bought
-
-  const updatedData = {
-    bought: itemToUpdate.bought,
-    test: {
-      miPrueba: true,
-      otraPrueba: [1,2,3]
-    }
-  }
-  const payload = JSON.stringify(updatedData)
-  // Send fetch to API, update article
-  await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/update/articles/${itemToUpdate._id}`, 'PUT', payload)
-  // console.log('after update on API', apiData)
-  store.article.update(itemToUpdate, setLocalStorageFromStore)
-}
-
-/**
- * Update existing shopping list item
- */
-function updateShoppingListItem() {
-  getShoppingListTotalAmount()
-}
-
-/**
- * Delete existing shopping list item
- * @param {MouseEvent} e
- * @param {string} itemIdToDelete
- * @param {HTMLElement} rowToDelete
- */
-async function deleteShoppingListItem(e, itemIdToDelete, rowToDelete) {
-  // Send fetch to API, delete article
-  const result = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/delete/articles/${itemIdToDelete}`, 'DELETE')
-
-  if (result) {
-    console.log('after delete on API', result)
-    // Delete item from store
-    store.article.delete(store.article.getById(itemIdToDelete), setLocalStorageFromStore)
-    // Update html
-    rowToDelete.remove()
-    getShoppingListTotalAmount()
-  } else {
-    alert('Error deleting article')
-    console.error('Error deleting article', result)
-  }
-}
-
-/**
- * Empty table element
- */
-function emptyTableElement() {
-  const shoppingListTableBodyRowsList = document.querySelectorAll('tbody>tr')
-  // 1. For each table row found
-  for (let tableRow of shoppingListTableBodyRowsList) {
-    // 2. Remove it from the table element
-    tableRow.remove()
-  }
-}
-
-/**
- * Calculate shopping list total amount
- */
-function getShoppingListTotalAmount() {
-  const shoppingListTableTotalElement = document.getElementById('shoppingListTableTotal')
-  let totalAmount = 0
-
-  for (let article of store.article.getAll()) {
-    // 1. Calculate subtotals for each article
-    const subtotal = article.qty * article.price
-    // 2. Add all subtotals
-    totalAmount += subtotal
-  }
-  // 3. Show it on table total amount cell
-  if (shoppingListTableTotalElement) {
-    shoppingListTableTotalElement.innerText = String(totalAmount)
   }
 }
 
@@ -431,18 +284,24 @@ export async function getAPIData(apiURL, method = 'GET', data) {
 async function readShoppingList() {
   /** @type {State} */
   const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/read/articles`)
-  // console.log('apiData', apiData)
   const storeData = {
     articles: apiData
   }
-  // Propagate article list to article-list component
-  document.getElementById('articleList')?.setAttribute('articles', JSON.stringify(apiData))
+  updateArticleList(apiData)
   updateLocalStorage(storeData)
   const storedData = getDataFromLocalStorage()
   storedData?.articles.forEach((/** @type {Article | UsualProduct} */ savedArticle) => {
     store.article.create(savedArticle)
-    // addNewRowToShoppingListTable(savedArticle)
   });
+}
+
+/**
+ * Propagate article list to article-list component
+ * @param {Article[]} articles
+ */
+function updateArticleList(articles) {
+  // Propagate article list to article-list component
+  document.getElementById('articleList')?.setAttribute('articles', JSON.stringify(articles))
 }
 
 /**
@@ -465,7 +324,7 @@ function updateSessionStorage(storeValue) {
  * Saves the current state of the store in local storage.
  * Removes the user's data from the store before saving.
  */
-function setLocalStorageFromStore() {
+export function setLocalStorageFromStore() {
   // Remove user data from store before saving
   const storeState = store.getState()
   delete storeState.user
@@ -473,26 +332,11 @@ function setLocalStorageFromStore() {
 }
 
 /**
- * Saves the current state of the store in session storage.
- * Removes all data except the user data from the store before saving.
- */
-// function setSessionStorageFromStore() {
-//   // Remove unused data from store before saving
-//   const storeState = store.getState()
-//   delete storeState.articles
-//   delete storeState.error
-//   delete storeState.isLoading
-//   delete storeState.route
-//   updateSessionStorage(storeState)
-// }
-
-/**
  * Retrieves the shopping list data from local storage.
  *
  * @returns {State} Saved state.
  * If no data is found, returns an empty State object.
  */
-
 function getDataFromLocalStorage() {
   const defaultValue = JSON.stringify(INITIAL_STATE)
   return JSON.parse(localStorage.getItem('shoppingList') || defaultValue)
@@ -515,7 +359,6 @@ function isUserLoggedIn() {
  * @returns {State} Saved state.
  * If no data is found, returns an empty State object.
  */
-
 function getDataFromSessionStorage() {
   const defaultValue = JSON.stringify(INITIAL_STATE)
   return JSON.parse(sessionStorage.getItem('shoppingList') || defaultValue)
@@ -626,10 +469,6 @@ function activateLoggedInUI(isLoggedIn = false) {
  * Exports for testing
  */
 export {
-  addNewRowToShoppingListTable,
-  updateShoppingListItem,
-  deleteShoppingListItem,
-  getShoppingListTotalAmount,
   getDataFromLocalStorage,
   readShoppingList
 }
