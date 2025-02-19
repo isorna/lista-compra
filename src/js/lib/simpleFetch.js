@@ -15,15 +15,9 @@ export async function simpleFetch (url, options) {
     throw new HttpError(result);
   }
   let isJsonResponse = result.headers.get('Content-Type')?.includes('application/json');
-  console.log(isJsonResponse);
+
   if (isJsonResponse) {
     return (await result.json());
   }
   return (await result.text());
-  // OLD
-  // Add support to html template files
-  // if (result.url.endsWith('.html')) {
-  //   return (await result.text());
-  // }
-  // return (await result.json());
 }
