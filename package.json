@@ -4,6 +4,7 @@
   "type": "module",
   "description": "proyecto de prácticas para el bootcamp de Neoland",
   "main": "index.js",
+  "node": ">=20.0.0",
   "scripts": {
     "server:express:start": "node --env-file=.env --watch server/server.express.js",
     "server:statics:start": "node --env-file=.env --watch server/server.statics.js",
