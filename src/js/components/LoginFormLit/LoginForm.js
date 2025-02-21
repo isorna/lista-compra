@@ -42,11 +42,14 @@ export class LoginForm extends LitElement {
 
   async _onFormSubmit(e) {
     e.preventDefault();
-    const email = this.email;
-    const password = this.password;
+    // Prevent autofill problems
+    const emailElement = this.renderRoot.querySelector('#email')
+    const passwordElement = this.renderRoot.querySelector('#password')
+    const email = this.email || emailElement.value;
+    const password = this.password || passwordElement.value;
     const loginData = {
-      email: email.value,
-      password: password.value
+      email,
+      password
     }
     let onFormSubmitEvent
     if (loginData.email !== '' && loginData.password !== '') {
