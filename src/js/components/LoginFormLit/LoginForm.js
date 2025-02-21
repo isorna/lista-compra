@@ -32,6 +32,7 @@ export class LoginForm extends LitElement {
     `;
   }
 
+  // Property binding methods
   _emailChanged(e) {
     this.email = e.target.value
   }
@@ -40,6 +41,7 @@ export class LoginForm extends LitElement {
     this.password = e.target.value
   }
 
+  // Event listeners
   async _onFormSubmit(e) {
     e.preventDefault();
     // Prevent autofill problems
