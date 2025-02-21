@@ -26,6 +26,7 @@ function onDomContentLoaded() {
   const newArticleElement = document.getElementById('newArticle')
   const newListElement = document.getElementById('newList')
   const logoutButton = document.getElementById('logoutButton')
+  const modalWrapper = document.querySelector('#modalWrapper')
 
   // Activate router
   installRouter((/** @type {Location} */ location) => {handleNavigation(location)})
@@ -43,6 +44,23 @@ function onDomContentLoaded() {
   window.addEventListener('login-form-submit', (event) => {
     // console.log('login-form-submit', /** @type {CustomEvent} */(event).detail)
     onLoginComponentSubmit(/** @type {CustomEvent} */(event).detail)
+  })
+
+  window.addEventListener('on-modal-show', (event) => {
+    const modalWrapper = document.querySelector('#modalWrapper')
+    const modalTitle = document.querySelector('#modalWrapper h1')
+    const modalText = document.querySelector('#modalWrapper p')
+    const modalMessage = /** @type {CustomEvent} */(event).detail.text
+
+    if (modalWrapper && modalText && modalTitle) {
+      modalText.textContent = modalMessage
+      modalWrapper.classList.remove('hidden')
+    }
+  })
+
+  modalWrapper?.addEventListener('click', () => {
+    const modalWrapper = document.querySelector('#modalWrapper')
+    modalWrapper?.classList.add('hidden')
   })
 
   // This is just a test
@@ -80,10 +98,12 @@ function onNewListClick() {
 /**
  * Handles a successful login from the login component
  * @param {Object} apiData - The user data returned from the API
+ * @param {Object} [apiData.detail] - Message errors
  * @returns void
  */
 function onLoginComponentSubmit(apiData) {
-  // console.log(`DESDE FUERA DEL COMPONENTE:`, apiData);
+  console.log(`DESDE FUERA DEL COMPONENTE:`, apiData);
+  //on-modal-show
   if (!apiData) {
     alert('Usuario no encontrado')
     return
@@ -100,6 +120,12 @@ function onLoginComponentSubmit(apiData) {
     navigateTo('/')
   } else {
     alert('La estructura devuelta por la API no corresponde con la clase Usuario')
+    let onModalErrorEvent = new CustomEvent("on-modal-show", {
+      bubbles: true,
+      detail: apiData.detail
+    })
+
+    window.dispatchEvent(onModalErrorEvent)
   }
 }
 

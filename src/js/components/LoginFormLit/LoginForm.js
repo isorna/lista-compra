@@ -56,7 +56,14 @@ export class LoginForm extends LitElement {
     let onFormSubmitEvent
     if (loginData.email !== '' && loginData.password !== '') {
       const payload = JSON.stringify(loginData)
-      const apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/login`, 'POST', payload)
+      let apiData = await getAPIData(`${location.protocol}//${location.hostname}${API_PORT}/api/login`, 'POST', payload)
+      if (!apiData) {
+        apiData = {
+          detail: {
+            text: 'No he encontrado el usuario o la contraseña'
+          }
+        }
+      }
       onFormSubmitEvent = new CustomEvent("login-form-submit", {
         bubbles: true,
         detail: apiData
@@ -64,7 +71,9 @@ export class LoginForm extends LitElement {
     } else {
       onFormSubmitEvent = new CustomEvent("login-form-submit", {
         bubbles: true,
-        detail: null
+        detail: {
+          text: 'No he encontrado el usuario o la contraseña'
+        }
       })
     }
 

@@ -250,4 +250,14 @@ body {
       }
     }
   }
+
+  dialog:not(.hidden) {
+    position: absolute;
+    background-color: rgba(241 8 8 / 0.3);
+    width: 100vw;
+    height: 100vh;
+    padding: 50%;
+    z-index: 1000;
+    display: block;
+  }
 }
