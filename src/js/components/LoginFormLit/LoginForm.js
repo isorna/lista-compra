@@ -12,15 +12,9 @@ export class LoginForm extends LitElement {
 
   static properties = {
     prueba: {type: String},
+    email: {type: String},
+    password: {type: String}
   };
-
-  get _email() {
-    return this.renderRoot?.querySelector('#email') ?? null;
-  }
-
-  get _password() {
-    return this.renderRoot?.querySelector('#password') ?? null;
-  }
 
   constructor() {
     super();
@@ -30,18 +24,26 @@ export class LoginForm extends LitElement {
     return html`
     <slot></slot>
     <form id="loginForm" @submit="${this._onFormSubmit}">
-      <label>Usuario (${this.prueba}): <input type="text" id="email" placeholder="email" /></label>
-      <label>Contraseña: <input type="password" id="password" placeholder="contraseña" /></label>
-      <button type="submit" id="loginButton" title="Login">Login</button>
+      <label>Usuario: <input type="text" id="email" placeholder="email" .value=${this.email} @input="${this._emailChanged}" /></label>
+      <label>Contraseña: <input type="password" id="password" placeholder="contraseña" .value=${this.password} @input="${this._passwordChanged}" /></label>
+      <button type="submit" id="loginButton" title="Login" ?disabled=${this.email === '' || this.password === ''}>Login</button>
       <slot name="error"></slot>
     </form>
     `;
   }
 
+  _emailChanged(e) {
+    this.email = e.target.value
+  }
+
+  _passwordChanged(e) {
+    this.password = e.target.value
+  }
+
   async _onFormSubmit(e) {
     e.preventDefault();
-    const email = this._email;
-    const password = this._password;
+    const email = this.email;
+    const password = this.password;
     const loginData = {
       email: email.value,
       password: password.value
