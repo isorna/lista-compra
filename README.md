@@ -22,6 +22,7 @@ En este repositorio se aplican los conocimientos adquiridos durante el curso:
 * Lit Element como librería de componentes web
 * Servidor de estáticos y APIs REST con ExpressJS
 * Base de datos con MongoDB
+* Habilitación como PWA para poder instalarla en dispositivos móviles.
 
 ...
 
