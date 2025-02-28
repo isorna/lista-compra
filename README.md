@@ -70,10 +70,9 @@ También está implementada la validación de tipados por medio de JSDoc en los 
 
 Para generar la documentación de la aplicación se usa [JSDoc] y se guarda en la carpeta ```out```. Para verla puedes ejecutar el comando ```npm run build:docs```.
 
-
 ## Modelo de datos y relaciones entre componentes
 
-AÑADIR IMG del OBSIDIAN
+![Modelo de datos](./public/data-model.png)
 
 Explicar el tipado de datos con JSDoc y la validación con [ESLint] y los hooks de Git.
 
