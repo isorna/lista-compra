@@ -1,4 +1,4 @@
-# Prácticas para el Bootcamp de Fullstack en Neoland
+# Lista de la compra
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/ddc0ed70-ca54-45fe-a3ce-5416c6d66c19/deploy-status)](https://app.netlify.com/sites/neoland-isorna/deploys)
 
