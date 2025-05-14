@@ -24,8 +24,8 @@ export class LoginForm extends LitElement {
     return html`
     <slot></slot>
     <form id="loginForm" @submit="${this._onFormSubmit}">
-      <label>Usuario: <input type="text" id="email" placeholder="email" .value=${this.email} @input="${this._emailChanged}" /></label>
-      <label>Contraseña: <input type="password" id="password" placeholder="contraseña" .value=${this.password} @input="${this._passwordChanged}" /></label>
+      <label>Usuario: <input type="text" id="email" placeholder="email" .value=${this.email} @input="${this._emailChanged}" autocomplete="email" /></label>
+      <label>Contraseña: <input type="password" id="password" placeholder="contraseña" .value=${this.password} @input="${this._passwordChanged}" autocomplete="password" /></label>
       <button type="submit" id="loginButton" title="Login" ?disabled=${this.email === '' || this.password === ''}>Login</button>
       <slot name="error"></slot>
     </form>

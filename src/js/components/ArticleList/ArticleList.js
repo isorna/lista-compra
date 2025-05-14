@@ -184,11 +184,7 @@ export class ArticleList extends HTMLElement {
     itemToUpdate.bought = !itemToUpdate.bought
 
     const updatedData = {
-      bought: itemToUpdate.bought,
-      test: {
-        miPrueba: true,
-        otraPrueba: [1,2,3]
-      }
+      bought: itemToUpdate.bought
     }
     const payload = JSON.stringify(updatedData)
     // Send fetch to API, update article

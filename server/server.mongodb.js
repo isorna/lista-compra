@@ -87,8 +87,11 @@ async function createArticle(article) {
     user_id: new ObjectId(String(article.user_id))
   };
   const returnValue = await articlesCollection.insertOne(articleWithUserId);
-  console.log('db createArticle', returnValue, article._id)
-  return article
+  console.log('db createArticle', returnValue, returnValue.insertedId)
+  return {
+    ...article,
+    _id: returnValue.insertedId
+  }
 }
 
 /**
